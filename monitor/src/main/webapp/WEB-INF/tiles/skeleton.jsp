@@ -53,10 +53,15 @@
           		<a href="<c:url value="/" />" >Home</a>
           	</li>
           	
-          	<sec:authorize access="isAuthenticated()">
+          	<sec:authorize access="hasAnyRole('ADMIN')">
           	<li role="presentation">
           		<a href="<c:url value="/admin/apps/add" />" >Add App</a>
           	</li>
+          	<li role="presentation">
+          		<a href="<c:url value="/admin/recipients/add" />" >Add Recipient</a>
+          	</li>
+          	</sec:authorize>
+          	<sec:authorize access="isAuthenticated()">
           	<li role="presentation">
          	 	<form action="<c:url value="/logout" />" method="POST">
          	 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

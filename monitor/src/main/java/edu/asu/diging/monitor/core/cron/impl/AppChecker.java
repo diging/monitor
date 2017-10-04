@@ -25,6 +25,7 @@ import edu.asu.diging.monitor.core.model.IPingResult;
 import edu.asu.diging.monitor.core.model.impl.AppTest;
 import edu.asu.diging.monitor.core.model.impl.PingResult;
 import edu.asu.diging.monitor.core.service.IAppManager;
+import edu.asu.diging.monitor.core.service.INotificationManager;
 
 @Component
 @PropertySource(value = "classpath:/config.properties")
@@ -37,6 +38,9 @@ public class AppChecker implements IAppChecker {
 	
 	@Autowired
 	private IAppManager appManager;
+	
+	@Autowired
+	private INotificationManager notificationManager;
 
 	/*
 	 * (non-Javadoc)
@@ -49,6 +53,8 @@ public class AppChecker implements IAppChecker {
 	@Async
 	public void checkApp(IApp app) {
 		logger.info("Checking app: " + app.getName());
+		
+		IAppTest lastTest = app.getLastAppTest();
 		
 		IAppTest test = new AppTest();
 		test.setAppId(app.getId());
@@ -81,6 +87,11 @@ public class AppChecker implements IAppChecker {
 		
 		logger.info("App status for " + app.getName() + " is " + test.getStatus());
 		appManager.addAppTest(test, true);
+		app.setLastAppTest(test);
+		
+		if (lastTest != null && (lastTest.getStatus() != test.getStatus())) {
+			notificationManager.sendNotificationEmails(app, lastTest.getStatus());
+		}
 	}
 
 	private AppStatus determineStatus(IApp app, int responseCode) {

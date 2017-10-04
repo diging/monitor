@@ -9,7 +9,7 @@
 	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.1.xsd
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
 	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
@@ -29,4 +29,22 @@
 	<context:property-placeholder location="classpath*:config.properties" />
 	<util:properties id="props" location="classpath:/config.properties" />
 	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${email.host}"/>
+        <property name="port" value="${email.port}"/>
+        <property name="username" value="${email.username}"/>
+        <property name="password" value="${email.pw}"/>
+        <property name="javaMailProperties">
+            <props>
+            	<prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+        </property>
+    </bean>
+   
+   <bean id="emailNoficationSender" class="edu.asu.diging.monitor.core.notify.impl.EmailNotificationSender">
+       <property name="enabled" value="${email.enabled}" />
+       <property name="fromAddress" value="${email.from}" />
+   </bean>
 </beans>

@@ -1,0 +1,13 @@
+Hi there!
+
+The following app watched by Monitor changed its status:
+App name: $app.name
+App health url: $app.healthUrl
+Previous status: $prevStatus
+New status: $newStatus
+
+I thought you should now.
+The Monitor Lizard
+
+-------
+This is an automated message, please do not respond.
