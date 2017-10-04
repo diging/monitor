@@ -11,4 +11,6 @@ public interface IAppTestDbConnection {
 
 	String generateId();
 
+	void deleteTestsForApp(String appId);
+
 }

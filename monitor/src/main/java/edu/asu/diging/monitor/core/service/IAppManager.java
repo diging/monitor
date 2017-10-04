@@ -15,4 +15,6 @@ public interface IAppManager {
 
 	void addAppTest(IAppTest test, boolean updateAppLastTest);
 
+	void deleteApp(String id);
+
 }

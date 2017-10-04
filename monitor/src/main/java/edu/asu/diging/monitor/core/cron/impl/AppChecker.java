@@ -79,7 +79,7 @@ public class AppChecker implements IAppChecker {
 			pingResult.setReturnValue(e.getMessage());
 		}
 		
-		logger.info("App status is " + test.getStatus());
+		logger.info("App status for " + app.getName() + " is " + test.getStatus());
 		appManager.addAppTest(test, true);
 	}
 

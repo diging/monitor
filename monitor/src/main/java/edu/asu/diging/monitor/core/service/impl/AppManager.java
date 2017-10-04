@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import edu.asu.diging.monitor.core.model.IAppTest;
 import edu.asu.diging.monitor.core.service.IAppManager;
 
 @Service
+@Transactional
 public class AppManager implements IAppManager {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -76,6 +79,15 @@ public class AppManager implements IAppManager {
 		
 		if (updateAppLastTest) {
 			dbConnection.updateLastAppTest(test.getAppId(), test.getId());
+		}
+	}
+	
+	@Override
+	public void deleteApp(String id) {
+		IApp app = dbConnection.getById(id);
+		if (app != null) {
+			appTestDbConnection.deleteTestsForApp(id);
+			dbConnection.delete(app);
 		}
 	}
 }
