@@ -1,0 +1,21 @@
+package edu.asu.diging.monitor.web;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import edu.asu.diging.monitor.core.service.IAppManager;
+
+@Controller
+public class HomeController {
+	
+	@Autowired
+	private IAppManager appManager;
+
+    @RequestMapping(value = "/")
+    public String home(Model model) {
+    		model.addAttribute("apps", appManager.getApps());
+        return "home";
+    }
+}
