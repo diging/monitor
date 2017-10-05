@@ -30,6 +30,11 @@
         <email.pw></email.pw>
         <email.from></email.from>
         <email.enabled>true</email.enabled>
+        
+        <!-- Tomcat -->
+        <tomcat.manager.path></tomcat.manager.path>
+        <tomcat.server.id></tomcat.server.id>
+        <tomcat.appname>ep-grazer</tomcat.appname>
 	</properties>
 
 	<dependencies>
@@ -306,6 +311,16 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			<plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <url>${tomcat.manager.path}</url>
+                    <server>${tomcat.server.id}</server>
+                    <path>/${tomcat.appname}</path>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
