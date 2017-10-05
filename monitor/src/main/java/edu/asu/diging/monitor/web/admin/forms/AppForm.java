@@ -1,5 +1,7 @@
 package edu.asu.diging.monitor.web.admin.forms;
 
+import edu.asu.diging.monitor.core.model.RequestMethod;
+
 public class AppForm {
 
 	private String id;
@@ -11,6 +13,7 @@ public class AppForm {
 	private int timeout;
 	private int retries;
 	private int pingInterval;
+	private RequestMethod method;
 	
 	public String getId() {
 		return id;
@@ -65,6 +68,12 @@ public class AppForm {
 	}
 	public void setPingInterval(int pingInterval) {
 		this.pingInterval = pingInterval;
+	}
+	public RequestMethod getMethod() {
+		return method;
+	}
+	public void setMethod(RequestMethod method) {
+		this.method = method;
 	}
 	
 }

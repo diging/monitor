@@ -68,7 +68,7 @@ public class AppChecker implements IAppChecker {
 
 		try {
 			HttpURLConnection connection = (HttpURLConnection) new URL(app.getHealthUrl()).openConnection();
-			connection.setRequestMethod("HEAD");
+			connection.setRequestMethod(app.getMethod() != null ? app.getMethod().toString() : "HEAD");
 			int timeout = app.getTimeout() > 0 ? app.getTimeout() : new Integer(pingConnectionTimeout);
 			connection.setConnectTimeout(timeout);
 			connection.setReadTimeout(timeout);

@@ -6,6 +6,7 @@ import javax.persistence.Transient;
 
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
+import edu.asu.diging.monitor.core.model.RequestMethod;
 
 @Entity
 public class App implements IApp {
@@ -21,6 +22,7 @@ public class App implements IApp {
 	private int pingInterval;
 	private String lastTestId;
 	@Transient private IAppTest lastAppTest;
+	private RequestMethod method;
 	
 	/* (non-Javadoc)
 	 * @see edu.asu.diging.monitor.core.model.impl.IApp#getId()
@@ -157,6 +159,14 @@ public class App implements IApp {
 	@Override
 	public void setLastAppTest(IAppTest lastAppTest) {
 		this.lastAppTest = lastAppTest;
+	}
+	@Override
+	public RequestMethod getMethod() {
+		return method;
+	}
+	@Override
+	public void setMethod(RequestMethod method) {
+		this.method = method;
 	}
 	
 }

@@ -46,4 +46,8 @@ public interface IApp {
 
 	IAppTest getLastAppTest();
 
+	void setMethod(RequestMethod method);
+
+	RequestMethod getMethod();
+
 }

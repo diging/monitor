@@ -29,6 +29,14 @@
   </div>
   
   <div class="form-group">
+  	 <form:label path="timeout">Method for ping:</form:label>
+  	 <form:select class="form-control" path="method">
+      <form:option value="HEAD" label="HEAD" />
+      <form:option value="GET" label="GET" />
+   </form:select>
+  </div>
+  
+  <div class="form-group">
  	 <form:label path="timeout">Timeout (in ms):</form:label>
     	 <form:input type="number" class="form-control" path="timeout" value="30000" />
     	 <small>Default is 30 seconds.</small>

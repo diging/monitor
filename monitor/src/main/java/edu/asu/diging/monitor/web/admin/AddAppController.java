@@ -3,7 +3,6 @@ package edu.asu.diging.monitor.web.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +35,7 @@ public class AddAppController {
 		app.setTimeout(appForm.getTimeout());
 		app.setWarningReturnCodes(appForm.getWarningReturnCodes());
 		app.setPingInterval(appForm.getPingInterval());
+		app.setMethod(appForm.getMethod());
 		appManager.addApp(app);
 		return "redirect:/admin/apps/add";
 	}
