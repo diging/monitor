@@ -22,19 +22,19 @@
 		<db.password>dbadmin</db.password>
 		<hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</hibernate.dialect>
 		<hibernate.log.sql>false</hibernate.log.sql>
-		
+
 		<!-- Email -->
 		<email.host></email.host>
-        <email.port>8080</email.port>
-        <email.username></email.username>
-        <email.pw></email.pw>
-        <email.from></email.from>
-        <email.enabled>true</email.enabled>
-        
-        <!-- Tomcat -->
-        <tomcat.manager.path></tomcat.manager.path>
-        <tomcat.server.id></tomcat.server.id>
-        <tomcat.appname>ep-grazer</tomcat.appname>
+		<email.port>8080</email.port>
+		<email.username></email.username>
+		<email.pw></email.pw>
+		<email.from></email.from>
+		<email.enabled>true</email.enabled>
+
+		<!-- Tomcat -->
+		<tomcat.manager.path></tomcat.manager.path>
+		<tomcat.server.id></tomcat.server.id>
+		<tomcat.appname>ep-grazer</tomcat.appname>
 	</properties>
 
 	<dependencies>
@@ -312,15 +312,15 @@
 				</configuration>
 			</plugin>
 			<plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <url>${tomcat.manager.path}</url>
-                    <server>${tomcat.server.id}</server>
-                    <path>/${tomcat.appname}</path>
-                </configuration>
-            </plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>${tomcat.manager.path}</url>
+					<server>${tomcat.server.id}</server>
+					<path>/${tomcat.appname}</path>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
