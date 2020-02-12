@@ -1,5 +1,7 @@
 package edu.asu.diging.monitor.core.service.impl;
 
+import static org.mockito.Mockito.never;
+
 import java.util.List;
 
 import org.junit.Assert;
@@ -48,6 +50,7 @@ public class AppManagerTest {
         storedApps = new App[] { app1, app2 };
         
         Mockito.when(dbConnection.getAllRegisteredApps()).thenReturn(storedApps);
+        Mockito.when(dbConnection.getById(ID1)).thenReturn(app1);
         
         test1 = new AppTest();
         test1.setAppId(ID1);
@@ -84,5 +87,42 @@ public class AppManagerTest {
     public void test_getLatestAppTest_success() {
         IAppTest test = managerToTest.getLatestAppTest(app1);
         Assert.assertEquals(test1, test);
+    }
+    
+    @Test
+    public void test_getLatestAppTest_noTest() {
+        IAppTest test = managerToTest.getLatestAppTest(app2);
+        Assert.assertNull(test);
+    }
+    
+    @Test
+    public void test_addAppTest_updateApp() throws UnstorableObjectException {
+        String newTestId = "NEWID";
+        Mockito.when(appTestDbConnection.generateId()).thenReturn(newTestId);
+        AppTest test = new AppTest();
+        String appId = "APPID";
+        test.setAppId(appId);
+        managerToTest.addAppTest(test, true);
+        Mockito.verify(appTestDbConnection).store(test);
+        Mockito.verify(dbConnection).updateLastAppTest(appId, newTestId);
+    }
+    
+    @Test
+    public void test_addAppTest_doNotUpdateApp() throws UnstorableObjectException {
+        String newTestId = "NEWID";
+        Mockito.when(appTestDbConnection.generateId()).thenReturn(newTestId);
+        AppTest test = new AppTest();
+        String appId = "APPID";
+        test.setAppId(appId);
+        managerToTest.addAppTest(test, false);
+        Mockito.verify(appTestDbConnection).store(test);
+        Mockito.verify(dbConnection, never()).updateLastAppTest(appId, newTestId);
+    }
+    
+    @Test
+    public void test_deleteApp_success() {
+        managerToTest.deleteApp(ID1);
+        Mockito.verify(appTestDbConnection).deleteTestsForApp(ID1);
+        Mockito.verify(dbConnection).delete(app1);
     }
 }
