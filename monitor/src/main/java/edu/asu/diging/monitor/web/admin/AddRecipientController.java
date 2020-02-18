@@ -33,7 +33,7 @@ public class AddRecipientController {
 			recipientForm.setEmail(x.getValue());
 			recipientList.add(recipientForm);
 		});
-		model.addAttribute("apps", recipientList);
+		model.addAttribute("rcpts", recipientList);
 		return "admin/recipients/show";
 	}
 

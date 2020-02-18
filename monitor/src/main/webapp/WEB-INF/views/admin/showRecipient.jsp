@@ -11,10 +11,10 @@
 	<th scope="col">Name</th>
     <th scope="col">Email</th>
 	</thead>
-    <c:forEach items="${apps}" var="recipient">
+    <c:forEach items="${rcpts}" var="rcpt">
         <tr>
-            <td><c:out value="${recipient.name}"/></td>
-            <td><c:out value="${recipient.email}"/></td>  
+            <td><c:out value="${rcpt.name}"/></td>
+            <td><c:out value="${rcpt.email}"/></td>  
         </tr>
     </c:forEach>
 </table>
