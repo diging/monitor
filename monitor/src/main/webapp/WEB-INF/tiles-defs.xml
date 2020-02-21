@@ -21,7 +21,12 @@
 	<definition name="admin/apps/show" extends="base.definition">
 		<put-attribute name="content" value="/WEB-INF/views/admin/addApp.jsp" />	
 	</definition>
+	
 	<definition name="admin/recipients/show" extends="base.definition">
+		<put-attribute name="content" value="/WEB-INF/views/admin/showRecipient.jsp" />
+	</definition>
+	
+	<definition name="admin/recipients/showAddPage" extends="base.definition">
 		<put-attribute name="content" value="/WEB-INF/views/admin/addRecipient.jsp" />	
 	</definition>
 	
