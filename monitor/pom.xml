@@ -11,8 +11,8 @@
 		<org.slf4j-version>1.7.30</org.slf4j-version>
 		<org.springframework-version>5.2.3.RELEASE</org.springframework-version>
 		<spring-security-version>5.2.2.RELEASE</spring-security-version>
-		<admin.password>{noop}admin</admin.password>
-
+		<encoding.type>{bcrypt}</encoding.type>
+		<admin.password>$2y$12$AJZLdMlxFVueyEUwjPNjo.df2235U0BTudUjY915T4on73our8x0C</admin.password>
 		<log.level>debug</log.level>
 
 		<!-- DB config -->
