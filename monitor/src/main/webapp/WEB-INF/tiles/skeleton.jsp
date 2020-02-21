@@ -73,7 +73,7 @@
          
         </nav>
         
-        <h1><a class="appName" href="<c:url value="/" />">Monitor</a> <span style="margin-left: 15px;" class="small">How are your sites are doing?</span></h1>
+        <h1><a class="appName" href="<c:url value="/" />">Monitor</a> <span style="margin-left: 15px;" class="small">How are your sites doing?</span></h1>
  
       </div>
       
