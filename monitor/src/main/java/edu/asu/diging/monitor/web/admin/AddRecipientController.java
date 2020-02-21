@@ -1,8 +1,5 @@
 package edu.asu.diging.monitor.web.admin;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,23 +22,11 @@ public class AddRecipientController {
 	@Autowired
 	private INotificationManager manager;
 	
-	@RequestMapping(value="/admin/recipients/show", method=RequestMethod.GET)
-	public String showRecipients(Model model) {
-		List<RecipientForm> recipientList = new ArrayList<>();
-		manager.showRecipients().entrySet().forEach( x-> {
-			RecipientForm recipientForm = new RecipientForm();
-			recipientForm.setName(x.getKey());
-			recipientForm.setEmail(x.getValue());
-			recipientList.add(recipientForm);
-		});
-		model.addAttribute("rcpts", recipientList);
-		return "admin/recipients/show";
-	}
 	
 	@RequestMapping(value="/admin/recipients/add", method=RequestMethod.GET)
 	public String show(Model model) {
 		model.addAttribute("recipientForm", new RecipientForm());
-		return "admin/recipients/showAddPage";
+		return "admin/recipients/add";
 	}
 	
 	@RequestMapping(value="/admin/recipients/add", method=RequestMethod.POST)

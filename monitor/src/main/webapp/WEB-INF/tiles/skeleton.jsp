@@ -58,7 +58,7 @@
           		<a href="<c:url value="/admin/apps/add" />" >Add App</a>
           	</li>
           	<li role="presentation">
-          		<a href="<c:url value="/admin/recipients/show" />" >Show Recipients</a>
+          		<a href="<c:url value="/admin/recipient/list" />" >Show Recipients</a>
           	</li>
           	</sec:authorize>
           	<sec:authorize access="isAuthenticated()">

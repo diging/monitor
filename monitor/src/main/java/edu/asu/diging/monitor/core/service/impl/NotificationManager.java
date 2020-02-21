@@ -2,6 +2,7 @@ package edu.asu.diging.monitor.core.service.impl;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -54,11 +55,8 @@ public class NotificationManager implements INotificationManager {
 	}
 	
 	@Override
-	public Map<String,String> showRecipients(){
-		INotificationRecipient[] recipients = dbConnection.getAllRecipients();
-		Map<String,String> recipientInfo = new HashMap<>();
-		Arrays.asList(recipients).forEach(x -> recipientInfo.put(x.getName(),x.getEmail()));
-		return recipientInfo;
+	public List<INotificationRecipient> getAllRecipients(){
+		return Arrays.asList(dbConnection.getAllRecipients());
 	}
 	
 	@Override

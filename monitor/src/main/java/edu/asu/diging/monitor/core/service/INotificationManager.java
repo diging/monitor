@@ -1,10 +1,11 @@
 package edu.asu.diging.monitor.core.service;
 
-import java.util.Map;
 
+import java.util.List;
 import edu.asu.diging.monitor.core.exceptions.EmailAlreadyRegisteredException;
 import edu.asu.diging.monitor.core.model.AppStatus;
 import edu.asu.diging.monitor.core.model.IApp;
+import edu.asu.diging.monitor.core.model.INotificationRecipient;
 
 public interface INotificationManager {
 
@@ -12,6 +13,6 @@ public interface INotificationManager {
 
 	void sendNotificationEmails(IApp app, AppStatus previousStatus);
 	
-	Map<String,String> showRecipients();
+	List<INotificationRecipient> getAllRecipients();
 
 }
