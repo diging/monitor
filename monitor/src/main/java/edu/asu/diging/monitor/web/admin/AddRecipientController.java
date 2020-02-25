@@ -31,24 +31,28 @@ public class AddRecipientController {
 	
 	@RequestMapping(value="/admin/recipients/add", method=RequestMethod.POST)
 	public String add(@ModelAttribute RecipientForm recipientForm, RedirectAttributes redirectAttrs) {
+		String redirectURL = null;
 		if (recipientForm.getEmail() == null || recipientForm.getEmail().trim().isEmpty()) {
 			redirectAttrs.addFlashAttribute("show_alert", true);
 			redirectAttrs.addFlashAttribute("alert_type", "danger");
 			redirectAttrs.addFlashAttribute("alert_msg", "Recipient could not be stored. Please provide an email address.");
+			redirectURL = "redirect:/admin/recipients/add";
 		} else {
 			try {
 				manager.addRecipient(recipientForm.getName(), recipientForm.getEmail());
 				redirectAttrs.addFlashAttribute("show_alert", true);
 				redirectAttrs.addFlashAttribute("alert_type", "success");
 				redirectAttrs.addFlashAttribute("alert_msg", "Recipient was successfully registered.");
+				redirectURL = "redirect:/admin/recipient/list";
 			} catch (EmailAlreadyRegisteredException e) {
 				redirectAttrs.addFlashAttribute("show_alert", true);
 				redirectAttrs.addFlashAttribute("alert_type", "danger");
 				redirectAttrs.addFlashAttribute("alert_msg", "Recipient could not be stored. Email address already registered.");
 				logger.error("Could not store recipient.", e);
+				redirectURL = "redirect:/admin/recipients/add";
 			}
 		}
 		
-		return "redirect:/admin/recipients/add";
+		return redirectURL;
 	}
 }
