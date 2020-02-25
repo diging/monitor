@@ -14,5 +14,7 @@ public interface INotificationManager {
 	void sendNotificationEmails(IApp app, AppStatus previousStatus);
 	
 	List<INotificationRecipient> getAllRecipients();
+	
+	void deleteRecipient(String email);
 
 }
