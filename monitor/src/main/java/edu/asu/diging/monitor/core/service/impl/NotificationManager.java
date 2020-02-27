@@ -1,6 +1,9 @@
 package edu.asu.diging.monitor.core.service.impl;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +52,11 @@ public class NotificationManager implements INotificationManager {
 			logger.error("Could not store recipient.", e);
 		}
 		return true;
+	}
+	
+	@Override
+	public List<INotificationRecipient> getAllRecipients(){
+		return Arrays.asList(dbConnection.getAllRecipients());
 	}
 	
 	@Override
