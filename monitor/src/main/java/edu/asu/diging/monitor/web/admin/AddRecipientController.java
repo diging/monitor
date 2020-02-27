@@ -16,41 +16,38 @@ import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
 
 @Controller
 public class AddRecipientController {
-	
+
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private INotificationManager manager;
-	
-	
-	@RequestMapping(value="/admin/recipients/add", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/admin/recipients/add", method = RequestMethod.GET)
 	public String show(Model model) {
 		model.addAttribute("recipientForm", new RecipientForm());
 		return "admin/recipients/add";
 	}
-	
-	@RequestMapping(value="/admin/recipients/add", method=RequestMethod.POST)
+
+	@RequestMapping(value = "/admin/recipients/add", method = RequestMethod.POST)
 	public String add(@ModelAttribute RecipientForm recipientForm, RedirectAttributes redirectAttrs) {
 		if (recipientForm.getEmail() == null || recipientForm.getEmail().trim().isEmpty()) {
 			redirectAttrs.addFlashAttribute("show_alert", true);
 			redirectAttrs.addFlashAttribute("alert_type", "danger");
 			redirectAttrs.addFlashAttribute("alert_msg", "Recipient could not be stored. Please provide an email address.");
 			return "redirect:/admin/recipients/add";
-		} else {
-			try {
-				manager.addRecipient(recipientForm.getName(), recipientForm.getEmail());
-				redirectAttrs.addFlashAttribute("show_alert", true);
-				redirectAttrs.addFlashAttribute("alert_type", "success");
-				redirectAttrs.addFlashAttribute("alert_msg", "Recipient was successfully registered.");
-				return "redirect:/admin/recipient/list";
-			} catch (EmailAlreadyRegisteredException e) {
-				redirectAttrs.addFlashAttribute("show_alert", true);
-				redirectAttrs.addFlashAttribute("alert_type", "danger");
-				redirectAttrs.addFlashAttribute("alert_msg", "Recipient could not be stored. Email address already registered.");
-				logger.error("Could not store recipient.", e);
-				return "redirect:/admin/recipients/add";
-			}
 		}
-		
+		try {
+			manager.addRecipient(recipientForm.getName(), recipientForm.getEmail());
+			redirectAttrs.addFlashAttribute("show_alert", true);
+			redirectAttrs.addFlashAttribute("alert_type", "success");
+			redirectAttrs.addFlashAttribute("alert_msg", "Recipient was successfully registered.");
+			return "redirect:/admin/recipient/list";
+		} catch (EmailAlreadyRegisteredException e) {
+			redirectAttrs.addFlashAttribute("show_alert", true);
+			redirectAttrs.addFlashAttribute("alert_type", "danger");
+			redirectAttrs.addFlashAttribute("alert_msg", "Recipient could not be stored. Email address already registered.");
+			logger.error("Could not store recipient.", e);
+			return "redirect:/admin/recipients/add";
+		}
 	}
 }
