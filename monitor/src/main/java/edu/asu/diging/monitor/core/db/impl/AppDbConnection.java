@@ -45,8 +45,8 @@ public class AppDbConnection implements IAppDbConnection {
 	
 	@Override
 	public IApp update(IApp app) {
-		
-		return null;
+		em.merge(app);
+		return app;
 	}
 	
 	@Override

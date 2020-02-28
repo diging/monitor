@@ -40,12 +40,12 @@
 		</c:otherwise>
 	</c:choose>
 	<sec:authorize access="hasAnyRole('ADMIN')">
-		<div class="pull-right">
+		<div class="pull-left">
 			<c:url value="/admin/apps/${app.id}/modify" var="modifyUrl" />
 			<form action="${modifyUrl}" method="POST">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				<button title="Delete App" type="submit" class="btn-link">
-					<i style="padding: 10px;" class="fa fa-trash" aria-hidden="true"></i>
+				<button title="Modify App" type="submit" class="btn-link">
+					<i style="padding: 0px;" class="fa fa-edit" aria-hidden="true"></i>
 				</button>
 			</form>
 		</div>

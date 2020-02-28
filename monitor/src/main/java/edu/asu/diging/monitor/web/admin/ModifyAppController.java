@@ -1,29 +1,33 @@
 package edu.asu.diging.monitor.web.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
+@Controller
 public class ModifyAppController {
 	
 	
 	@Autowired
 	private IAppManager appManager;
 
-	@RequestMapping(value="/admin/apps/modify")
-	public String show(Model model) {
-		model.addAttribute("appForm", new AppForm());
+	@RequestMapping(value="/admin/apps/{id}/modify", method= RequestMethod.POST)
+	public String show(Model model, @PathVariable("id") String id) {
+		model.addAttribute("appForm", appManager.getApp(id));
 		return "admin/apps/modify";
 	}
 	
-	@RequestMapping(value="/admin/apps/add", method=RequestMethod.POST)
-	public String update(@ModelAttribute AppForm appForm) {
+	@RequestMapping(value="/admin/apps/modify", method=RequestMethod.POST)
+	public String update(@ModelAttribute AppForm appForm, RedirectAttributes redirectAttrs) {
 		IApp app = appManager.getApp(appForm.getId());
 		app.setDescription(appForm.getDescription());
 		app.setExpectedReturnCodes(appForm.getExpectedReturnCodes());
@@ -35,7 +39,10 @@ public class ModifyAppController {
 		app.setPingInterval(appForm.getPingInterval());
 		app.setMethod(appForm.getMethod());
 		appManager.updateApp(app);
-		return "redirect:/admin/apps/add";
+		redirectAttrs.addFlashAttribute("show_alert", true);
+		redirectAttrs.addFlashAttribute("alert_type", "success");
+		redirectAttrs.addFlashAttribute("alert_msg", "App was successfully updated.");
+		return "redirect:/";
 	}
 	
 
