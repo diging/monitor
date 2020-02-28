@@ -9,14 +9,15 @@
 	Recipient</a>
 <table class="table">
 	<thead>
-		<th scope="col">Name</th>
-		<th scope="col">Email</th>
+		<th scope="col" style="width:20%">Name</th>
+		<th scope="col" style="width:20%">Email</th>
+		<th style="width:100%"></th>
 	</thead>
 	<c:forEach items="${recipients}" var="recipient">
 		<tr>
 			<td><c:out value="${recipient.name}" /></td>
 			<td><c:out value="${recipient.email}" /></td>
-			<td><sec:authorize access="hasAnyRole('ADMIN')">
+			<td align="left"><sec:authorize access="hasAnyRole('ADMIN')">
 					<div class="pull-left">
 						<c:url value="/admin/recipients/${recipient.email}/delete"
 							var="deleteUrl" />
@@ -24,7 +25,7 @@
 							<input type="hidden" name="${_csrf.parameterName}"
 								value="${_csrf.token}" />
 							<button title="Delete Recipient" type="submit" class="btn-link">
-								<i style="padding: 10px;" class="fa fa-trash" aria-hidden="true"></i>
+								<i class="fa fa-trash" aria-hidden="true"></i>
 							</button>
 						</form>
 					</div>
