@@ -17,7 +17,8 @@
 		<tr>
 			<td><c:out value="${recipient.name}" /></td>
 			<td><c:out value="${recipient.email}" /></td>
-			<td align="right"><sec:authorize access="hasAnyRole('ADMIN')">
+			<td align="right">
+				<sec:authorize access="hasAnyRole('ADMIN')">
 					<div class="pull-right">
 						<c:url value="/admin/recipients/${recipient.email}/delete" var="deleteUrl" />
 						<form action="${deleteUrl}" method="POST">
@@ -27,7 +28,8 @@
 							</button>
 						</form>
 					</div>
-				</sec:authorize></td>
+				</sec:authorize>
+			</td>
 		</tr>
 	</c:forEach>
 </table>
