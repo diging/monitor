@@ -44,6 +44,12 @@ public class AppDbConnection implements IAppDbConnection {
     }
 	
 	@Override
+	public IApp update(IApp app) {
+		
+		return null;
+	}
+	
+	@Override
 	public void updateLastAppTest(String appId, String appTestId) {
 		IApp app = getById(appId);
 		app.setLastTestId(appTestId);

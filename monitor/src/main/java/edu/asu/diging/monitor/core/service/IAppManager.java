@@ -8,8 +8,12 @@ import edu.asu.diging.monitor.core.model.IAppTest;
 public interface IAppManager {
 
 	void addApp(IApp app);
+	
+	void updateApp(IApp app);
 
 	List<IApp> getApps();
+	
+	IApp getApp(String id);
 
 	IAppTest getLatestAppTest(IApp app);
 

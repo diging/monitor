@@ -8,6 +8,8 @@ public interface IAppDbConnection {
 	IApp getById(String id);
 
 	IApp store(IApp app) throws UnstorableObjectException;
+	
+	IApp update(IApp app);
 
 	void delete(IApp element);
 

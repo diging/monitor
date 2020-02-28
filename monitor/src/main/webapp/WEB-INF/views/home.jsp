@@ -39,7 +39,17 @@
 				<i class="fa fa-clock-o" aria-hidden="true"></i>
 		</c:otherwise>
 	</c:choose>
-
+	<sec:authorize access="hasAnyRole('ADMIN')">
+		<div class="pull-right">
+			<c:url value="/admin/apps/${app.id}/modify" var="modifyUrl" />
+			<form action="${modifyUrl}" method="POST">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<button title="Delete App" type="submit" class="btn-link">
+					<i style="padding: 10px;" class="fa fa-trash" aria-hidden="true"></i>
+				</button>
+			</form>
+		</div>
+	</sec:authorize>
 	<strong>${app.name}</strong> (${app.healthUrl})
 		<p>
 		<i>${app.description}</i>
