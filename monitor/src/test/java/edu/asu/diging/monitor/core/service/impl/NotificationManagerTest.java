@@ -57,7 +57,11 @@ public class NotificationManagerTest {
 	}
 	
 	
-	
+	@Test
+    public void test_deleteRecipient_success() {
+        managerToTest.deleteRecipient(ID1);
+        Mockito.verify(dbConn).delete(ID1);
+    }
 	
 
 }
