@@ -20,15 +20,15 @@ public class ModifyAppController {
 	@Autowired
 	private IAppManager appManager;
 
-	@RequestMapping(value="/admin/apps/{id}/modify", method= RequestMethod.POST)
+	@RequestMapping(value="/admin/apps/{id}/modify", method= RequestMethod.GET)
 	public String show(Model model, @PathVariable("id") String id) {
 		model.addAttribute("appForm", appManager.getApp(id));
-		return "admin/apps/modify";
+		return "admin/apps/show";
 	}
 	
-	@RequestMapping(value="/admin/apps/modify", method=RequestMethod.POST)
-	public String update(@ModelAttribute AppForm appForm, RedirectAttributes redirectAttrs) {
-		IApp app = appManager.getApp(appForm.getId());
+	@RequestMapping(value="/admin/apps/{id}/modify", method=RequestMethod.POST)
+	public String update(@ModelAttribute AppForm appForm, @PathVariable("id") String id, RedirectAttributes redirectAttrs) {
+		IApp app = appManager.getApp(id);
 		app.setDescription(appForm.getDescription());
 		app.setExpectedReturnCodes(appForm.getExpectedReturnCodes());
 		app.setHealthUrl(appForm.getHealthUrl());
