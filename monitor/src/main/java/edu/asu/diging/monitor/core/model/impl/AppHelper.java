@@ -1,9 +1,15 @@
-package edu.asu.diging.monitor.core.model;
+package edu.asu.diging.monitor.core.model.impl;
 
+import org.springframework.stereotype.Service;
+import edu.asu.diging.monitor.core.model.IApp;
+import edu.asu.diging.monitor.core.model.IAppHelper;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
-public class AppHelper {
-	public static void copyAppInfo(IApp app, AppForm appForm) {
+@Service
+public class AppHelper implements IAppHelper {
+
+	@Override
+	public void copyAppInfo(IApp app, AppForm appForm) {
 		app.setDescription(appForm.getDescription());
 		app.setExpectedReturnCodes(appForm.getExpectedReturnCodes());
 		app.setHealthUrl(appForm.getHealthUrl());
