@@ -16,7 +16,18 @@
 			<form action="${deleteUrl}" method="POST">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Delete App" type="submit" class="btn-link">
-					<i style="padding: 10px;" class="fa fa-trash" aria-hidden="true"></i>
+					<i style="padding: 10px;padding-left:5px;" class="fa fa-trash" aria-hidden="true"></i>
+				</button>
+			</form>
+		</div>
+		<div class="pull-right">
+			<c:url value="/admin/apps/ping" var="pingUrl">
+				<c:param name="url" value="${app.healthUrl}"/>
+			</c:url>
+			<form action="${pingUrl}" method="POST">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<button title="Ping App" type="submit" class="btn-link">
+					<i style="padding: 10px;padding-right:5px;" class="fa fa-bullseye" aria-hidden="true"></i>
 				</button>
 			</form>
 		</div>
