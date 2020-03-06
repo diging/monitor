@@ -30,9 +30,7 @@
 			</form>
 		</div>
 		<div class="pull-right">
-			<c:url value="/admin/apps/ping" var="pingUrl">
-				<c:param name="url" value="${app.healthUrl}"/>
-			</c:url>
+			<c:url value="/admin/apps/${app.id}/ping" var="pingUrl"/>
 			<form action="${pingUrl}" method="POST">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Ping App" type="submit" class="btn-link">

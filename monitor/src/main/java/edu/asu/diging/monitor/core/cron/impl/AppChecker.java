@@ -93,6 +93,11 @@ public class AppChecker implements IAppChecker {
 			notificationManager.sendNotificationEmails(app, lastTest.getStatus());
 		}
 	}
+	
+	@Override
+	public void checkAppNow(IApp app) {
+		checkApp(app);
+	}
 
 	private AppStatus determineStatus(IApp app, int responseCode) {
 		if (app.getExpectedReturnCodes() == null || app.getExpectedReturnCodes().trim().isEmpty()) {
