@@ -25,7 +25,7 @@
 			<form action="${modifyUrl}" method="GET">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Modify App" type="submit" class="btn-link">
-					<i style="padding: 11px;padding-right:0px;" class="fa fa-edit" aria-hidden="true"></i>
+					<i style="padding: 11px;padding-right:0px;padding-left:0px;" class="fa fa-edit" aria-hidden="true"></i>
 				</button>
 			</form>
 		</div>
@@ -34,7 +34,7 @@
 			<form action="${pingUrl}" method="POST">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Ping App" type="submit" class="btn-link">
-					<i style="padding: 10px;padding-right:5px;" class="fa fa-bullseye" aria-hidden="true"></i>
+					<i style="padding: 10px;padding-right:0px;" class="fa fa-bullseye" aria-hidden="true"></i>
 				</button>
 			</form>
 		</div>
