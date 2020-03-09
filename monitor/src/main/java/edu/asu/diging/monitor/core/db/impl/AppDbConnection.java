@@ -44,6 +44,12 @@ public class AppDbConnection implements IAppDbConnection {
     }
 	
 	@Override
+	public IApp update(IApp app) {
+		em.merge(app);
+		return app;
+	}
+	
+	@Override
 	public void updateLastAppTest(String appId, String appTestId) {
 		IApp app = getById(appId);
 		app.setLastTestId(appTestId);

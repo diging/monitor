@@ -16,7 +16,16 @@
 			<form action="${deleteUrl}" method="POST">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Delete App" type="submit" class="btn-link">
-					<i style="padding: 10px;" class="fa fa-trash" aria-hidden="true"></i>
+					<i style="padding: 10px;padding-left:0px;" class="fa fa-trash" aria-hidden="true"></i>
+				</button>
+			</form>
+		</div>
+		<div class="pull-right">
+			<c:url value="/admin/apps/${app.id}/modify" var="modifyUrl" />
+			<form action="${modifyUrl}" method="GET">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<button title="Modify App" type="submit" class="btn-link">
+					<i style="padding: 11px;padding-right:0px;" class="fa fa-edit" aria-hidden="true"></i>
 				</button>
 			</form>
 		</div>
@@ -39,7 +48,6 @@
 				<i class="fa fa-clock-o" aria-hidden="true"></i>
 		</c:otherwise>
 	</c:choose>
-
 	<strong>${app.name}</strong> (${app.healthUrl})
 		<p>
 		<i>${app.description}</i>

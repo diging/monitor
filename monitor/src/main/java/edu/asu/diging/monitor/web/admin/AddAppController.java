@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import edu.asu.diging.monitor.core.model.IApp;
+import edu.asu.diging.monitor.core.model.IAppHelper;
 import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
@@ -17,6 +18,9 @@ public class AddAppController {
 	
 	@Autowired
 	private IAppManager appManager;
+	
+	@Autowired
+	private IAppHelper appHelper;
 
 	@RequestMapping(value="/admin/apps/add")
 	public String show(Model model) {
@@ -27,15 +31,7 @@ public class AddAppController {
 	@RequestMapping(value="/admin/apps/add", method=RequestMethod.POST)
 	public String add(@ModelAttribute AppForm appForm) {
 		IApp app = new App();
-		app.setDescription(appForm.getDescription());
-		app.setExpectedReturnCodes(appForm.getExpectedReturnCodes());
-		app.setHealthUrl(appForm.getHealthUrl());
-		app.setName(appForm.getName());
-		app.setRetries(appForm.getRetries());
-		app.setTimeout(appForm.getTimeout());
-		app.setWarningReturnCodes(appForm.getWarningReturnCodes());
-		app.setPingInterval(appForm.getPingInterval());
-		app.setMethod(appForm.getMethod());
+		appHelper.copyAppInfo(app, appForm);
 		appManager.addApp(app);
 		return "redirect:/admin/apps/add";
 	}

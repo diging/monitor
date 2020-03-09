@@ -44,6 +44,12 @@ public class AppManager implements IAppManager {
 		}
 	}
 	
+	
+	@Override
+	public void updateApp(IApp app) {
+		dbConnection.update(app);
+	}
+	
 	@Override
 	public List<IApp> getApps() {
 		IApp[] apps = dbConnection.getAllRegisteredApps();
@@ -57,6 +63,11 @@ public class AppManager implements IAppManager {
 			return appList;
 		}
 		return new ArrayList<>();
+	}
+	
+	@Override
+	public IApp getApp(String id){
+		return dbConnection.getById(id);
 	}
 	
 	@Override
