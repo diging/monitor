@@ -24,17 +24,10 @@ public class PingAppController {
 	@RequestMapping(value = "/admin/apps/{id}/ping", method = RequestMethod.POST)
 	public String getStatus(@PathVariable("id") String id, RedirectAttributes redirectAttrs) {
 		IApp app = manager.getApp(id);
-		checker.checkAppNow(app);
-		AppStatus appStatus = app.getLastAppTest().getStatus();
-		if (AppStatus.OK == appStatus) {
-			redirectAttrs.addFlashAttribute("show_alert", true);
-			redirectAttrs.addFlashAttribute("alert_type", "success");
-			redirectAttrs.addFlashAttribute("alert_msg", "Ping successful");
-		} else {
-			redirectAttrs.addFlashAttribute("show_alert", true);
-			redirectAttrs.addFlashAttribute("alert_type", "danger");
-			redirectAttrs.addFlashAttribute("alert_msg", "Ping failure. App is unreachable");
-		}
+		checker.checkApp(app);
+		redirectAttrs.addFlashAttribute("show_alert", true);
+		redirectAttrs.addFlashAttribute("alert_type", "warning");
+		redirectAttrs.addFlashAttribute("alert_msg", "Ping initiated");
 		return "redirect:/";
 	}
 }

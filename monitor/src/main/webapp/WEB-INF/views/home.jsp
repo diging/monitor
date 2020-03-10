@@ -48,6 +48,10 @@
 			<div class="alert alert-danger" role="alert">
 				<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
 		</c:when>
+		<c:when test="${app.lastAppTest.status == 'IN_PROGRESS'}">
+			<div class="alert alert-warning" role="alert">
+				<i class="fa fa-clock-o" aria-hidden="true"></i>
+		</c:when>
 		<c:when test="${app.lastAppTest.status == 'WARNING'}">
 			<div class="alert alert-warning" role="alert">
 				<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>

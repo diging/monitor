@@ -4,5 +4,6 @@ public enum AppStatus {
 	OK,
 	WARNING,
 	ERROR,
-	UNKOWN;
+	UNKOWN,
+	IN_PROGRESS;
 }
