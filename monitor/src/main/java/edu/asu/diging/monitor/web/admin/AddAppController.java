@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import edu.asu.diging.monitor.core.model.IApp;
-import edu.asu.diging.monitor.core.model.IAppHelper;
 import edu.asu.diging.monitor.core.model.impl.App;
+import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
