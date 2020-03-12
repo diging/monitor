@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.model.IApp;
-import edu.asu.diging.monitor.core.model.IAppHelper;
+import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 

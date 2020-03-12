@@ -25,7 +25,16 @@
 			<form action="${modifyUrl}" method="GET">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Modify App" type="submit" class="btn-link">
-					<i style="padding: 11px;padding-right:0px;" class="fa fa-edit" aria-hidden="true"></i>
+					<i style="padding: 11px;padding-right:0px;padding-left:0px;" class="fa fa-edit" aria-hidden="true"></i>
+				</button>
+			</form>
+		</div>
+		<div class="pull-right">
+			<c:url value="/admin/apps/${app.id}/ping" var="pingUrl"/>
+			<form action="${pingUrl}" method="POST">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<button title="Ping App" type="submit" class="btn-link">
+					<i style="padding: 10px;padding-right:0px;" class="fa fa-bullseye" aria-hidden="true"></i>
 				</button>
 			</form>
 		</div>
@@ -38,6 +47,10 @@
 		<c:when test="${app.lastAppTest.status == 'ERROR'}">
 			<div class="alert alert-danger" role="alert">
 				<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+		</c:when>
+		<c:when test="${app.lastAppTest.status == 'IN_PROGRESS'}">
+			<div class="alert alert-warning" role="alert">
+				<i class="fa fa-clock-o" aria-hidden="true"></i>
 		</c:when>
 		<c:when test="${app.lastAppTest.status == 'WARNING'}">
 			<div class="alert alert-warning" role="alert">

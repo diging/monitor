@@ -1,8 +1,8 @@
-package edu.asu.diging.monitor.core.model.impl;
+package edu.asu.diging.monitor.core.service.impl;
 
 import org.springframework.stereotype.Service;
 import edu.asu.diging.monitor.core.model.IApp;
-import edu.asu.diging.monitor.core.model.IAppHelper;
+import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
 @Service

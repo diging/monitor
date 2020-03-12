@@ -57,6 +57,8 @@ public class AppChecker implements IAppChecker {
 		IAppTest lastTest = app.getLastAppTest();
 		
 		IAppTest test = new AppTest();
+		app.setLastAppTest(test);
+		test.setStatus(AppStatus.IN_PROGRESS);
 		test.setAppId(app.getId());
 		OffsetDateTime execTime = OffsetDateTime.now();
 		test.setPingTime(execTime);
@@ -87,13 +89,13 @@ public class AppChecker implements IAppChecker {
 		
 		logger.info("App status for " + app.getName() + " is " + test.getStatus());
 		appManager.addAppTest(test, true);
-		app.setLastAppTest(test);
 		
 		if (lastTest != null && (lastTest.getStatus() != test.getStatus())) {
 			notificationManager.sendNotificationEmails(app, lastTest.getStatus());
 		}
 	}
-
+	
+	
 	private AppStatus determineStatus(IApp app, int responseCode) {
 		if (app.getExpectedReturnCodes() == null || app.getExpectedReturnCodes().trim().isEmpty()) {
 			// by default we accept any response codes in the 200 range
