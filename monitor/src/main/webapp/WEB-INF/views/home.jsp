@@ -61,14 +61,14 @@
 				<i class="fa fa-clock-o" aria-hidden="true"></i>
 		</c:otherwise>
 	</c:choose>
-	<strong>${app.name}</strong> (${app.healthUrl})
+	<strong id="name_${app.id}">${app.name}</strong> <span id="url_${app.id}">(${app.healthUrl})</span>
 		<p>
-		<i>${app.description}</i>
+		<i id="desc_${app.id}">${app.description}</i>
 	</p>
 	<p>
 		Last check was run on:
 		<time:format value="${app.lastAppTest.pingTime}" style="MS" />
-		<br> App status is: ${app.lastAppTest.status}
+		<br> <span id="status_${app.id}">App status is: ${app.lastAppTest.status}</span>
 	</p>
 	</div>
 </c:forEach>
