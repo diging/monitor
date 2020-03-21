@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import edu.asu.diging.monitor.core.model.AppStatus;
 import edu.asu.diging.monitor.core.model.IAppTest;
 import edu.asu.diging.monitor.core.model.IPingResult;
@@ -25,6 +27,7 @@ public class AppTest implements IAppTest {
 	@Id private String id;
 	private OffsetDateTime pingTime;
 	private AppStatus status;
+	@JsonIgnore
 	@OneToMany(targetEntity=PingResult.class) @Cascade({CascadeType.ALL}) private List<IPingResult> pingResults;
 	private String appId;
 	
