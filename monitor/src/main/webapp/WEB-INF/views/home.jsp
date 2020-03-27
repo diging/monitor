@@ -61,7 +61,7 @@
 				<i class="fa fa-clock-o" aria-hidden="true"></i>
 		</c:otherwise>
 	</c:choose>
-	<strong id="name_${app.id}">${app.name}</strong> <span id="url_${app.id}">(${app.healthUrl})</span>
+	<strong id="name_${app.id}">${app.name}</strong> (<span id="url_${app.id}">${app.healthUrl}</span>)
 		<p>
 		<i id="desc_${app.id}">${app.description}</i>
 	</p>
