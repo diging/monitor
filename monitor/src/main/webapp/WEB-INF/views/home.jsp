@@ -4,6 +4,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib uri="http://sargue.net/jsptags/time" prefix="time"%>
 
+<script src="<c:url value="/resources/monitor/reload.js" />"></script>
 <h3>The following apps are being monitored:</h3>
 <sec:authorize access="isAuthenticated()">
 	<p>You are logged in.</p>

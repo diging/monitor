@@ -2,7 +2,7 @@ window.setInterval(function() {
 	$.ajax({
 		type : "GET",
 		dataType : "json",
-		url : "/monitor/admin/apps/reload",
+		url : "admin/apps/reload",
 		success : function(data) {
 			data.forEach(update)
 		},
@@ -10,9 +10,10 @@ window.setInterval(function() {
 			console.error(xhr.responseText)
 			console.error(status)
 			console.error(error.message)
+			alert('This page could not be updated')
 		}
 	});
-}, 60000);
+}, 10000);
 function update(data) {
 	$('#name_' + data.id).text(data.name)
 	$('#desc_' + data.id).text(data.description)
