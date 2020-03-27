@@ -13,7 +13,7 @@ window.setInterval(function() {
 			alert('This page could not be updated')
 		}
 	});
-}, 10000);
+}, 60000);
 function update(data) {
 	$('#name_' + data.id).text(data.name)
 	$('#desc_' + data.id).text(data.description)
