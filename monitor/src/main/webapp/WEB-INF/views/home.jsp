@@ -3,11 +3,42 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib uri="http://sargue.net/jsptags/time" prefix="time"%>
+<c:url value="admin/apps/reload"  var ="reloadUrl"/>
+<script>
+	window.setInterval(function() {
+		$.ajax({
+			type : "GET",
+			dataType : "json",
+			url : "${reloadUrl}",
+			success : function(data) {
+				$('#ajax_reload_alert').hide()
+				data.forEach(update)
+			},
+			error : function(xhr, status, error) {
+				console.error(xhr.responseText)
+				console.error(status)
+				console.error(error.message)
+				$('#ajax_reload_alert').show()
+			}
+		});
+	}, 60000);
+	function update(data) {
+		$('#name_' + data.id).text(data.name)
+		$('#desc_' + data.id).text(data.description)
+		$('#url_' + data.id).text(data.healthUrl)
+		$('#status_' + data.id).text(
+				"App status is: " + data.lastAppTest.status)
+	}
+</script>
 <h3>The following apps are being monitored:</h3>
 <sec:authorize access="isAuthenticated()">
 	<p>You are logged in.</p>
 </sec:authorize>
-
+<div class="alert alert-warning alert-dismissible" role="alert" id="ajax_reload_alert" style="display:none">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+  </button>
+  <strong>Connection to server lost. Trying to connect...</strong>
+</div>
 <c:forEach items="${apps}" var="app">
 	<sec:authorize access="hasAnyRole('ADMIN')">
 		<div class="pull-right">
