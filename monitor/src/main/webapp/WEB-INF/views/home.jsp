@@ -33,30 +33,36 @@
 			<form action="${pingUrl}" method="POST">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Ping App" type="submit" class="btn-link">
-					<i style="padding: 10px;padding-right:0px;" class="fa fa-bullseye" aria-hidden="true"></i>
+					<i style="padding:10px;padding-right:0px;padding-left:5px;" class="fa fa-bullseye" aria-hidden="true"></i>
 				</button>
 			</form>
+		</div>
+		<div class="pull-right">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<button title="Details" type="submit" class="btn-link" data-toggle="modal" data-target="#modal_${app.id }" data-backdrop="false">
+					<i style="padding:10px;padding-right:0px;padding-left:0px;" class="fa fa-info-circle" aria-hidden="true"></i>
+				</button>
 		</div>
 	</sec:authorize>
 	<c:choose>
 		<c:when test="${app.lastAppTest.status == 'OK'}">
-			<div class="alert alert-success" role="alert" data-toggle="modal" data-target="#modal_${app.id }" data-backdrop="false">
+			<div class="alert alert-success" role="alert">
 				<i class="fa fa-check-circle" aria-hidden="true"></i>
 		</c:when>
 		<c:when test="${app.lastAppTest.status == 'ERROR'}">
-			<div class="alert alert-danger" role="alert" data-toggle="modal" data-target="#modal_${app.id }" data-backdrop="false">
+			<div class="alert alert-danger" role="alert">
 				<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
 		</c:when>
 		<c:when test="${app.lastAppTest.status == 'IN_PROGRESS'}">
-			<div class="alert alert-warning" role="alert" data-toggle="modal" data-target="#modal_${app.id }" data-backdrop="false">
+			<div class="alert alert-warning" role="alert">
 				<i class="fa fa-clock-o" aria-hidden="true"></i>
 		</c:when>
 		<c:when test="${app.lastAppTest.status == 'WARNING'}">
-			<div class="alert alert-warning" role="alert" data-toggle="modal" data-target="#modal_${app.id }" data-backdrop="false">
+			<div class="alert alert-warning" role="alert">
 				<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
 		</c:when>
 		<c:otherwise>
-			<div class="alert alert-info" role="alert" data-toggle="modal" data-target="#modal_${app.id }" data-backdrop="false">
+			<div class="alert alert-info" role="alert">
 				<i class="fa fa-clock-o" aria-hidden="true"></i>
 		</c:otherwise>
 	</c:choose>
@@ -69,27 +75,30 @@
 		<time:format value="${app.lastAppTest.pingTime}" style="MS" />
 		<br> App status is: ${app.lastAppTest.status}
 	</p>
-	<div id="modal_${app.id }" class="modal fade;overflow:hidden" role="dialog" aria-hidden="false">
+	</div>
+	<div id="modal_${app.id}" class="modal fade;overflow:hidden" role="dialog" aria-hidden="false">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
-					<p>App Name: ${app.name }</p>
-					<p>Health Url: ${app.healthUrl }</p>
-					<p>Description: ${app.description }</p>
-					<p>App Status is: ${app.lastAppTest.status }</p>
+					<p>App Name: <b>${app.name}</b></p>
+					<p>Health Url: <b>${app.healthUrl}</b></p>
+					<p>Description: <b>${app.description}</b></p>
+					<p>App Status is: <b>${app.lastAppTest.status}</b></p>
 					<p>
 						Last check was run on:
-						<time:format value="${app.lastAppTest.pingTime}" style="MS" />
+						<b><time:format value="${app.lastAppTest.pingTime}" style="MS" /></b>
 					</p>
-					<p>Expected Return codes: ${app.expectedReturnCodes }</p>
-					<p>Warning Return codes: ${app.warningReturnCodes }</p>
-					<p>Timeout: ${app.timeout }</p>
-					<p>Retries: ${app.retries }</p>
-					<p>Ping Interval is: ${app.pingInterval }</p>
-					<p>Request Method is: ${app.method }</p>
+					<p>Expected Return codes: <b>${app.expectedReturnCodes }</b></p>
+					<p>Warning Return codes: <b>${app.warningReturnCodes }</b></p>
+					<p>Timeout: <b>${app.timeout }</b></p>
+					<p>Retries: <b>${app.retries}</b></p>
+					<p>Ping Interval is: <b>${app.pingInterval}</b></p>
+					<p>Request Method is: <b>${app.method }</b></p>
 				</div>
+				<div class="modal-footer">
+        			<button type="button" class="btn btn-alert" data-dismiss="modal">Close</button>
+      			</div>
 			</div>
 		</div>
-	</div>
 	</div>
 </c:forEach>
