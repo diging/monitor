@@ -3,7 +3,6 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib uri="http://sargue.net/jsptags/time" prefix="time"%>
-
 <h3>The following apps are being monitored:</h3>
 <sec:authorize access="isAuthenticated()">
 	<p>You are logged in.</p>
@@ -34,9 +33,14 @@
 			<form action="${pingUrl}" method="POST">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Ping App" type="submit" class="btn-link">
-					<i style="padding: 10px;padding-right:0px;" class="fa fa-bullseye" aria-hidden="true"></i>
+					<i style="padding:10px;padding-right:0px;padding-left:5px;" class="fa fa-bullseye" aria-hidden="true"></i>
 				</button>
 			</form>
+		</div>
+		<div class="pull-right">
+				<button title="Details" type="submit" class="btn-link" data-toggle="modal" data-target="#modal_${app.id }" data-backdrop="false">
+					<i style="padding:10px;padding-right:0px;padding-left:0px;" class="fa fa-info-circle" aria-hidden="true"></i>
+				</button>
 		</div>
 	</sec:authorize>
 	<c:choose>
@@ -70,5 +74,30 @@
 		<time:format value="${app.lastAppTest.pingTime}" style="MS" />
 		<br> App status is: ${app.lastAppTest.status}
 	</p>
+	</div>
+	<div id="modal_${app.id}" class="modal fade;overflow:hidden" role="dialog" aria-hidden="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<p>App Name: <b>${app.name}</b></p>
+					<p>Health Url: <b>${app.healthUrl}</b></p>
+					<p>Description: <b>${app.description}</b></p>
+					<p>App Status is: <b>${app.lastAppTest.status}</b></p>
+					<p>
+						Last check was run on:
+						<b><time:format value="${app.lastAppTest.pingTime}" style="MS" /></b>
+					</p>
+					<p>Expected Return codes: <b>${app.expectedReturnCodes }</b></p>
+					<p>Warning Return codes: <b>${app.warningReturnCodes }</b></p>
+					<p>Timeout: <b>${app.timeout }</b></p>
+					<p>Retries: <b>${app.retries}</b></p>
+					<p>Ping Interval is: <b>${app.pingInterval}</b></p>
+					<p>Request Method is: <b>${app.method }</b></p>
+				</div>
+				<div class="modal-footer">
+        			<button type="button" class="btn btn-alert" data-dismiss="modal">Close</button>
+      			</div>
+			</div>
+		</div>
 	</div>
 </c:forEach>
