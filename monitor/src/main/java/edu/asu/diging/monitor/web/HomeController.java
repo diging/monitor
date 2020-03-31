@@ -26,7 +26,7 @@ public class HomeController {
     }
     
     
-    @RequestMapping(value="/admin/apps/reload",method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/reload",method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<IApp> refresh(Model model){
     	return appManager.getApps();
     }

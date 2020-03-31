@@ -3,7 +3,7 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib uri="http://sargue.net/jsptags/time" prefix="time"%>
-<c:url value="admin/apps/reload"  var ="reloadUrl"/>
+<c:url value="/reload"  var ="reloadUrl"/>
 <script>
 	window.setInterval(function() {
 		$.ajax({
