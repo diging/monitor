@@ -38,7 +38,6 @@
 			</form>
 		</div>
 		<div class="pull-right">
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Details" type="submit" class="btn-link" data-toggle="modal" data-target="#modal_${app.id }" data-backdrop="false">
 					<i style="padding:10px;padding-right:0px;padding-left:0px;" class="fa fa-info-circle" aria-hidden="true"></i>
 				</button>
