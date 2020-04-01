@@ -28,6 +28,25 @@
 		$('#url_' + data.id).text(data.healthUrl)
 		$('#status_' + data.id).text(
 				"App status is: " + data.lastAppTest.status)
+		$('#status_mod_' + data.id).text(data.lastAppTest.status)		
+		$('#time_' + data.id).text(parseDate(data.lastAppTest.pingTime))
+		$('#time_mod_'+ data.id).text($('#time_' + data.id).text())
+		
+	}
+	function parseDate(date){
+		var meridiem = 'AM'
+		if (date.hour>12){
+			date.hour = date.hour%12
+			meridiem = 'PM'
+		}
+		if (date.minute<10){
+			date.minute = '0'+date.minute
+		}
+		var dateStr = date.month.charAt(0)+
+					  date.month.slice(1,3).toLowerCase()+ ' ' + 
+					  date.dayOfMonth + ', ' + date.year + ' ' + 
+					  date.hour+':'+ date.minute+' '+meridiem
+		return dateStr
 	}
 </script>
 <h3>The following apps are being monitored:</h3>
@@ -102,7 +121,7 @@
 	</p>
 	<p>
 		Last check was run on:
-		<time:format value="${app.lastAppTest.pingTime}" style="MS" />
+		<span id="time_${app.id }"><time:format value="${app.lastAppTest.pingTime}" style="MS" /></span>
 		<br> <span id="status_${app.id}">App status is: ${app.lastAppTest.status}</span>
 	</p>
 	</div>
@@ -113,10 +132,10 @@
 					<p>App Name: <b>${app.name}</b></p>
 					<p>Health Url: <b>${app.healthUrl}</b></p>
 					<p>Description: <b>${app.description}</b></p>
-					<p>App Status is: <b>${app.lastAppTest.status}</b></p>
+					<p>App Status is: <b id="status_mod_${app.id}">${app.lastAppTest.status}</b></p>
 					<p>
 						Last check was run on:
-						<b><time:format value="${app.lastAppTest.pingTime}" style="MS" /></b>
+						<b id="time_mod_${app.id}"><time:format value="${app.lastAppTest.pingTime}" style="MS" /></b>
 					</p>
 					<p>Expected Return codes: <b>${app.expectedReturnCodes }</b></p>
 					<p>Warning Return codes: <b>${app.warningReturnCodes }</b></p>
