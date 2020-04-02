@@ -1,8 +1,11 @@
 package edu.asu.diging.monitor.core.model.impl;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
 
 @Entity
