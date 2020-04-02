@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.exceptions.EmailAlreadyRegisteredException;
+import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
 import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
 
@@ -21,10 +22,15 @@ public class AddRecipientController {
 
 	@Autowired
 	private INotificationManager manager;
+	
+	@Autowired
+	private IAppManager appManager;
 
 	@RequestMapping(value = "/admin/recipients/add", method = RequestMethod.GET)
 	public String show(Model model) {
-		model.addAttribute("recipientForm", new RecipientForm());
+		RecipientForm rForm = new RecipientForm();
+		rForm.setApps(appManager.getApps());
+		model.addAttribute("recipientForm", rForm);
 		return "admin/recipients/add";
 	}
 

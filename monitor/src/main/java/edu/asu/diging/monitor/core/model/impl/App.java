@@ -24,6 +24,10 @@ public class App implements IApp {
 	@Transient private IAppTest lastAppTest;
 	private RequestMethod method;
 	
+	@Override
+	public String toString() {
+		return name;
+	}
 	/* (non-Javadoc)
 	 * @see edu.asu.diging.monitor.core.model.impl.IApp#getId()
 	 */
