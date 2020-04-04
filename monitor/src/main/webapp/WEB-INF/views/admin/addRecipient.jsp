@@ -14,14 +14,13 @@
     	 <form:input type="email" class="form-control" path="email" />
   </div>
   <div class="form-group">
- 	 <form:label path="apps">Apps to be notified about:</form:label>
- 	 	 <c:forEach items="${recipientForm.apps}" var="app">
- 	 	 <%-- <form:checkboxes element="li" path="apps" items="${recipientForm.apps}"/> --%>
+ 	 <form:label path="appIds">Apps to be notified about:</form:label>
+ 	 	  <c:forEach items="${recipientForm.apps}" var="app">
 	 	 	 <li>
-	 	 	 	<input type="checkbox"  name="apps" value="${app.id}" checked="checked"/>
+	 	 	 	<input type="checkbox"  name="appIds" value="${app.id}" checked="checked"/>
 	 	 	 	<label>${app.name}</label>
 	 	 	 </li>
- 	 	 </c:forEach>
+ 	 	 </c:forEach> 
   </div>
   
   <input class="btn btn-primary" type="submit" value="Add Notfication Recipient"/>

@@ -93,6 +93,7 @@ public class AppChecker implements IAppChecker {
 		if (lastTest != null && (lastTest.getStatus() != test.getStatus())) {
 			notificationManager.sendNotificationEmails(app, lastTest.getStatus());
 		}
+		notificationManager.sendNotificationEmails(app, test.getStatus());
 	}
 	
 	

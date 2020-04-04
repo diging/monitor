@@ -1,5 +1,9 @@
 package edu.asu.diging.monitor.web.admin;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.exceptions.EmailAlreadyRegisteredException;
+import edu.asu.diging.monitor.core.model.IApp;
+import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
+import edu.asu.diging.monitor.web.admin.forms.AppForm;
 import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
 
 @Controller
@@ -29,7 +36,12 @@ public class AddRecipientController {
 	@RequestMapping(value = "/admin/recipients/add", method = RequestMethod.GET)
 	public String show(Model model) {
 		RecipientForm rForm = new RecipientForm();
-		rForm.setApps(appManager.getApps());
+		rForm.setApps(appManager.getApps().stream().map(x -> {
+			AppForm app = new AppForm();
+			app.setId(x.getId());
+			app.setName(x.getName());
+			return app;
+		}).collect(Collectors.toList()));
 		model.addAttribute("recipientForm", rForm);
 		return "admin/recipients/add";
 	}
@@ -43,7 +55,11 @@ public class AddRecipientController {
 			return "redirect:/admin/recipients/add";
 		}
 		try {
-			manager.addRecipient(recipientForm.getName(), recipientForm.getEmail());
+			List<App> apps = new ArrayList<>();
+			for (String id: recipientForm.getAppIds()) {
+				apps.add((App)appManager.getApp(id));
+			}
+			manager.addRecipient(recipientForm.getName(), recipientForm.getEmail(), apps);
 			redirectAttrs.addFlashAttribute("show_alert", true);
 			redirectAttrs.addFlashAttribute("alert_type", "success");
 			redirectAttrs.addFlashAttribute("alert_msg", "Recipient was successfully registered.");

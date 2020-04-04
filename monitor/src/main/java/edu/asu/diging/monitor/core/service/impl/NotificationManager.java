@@ -14,6 +14,7 @@ import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.AppStatus;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
+import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
 import edu.asu.diging.monitor.core.notify.IEmailNotificationManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
@@ -37,7 +38,7 @@ public class NotificationManager implements INotificationManager {
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
-	public boolean addRecipient(String name, String email) throws EmailAlreadyRegisteredException {
+	public boolean addRecipient(String name, String email, List<App> apps) throws EmailAlreadyRegisteredException {
 		if (email == null || email.trim().isEmpty()) {
 			return false;
 		}
@@ -47,6 +48,7 @@ public class NotificationManager implements INotificationManager {
 		INotificationRecipient recipient = new NotificationRecipient();
 		recipient.setName(name);
 		recipient.setEmail(email);
+		recipient.setApps(apps);
 		try {
 			dbConnection.store(recipient);
 		} catch (UnstorableObjectException e) {
@@ -66,9 +68,9 @@ public class NotificationManager implements INotificationManager {
 		return Arrays.asList(dbConnection.getAllRecipients());
 	}
 
-	@Override
+	@Override //change here
 	public void sendNotificationEmails(IApp app, AppStatus previousStatus) {
-		INotificationRecipient[] recipients = dbConnection.getAllRecipients();
+		INotificationRecipient[] recipients = dbConnection.getRecipientsByAppId(app.getId());
 		for (INotificationRecipient recipient : Arrays.asList(recipients)) {
 			emailManager.sendAppStatusNotificationEmail(recipient.getEmail(), app, previousStatus.toString(),
 					app.getLastAppTest().getStatus().toString());
