@@ -44,6 +44,17 @@ public class NotificationRecipientDbConnection implements INotificationRecipient
     }
 	
 	@Override
+	public INotificationRecipient[] getRecipientsByAppId(String appId) {
+		TypedQuery<INotificationRecipient> query = em.createQuery("SELECT n.recipients FROM NotificationRecipient n where n.id=:appId", INotificationRecipient.class);
+		query.setParameter("appId", appId);
+		List<INotificationRecipient> results = query.getResultList();
+		if (results == null) {
+            return new INotificationRecipient[0];
+        }
+        return results.toArray(new INotificationRecipient[results.size()]);
+		
+	}
+	@Override
 	public INotificationRecipient[] getAllRecipients() {
         TypedQuery<INotificationRecipient> query = em.createQuery("SELECT n FROM NotificationRecipient n", INotificationRecipient.class);
         List<INotificationRecipient> results = query.getResultList();

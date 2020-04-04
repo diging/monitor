@@ -12,5 +12,7 @@ public interface INotificationRecipientDbConnection {
 	void delete(String email);
 
 	INotificationRecipient[] getAllRecipients();
+	
+	INotificationRecipient[] getRecipientsByAppId(String appId);
 
 }

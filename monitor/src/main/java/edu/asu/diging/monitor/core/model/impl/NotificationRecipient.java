@@ -2,8 +2,13 @@ package edu.asu.diging.monitor.core.model.impl;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
@@ -14,6 +19,20 @@ public class NotificationRecipient implements INotificationRecipient {
 	private String name;
 	@Id private String email;
 	
+	@ManyToMany(cascade = { CascadeType.MERGE })
+    @JoinTable(
+        name = "AppNotificationRecipients", 
+        joinColumns = { @JoinColumn(name = "email") }, 
+        inverseJoinColumns = { @JoinColumn(name = "id") })
+	private List<App> apps;
+	
+	public List<App> getApps() {
+		return apps;
+	}
+	
+	public void setApps(List<App> apps) {
+		this.apps = apps;
+	}
 	/* (non-Javadoc)
 	 * @see edu.asu.diging.monitor.core.model.impl.INotificationRecipient#getName()
 	 */

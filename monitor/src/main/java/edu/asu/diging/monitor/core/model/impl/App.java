@@ -1,11 +1,16 @@
 package edu.asu.diging.monitor.core.model.impl;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
+import edu.asu.diging.monitor.core.model.INotificationRecipient;
 import edu.asu.diging.monitor.core.model.RequestMethod;
 
 @Entity
@@ -23,7 +28,18 @@ public class App implements IApp {
 	private String lastTestId;
 	@Transient private IAppTest lastAppTest;
 	private RequestMethod method;
+	@ManyToMany(mappedBy = "apps")
+	private List<NotificationRecipient> recipients; 
 	
+	@Override
+	public List<NotificationRecipient> getRecipients() {
+		return recipients;
+	}
+	
+	@Override
+	public void setRecipients(List<NotificationRecipient> recipients) {
+		this.recipients = recipients;
+	}
 	@Override
 	public String toString() {
 		return name;

@@ -8,12 +8,19 @@ public class RecipientForm {
 
 	private String name;
 	private String email;
-	private List<IApp> apps;
+	private List<AppForm> apps;
+	private List<String> appIds;
 	
-	public List<IApp> getApps() {
+	public List<String> getAppIds() {
+		return appIds;
+	}
+	public void setAppIds(List<String> appIds) {
+		this.appIds = appIds;
+	}
+	public List<AppForm> getApps() {
 		return apps;
 	}
-	public void setApps(List<IApp> apps) {
+	public void setApps(List<AppForm> apps) {
 		this.apps = apps;
 	}
 	public String getName() {
