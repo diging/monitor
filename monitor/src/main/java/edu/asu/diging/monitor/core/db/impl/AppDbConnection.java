@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import edu.asu.diging.monitor.core.db.IAppDbConnection;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
+import edu.asu.diging.monitor.core.model.INotificationRecipient;
 import edu.asu.diging.monitor.core.model.impl.App;
-import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
 
 @Component
 @Transactional
@@ -62,9 +62,9 @@ public class AppDbConnection implements IAppDbConnection {
 	 */
 	@Override
 	public void delete(IApp element) {
-		for (NotificationRecipient n: element.getRecipients()) {
-        	n.getApps().remove(element);
-        }
+		for (INotificationRecipient recipient: element.getRecipients()) {
+		    recipient.getApps().remove(element);
+		}
         em.remove(element);
         
     }
