@@ -1,7 +1,5 @@
 package edu.asu.diging.monitor.web.admin;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -15,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.exceptions.EmailAlreadyRegisteredException;
-import edu.asu.diging.monitor.core.model.IApp;
-import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
@@ -33,18 +29,18 @@ public class AddRecipientController {
 	@Autowired
 	private IAppManager appManager;
 
-	@RequestMapping(value = "/admin/recipients/add", method = RequestMethod.GET)
-	public String show(Model model) {
-		RecipientForm rForm = new RecipientForm();
-		rForm.setApps(appManager.getApps().stream().map(x -> {
-			AppForm app = new AppForm();
-			app.setId(x.getId());
-			app.setName(x.getName());
-			return app;
-		}).collect(Collectors.toList()));
-		model.addAttribute("recipientForm", rForm);
-		return "admin/recipients/add";
-	}
+    @RequestMapping(value = "/admin/recipients/add", method = RequestMethod.GET)
+    public String show(Model model) {
+        RecipientForm recipientForm = new RecipientForm();
+        recipientForm.setApps(appManager.getApps().stream().map(x -> {
+            AppForm app = new AppForm();
+            app.setId(x.getId());
+            app.setName(x.getName());
+            return app;
+        }).collect(Collectors.toList()));
+        model.addAttribute("recipientForm", recipientForm);
+        return "admin/recipients/add";
+    }
 
 	@RequestMapping(value = "/admin/recipients/add", method = RequestMethod.POST)
 	public String add(@ModelAttribute RecipientForm recipientForm, RedirectAttributes redirectAttrs) {
@@ -55,11 +51,7 @@ public class AddRecipientController {
 			return "redirect:/admin/recipients/add";
 		}
 		try {
-			List<App> apps = new ArrayList<>();
-			for (String id: recipientForm.getAppIds()) {
-				apps.add((App)appManager.getApp(id));
-			}
-			manager.addRecipient(recipientForm.getName(), recipientForm.getEmail(), apps);
+			manager.addRecipient(recipientForm.getName(), recipientForm.getEmail(), recipientForm.getAppIds());
 			redirectAttrs.addFlashAttribute("show_alert", true);
 			redirectAttrs.addFlashAttribute("alert_type", "success");
 			redirectAttrs.addFlashAttribute("alert_msg", "Recipient was successfully registered.");

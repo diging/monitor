@@ -1,5 +1,6 @@
 package edu.asu.diging.monitor.core.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import edu.asu.diging.monitor.core.model.INotificationRecipient;
 import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
 import edu.asu.diging.monitor.core.notify.IEmailNotificationManager;
+import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
 
 @Service
@@ -29,6 +31,9 @@ public class NotificationManager implements INotificationManager {
 
 	@Autowired
 	private IEmailNotificationManager emailManager;
+	
+	@Autowired
+	private IAppManager appManager;
 
 	/*
 	 * (non-Javadoc)
@@ -38,7 +43,7 @@ public class NotificationManager implements INotificationManager {
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
-	public boolean addRecipient(String name, String email, List<App> apps) throws EmailAlreadyRegisteredException {
+	public boolean addRecipient(String name, String email, List<String> appIds) throws EmailAlreadyRegisteredException {
 		if (email == null || email.trim().isEmpty()) {
 			return false;
 		}
@@ -46,9 +51,13 @@ public class NotificationManager implements INotificationManager {
 			throw new EmailAlreadyRegisteredException();
 		}
 		INotificationRecipient recipient = new NotificationRecipient();
+		List<App> apps = new ArrayList<>();
 		recipient.setName(name);
 		recipient.setEmail(email);
 		recipient.setApps(apps);
+        for (String id: appIds) {
+            apps.add((App)appManager.getApp(id));
+        }
 		try {
 			dbConnection.store(recipient);
 		} catch (UnstorableObjectException e) {
@@ -69,11 +78,19 @@ public class NotificationManager implements INotificationManager {
 	}
 
 	@Override //change here
-	public void sendNotificationEmails(IApp app, AppStatus previousStatus) {
-		INotificationRecipient[] recipients = dbConnection.getRecipientsByAppId(app.getId());
-		for (INotificationRecipient recipient : Arrays.asList(recipients)) {
-			emailManager.sendAppStatusNotificationEmail(recipient.getEmail(), app, previousStatus.toString(),
-					app.getLastAppTest().getStatus().toString());
-		}
-	}
+    public void sendNotificationEmails(IApp app, AppStatus previousStatus) {
+	    List<INotificationRecipient> recipients;
+        if (app.getRecipients().isEmpty()) {
+            recipients = Arrays.asList(dbConnection.getAllRecipients());
+        }
+        else {
+            recipients = new ArrayList<>();
+            for (INotificationRecipient recipient : app.getRecipients())
+                recipients.add(recipient);
+        }
+        for (INotificationRecipient recipient : recipients) {
+            emailManager.sendAppStatusNotificationEmail(recipient.getEmail(), app, previousStatus.toString(),
+                    app.getLastAppTest().getStatus().toString());
+        }
+    }
 }

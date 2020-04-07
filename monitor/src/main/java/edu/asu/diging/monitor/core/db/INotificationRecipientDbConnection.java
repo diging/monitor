@@ -13,6 +13,4 @@ public interface INotificationRecipientDbConnection {
 
 	INotificationRecipient[] getAllRecipients();
 	
-	INotificationRecipient[] getRecipientsByAppId(String appId);
-
 }

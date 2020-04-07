@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
@@ -28,7 +29,7 @@ public class App implements IApp {
 	private String lastTestId;
 	@Transient private IAppTest lastAppTest;
 	private RequestMethod method;
-	@ManyToMany(mappedBy = "apps")
+	@ManyToMany(mappedBy = "apps", fetch = FetchType.EAGER)
 	private List<NotificationRecipient> recipients; 
 	
 	@Override
