@@ -33,20 +33,11 @@
 		$('#time_mod_'+ data.id).text($('#time_' + data.id).text())
 		
 	}
-	function parseDate(date){
-		var meridiem = 'AM'
-		if (date.hour>12){
-			date.hour = date.hour%12
-			meridiem = 'PM'
-		}
-		if (date.minute<10){
-			date.minute = '0'+date.minute
-		}
-		var dateStr = date.month.charAt(0)+
-					  date.month.slice(1,3).toLowerCase()+ ' ' + 
-					  date.dayOfMonth + ', ' + date.year + ' ' + 
-					  date.hour+':'+ date.minute+' '+meridiem
-		return dateStr
+	
+	function parseDate(jsonDate) {
+		const date = new Date(jsonDate.year, jsonDate.monthValue - 1,
+				jsonDate.dayOfMonth, jsonDate.hour, jsonDate.minute)
+		return moment(date).format('MMM D, YYYY h:mm A')
 	}
 </script>
 <h3>The following apps are being monitored:</h3>
