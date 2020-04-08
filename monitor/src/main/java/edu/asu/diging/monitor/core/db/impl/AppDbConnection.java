@@ -60,15 +60,14 @@ public class AppDbConnection implements IAppDbConnection {
 	/* (non-Javadoc)
 	 * @see edu.asu.diging.monitor.core.db.impl.IAppDbConnection#delete(edu.asu.diging.monitor.core.model.IApp)
 	 */
-	@Override
-	public void delete(IApp element) {
-		for (INotificationRecipient recipient: element.getRecipients()) {
-		    recipient.getApps().remove(element);
-		}
+    @Override
+    public void delete(IApp element) {
+        for (INotificationRecipient recipient : element.getRecipients()) {
+            recipient.getApps().remove(element);
+        }
         em.remove(element);
-        
     }
-    
+
 	/* (non-Javadoc)
 	 * @see edu.asu.diging.monitor.core.db.impl.IAppDbConnection#getAllRegisteredApps()
 	 */

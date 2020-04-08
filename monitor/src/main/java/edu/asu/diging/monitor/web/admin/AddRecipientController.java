@@ -32,10 +32,10 @@ public class AddRecipientController {
     @RequestMapping(value = "/admin/recipients/add", method = RequestMethod.GET)
     public String show(Model model) {
         RecipientForm recipientForm = new RecipientForm();
-        recipientForm.setApps(appManager.getApps().stream().map(x -> {
+        recipientForm.setApps(appManager.getApps().stream().map(a -> {
             AppForm app = new AppForm();
-            app.setId(x.getId());
-            app.setName(x.getName());
+            app.setId(a.getId());
+            app.setName(a.getName());
             return app;
         }).collect(Collectors.toList()));
         model.addAttribute("recipientForm", recipientForm);
