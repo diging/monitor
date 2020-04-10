@@ -15,12 +15,14 @@
 	</div>
 	<div class="form-group">
 		<form:label path="appIds">Apps to be notified about:</form:label>
-		<li>
-			<input type="checkbox" name="select-all" id="select-all" />
-		</li>
+		<p>
+			<input type="checkbox" name="select-all" id="select-all" /> <label>Select/deselect
+				all</label>
+		</p>
 		<c:forEach items="${recipientForm.apps}" var="app">
-			<li><input type="checkbox" name="appIds" value="${app.id}"
-				checked="checked" /> <label>${app.name}</label></li>
+			<p>
+				<input type="checkbox" name="appIds" value="${app.id}" /> <label>${app.name}</label>
+			</p>
 		</c:forEach>
 	</div>
 
