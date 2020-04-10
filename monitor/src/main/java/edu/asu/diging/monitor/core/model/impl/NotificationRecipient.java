@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -18,7 +19,7 @@ public class NotificationRecipient implements INotificationRecipient {
     @Id
     private String email;
 
-    @ManyToMany(cascade = { CascadeType.MERGE })
+    @ManyToMany(cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinTable(name = "AppNotificationRecipients", joinColumns = { @JoinColumn(name = "email") }, inverseJoinColumns = {
             @JoinColumn(name = "id") })
     private List<App> apps;
@@ -73,5 +74,10 @@ public class NotificationRecipient implements INotificationRecipient {
     @Override
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    @Override
+    public String toString() {
+        return name;
     }
 }

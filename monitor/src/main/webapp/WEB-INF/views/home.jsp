@@ -126,6 +126,12 @@
 		<span id="time_${app.id }"><time:format value="${app.lastAppTest.pingTime}" pattern ="MMM d, yyyy h:mm a" /></span>
 		<br> <span id="status_${app.id}">App status is: ${app.lastAppTest.status}</span>
 	</p>
+	<p>
+		Recipients:
+		<c:forEach items="${app.recipients}" var="recipient" varStatus="loop">
+    		${recipient}<c:if test="${!loop.last}">,</c:if>
+		</c:forEach>
+	</p>
 	</div>
 	<div id="modal_${app.id}" class="modal fade;overflow:hidden" role="dialog" aria-hidden="false">
 		<div class="modal-dialog">
