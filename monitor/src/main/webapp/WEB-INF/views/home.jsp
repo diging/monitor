@@ -21,7 +21,7 @@
 				$('#ajax_reload_alert').show()
 			}
 		});
-	}, 60000);
+	}, 20000);
 	function update(data) {
 		$('#name_' + data.id).text(data.name)
 		$('#desc_' + data.id).text(data.description)
@@ -35,9 +35,10 @@
 	}
 	
 	function parseDate(jsonDate) {
-		const date = new Date(jsonDate.year, jsonDate.monthValue - 1,
-				jsonDate.dayOfMonth, jsonDate.hour, jsonDate.minute)
-		return moment(date).utcOffset(jsonDate.offset.id).format('MMM D, YYYY h:mm A')
+		return moment(
+				[ jsonDate.year, jsonDate.monthValue - 1, jsonDate.dayOfMonth,
+						jsonDate.hour, jsonDate.minute ]).utcOffset(
+				jsonDate.offset.id).format('MMM D, YYYY h:mm A')
 	}
 </script>
 <h3>The following apps are being monitored:</h3>
