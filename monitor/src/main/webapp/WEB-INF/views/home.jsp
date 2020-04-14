@@ -21,7 +21,8 @@
 				$('#ajax_reload_alert').show()
 			}
 		});
-	}, 20000);
+	}, 60000);
+	
 	function update(data) {
 		$('#name_' + data.id).text(data.name)
 		$('#desc_' + data.id).text(data.description)
@@ -34,11 +35,13 @@
 		
 	}
 	
+	
 	function parseDate(jsonDate) {
-		return moment(
-				[ jsonDate.year, jsonDate.monthValue - 1, jsonDate.dayOfMonth,
-						jsonDate.hour, jsonDate.minute ]).utcOffset(
-				jsonDate.offset.id).format('MMM D, YYYY h:mm A')
+		return moment.parseZone(
+				[ jsonDate.year, (jsonDate.monthValue - 1),
+						jsonDate.dayOfMonth, jsonDate.hour, jsonDate.minute,
+						jsonDate.offset.id ], 'YYYY MM DD HH mm ZZ').local()
+				.format('MMMM D, YYYY h:mm A')
 	}
 </script>
 <h3>The following apps are being monitored:</h3>
@@ -113,7 +116,7 @@
 	</p>
 	<p>
 		Last check was run on:
-		<span id="time_${app.id }"><time:format value="${app.lastAppTest.pingTime}" pattern ="MMM d, yyyy h:mm a Z" /></span>
+		<span id="time_${app.id }"><time:format value="${app.lastAppTest.pingTime}" pattern ="MMM d, yyyy h:mm a" /></span>
 		<br> <span id="status_${app.id}">App status is: ${app.lastAppTest.status}</span>
 	</p>
 	</div>
