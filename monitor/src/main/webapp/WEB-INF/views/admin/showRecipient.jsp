@@ -16,9 +16,21 @@
 	<c:forEach items="${recipients}" var="recipient">
 		<tr>
 			<td><c:out value="${recipient.name}" /></td>
-			<td><c:forEach items="${recipient.apps}" var="app" varStatus="loop">
+			<td>
+			<c:choose>
+			<c:when test="${empty recipient.apps}">
+				None
+			</c:when>
+			<c:when test ="${recipient.apps.size() == appCount}">
+				All
+			</c:when>
+			<c:otherwise>
+			<c:forEach items="${recipient.apps}" var="app" varStatus="loop">
     				${app}<c:if test="${!loop.last}">,</c:if>
-			</c:forEach></td>
+			</c:forEach>
+			</c:otherwise>
+			</c:choose>
+			</td>
 			<td><c:out value="${recipient.email}" /></td>
 			<td align="right">
 				<sec:authorize access="hasAnyRole('ADMIN')">

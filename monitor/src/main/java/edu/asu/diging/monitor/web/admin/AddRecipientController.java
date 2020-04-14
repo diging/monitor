@@ -1,5 +1,6 @@
 package edu.asu.diging.monitor.web.admin;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -49,6 +50,9 @@ public class AddRecipientController {
 			redirectAttrs.addFlashAttribute("alert_type", "danger");
 			redirectAttrs.addFlashAttribute("alert_msg", "Recipient could not be stored. Please provide an email address.");
 			return "redirect:/admin/recipients/add";
+		}
+		if (recipientForm.getAppIds() == null) {
+		    recipientForm.setAppIds(new ArrayList<>());
 		}
 		try {
 			manager.addRecipient(recipientForm.getName(), recipientForm.getEmail(), recipientForm.getAppIds());

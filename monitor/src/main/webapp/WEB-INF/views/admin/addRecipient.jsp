@@ -16,9 +16,11 @@
 	<div class="form-group">
 		<form:label path="appIds">Apps to be notified about:</form:label>
 		<p>
+		<i>
 			<input type="checkbox" name="select-all" id="select-all" /> <label>Select/deselect
 				all</label>
-		</p>
+		</i>
+		</p>		
 		<c:forEach items="${recipientForm.apps}" var="app">
 			<p>
 				<input type="checkbox" name="appIds" value="${app.id}" /> <label>${app.name}</label>
