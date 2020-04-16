@@ -58,6 +58,20 @@
     	 <form:input type="number" class="form-control" path="pingInterval" value="900" />
     	 <small>Minimum interval is 1 minute (60 seconds).</small>
   </div>
+  <div class="form-group">
+		<form:label path="recipientIds">Recipients:</form:label>
+		<p>
+		<i>
+			<input type="checkbox" name="select-all" id="select-all" /> <label>Select/deselect
+				all</label>
+		</i>
+		</p>		
+		<c:forEach items="${appForm.recipients}" var="recipient">
+			<p>
+				<input type="checkbox" name="recipientIds" value="${recipient.email}" /> <label>${recipient.name}</label>
+			</p>
+		</c:forEach>
+  </div>
   <c:choose>
   	<c:when test="${empty appForm.id}">
   		<input class="btn btn-primary" type="submit" value="Add App"/>

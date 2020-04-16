@@ -34,12 +34,18 @@ public class AppDbConnection implements IAppDbConnection {
 	/* (non-Javadoc)
 	 * @see edu.asu.diging.monitor.core.db.impl.IAppDbConnection#storeModifiedApp(edu.asu.diging.monitor.core.model.IApp)
 	 */
-	@Override
-	public IApp store(IApp app) throws UnstorableObjectException {
+    @Override
+    public IApp store(IApp app) throws UnstorableObjectException {
         if (app.getId() == null) {
             throw new UnstorableObjectException("App does not have an id.");
         }
-        em.persist(app);
+        if (app.getRecipients() != null)
+            for (INotificationRecipient recipient : app.getRecipients()) {
+                recipient.getApps().add((App) app);
+                em.merge(recipient);
+            }
+        else
+            em.persist(app);
         em.flush();
         return app;
     }
