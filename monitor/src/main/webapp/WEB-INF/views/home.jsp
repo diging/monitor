@@ -6,6 +6,14 @@
 <c:url value="/reload"  var ="reloadUrl"/>
 <script>
 	window.setInterval(function() {
+		ajaxCall()
+	}, 60000);
+	
+	window.onload = function() {
+		ajaxCall()
+	};
+	
+	function ajaxCall(){
 		$.ajax({
 			type : "GET",
 			dataType : "json",
@@ -21,7 +29,7 @@
 				$('#ajax_reload_alert').show()
 			}
 		});
-	}, 60000);
+	}
 	
 	function update(data) {
 		$('#name_' + data.id).text(data.name)
@@ -34,7 +42,6 @@
 		$('#time_mod_'+ data.id).text($('#time_' + data.id).text())
 		
 	}
-	
 	
 	function parseDate(jsonDate) {
 		return moment.parseZone(
