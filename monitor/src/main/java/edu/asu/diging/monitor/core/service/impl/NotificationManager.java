@@ -75,6 +75,11 @@ public class NotificationManager implements INotificationManager {
     public List<INotificationRecipient> getAllRecipients() {
         return Arrays.asList(dbConnection.getAllRecipients());
     }
+    
+    @Override
+    public INotificationRecipient getRecipient(String id) {
+        return dbConnection.getById(id);
+    }
 
     @Override
     public void sendNotificationEmails(IApp app, AppStatus previousStatus) {

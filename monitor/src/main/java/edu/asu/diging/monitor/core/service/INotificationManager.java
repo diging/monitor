@@ -17,5 +17,7 @@ public interface INotificationManager {
 	List<INotificationRecipient> getAllRecipients();
 	
 	void deleteRecipient(String email);
+	
+	INotificationRecipient getRecipient(String id);
 
 }

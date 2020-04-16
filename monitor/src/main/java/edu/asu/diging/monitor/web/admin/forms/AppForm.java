@@ -1,5 +1,7 @@
 package edu.asu.diging.monitor.web.admin.forms;
 
+import java.util.List;
+
 import edu.asu.diging.monitor.core.model.RequestMethod;
 
 public class AppForm {
@@ -14,6 +16,23 @@ public class AppForm {
 	private int retries;
 	private int pingInterval;
 	private RequestMethod method;
+	private List<RecipientForm> recipients;
+	private List<String> recipientIds;
+	
+	public List<RecipientForm> getRecipients() {
+        return recipients;
+    }
+    public void setRecipients(List<RecipientForm> recipients) {
+        this.recipients = recipients;
+    }
+    public List<String> getRecipientIds() {
+        return recipientIds;
+    }
+    public void setRecipientIds(List<String> recipientIds) {
+        this.recipientIds = recipientIds;
+    }
+    
+	
 	
 	public String getId() {
 		return id;
