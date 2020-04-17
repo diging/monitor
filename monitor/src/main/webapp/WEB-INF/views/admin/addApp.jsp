@@ -68,7 +68,9 @@
 		</p>		
 		<c:forEach items="${appForm.recipients}" var="recipient">
 			<p>
-				<input type="checkbox" name="recipientIds" value="${recipient.email}" /> <label>${recipient.name}</label>
+				<input type="checkbox" name="recipientIds" value="${recipient.email}"
+				 <c:if test="${appRecipients.contains(recipient.email)}">checked="checked"</c:if>
+				/> <label>${recipient.name}</label>
 			</p>
 		</c:forEach>
   </div>
