@@ -5,6 +5,8 @@ import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
 public interface IAppHelper {
 
-	void copyAppInfo(IApp app, AppForm appForm);
+	IApp copyAppInfo(IApp app, AppForm appForm);
+	
+	void copyAppInfoToForm(IApp app, AppForm appForm);
 
 }

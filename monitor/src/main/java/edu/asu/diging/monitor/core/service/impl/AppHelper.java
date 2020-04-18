@@ -10,6 +10,7 @@ import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
 import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.INotificationManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
+import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
 
 @Service
 public class AppHelper implements IAppHelper {
@@ -18,7 +19,7 @@ public class AppHelper implements IAppHelper {
     private INotificationManager manager;
 
     @Override
-    public void copyAppInfo(IApp app, AppForm appForm) {
+    public IApp copyAppInfo(IApp app, AppForm appForm) {
         app.setDescription(appForm.getDescription());
         app.setExpectedReturnCodes(appForm.getExpectedReturnCodes());
         app.setHealthUrl(appForm.getHealthUrl());
@@ -30,6 +31,27 @@ public class AppHelper implements IAppHelper {
         app.setMethod(appForm.getMethod());
         if (appForm.getRecipientIds()!=null)
             app.setRecipients(getRecipientsById(appForm.getRecipientIds()));
+        return app;
+    }
+    
+    @Override
+    public void copyAppInfoToForm(IApp app, AppForm appForm) {
+        appForm.setDescription(app.getDescription());
+        appForm.setExpectedReturnCodes(app.getExpectedReturnCodes());
+        appForm.setHealthUrl(app.getHealthUrl());
+        appForm.setId(app.getId());
+        appForm.setMethod(app.getMethod());
+        appForm.setName(app.getName());
+        appForm.setPingInterval(app.getPingInterval());
+        appForm.setRecipients(manager.getAllRecipients().stream().map(r -> {
+            RecipientForm recipientForm = new RecipientForm();
+            recipientForm.setName(r.getName());
+            recipientForm.setEmail(r.getEmail());
+            return recipientForm;
+        }).collect(Collectors.toList()));
+        appForm.setRetries(app.getRetries());
+        appForm.setTimeout(app.getTimeout());
+        appForm.setWarningReturnCodes(app.getWarningReturnCodes());
     }
 
     private List<NotificationRecipient> getRecipientsById(List<String> recipientIds) {

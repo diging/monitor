@@ -50,11 +50,18 @@ public class AppDbConnection implements IAppDbConnection {
         return app;
     }
 	
-	@Override
-	public IApp update(IApp app) {
-		em.merge(app);
-		return app;
-	}
+    @Override
+    public IApp update(IApp app) {
+        if (app.getRecipients() != null) {
+            for (INotificationRecipient recipient : app.getRecipients()) {
+                recipient.getApps().add((App) app);
+                em.merge(recipient);
+            }
+        } else
+            em.persist(app);
+        em.flush();
+        return app;
+    }
 	
 	@Override
 	public void updateLastAppTest(String appId, String appTestId) {
@@ -72,6 +79,15 @@ public class AppDbConnection implements IAppDbConnection {
             recipient.getApps().remove(element);
         }
         em.remove(element);
+    }
+    
+    @Override
+    public void deleteRecipientsForApp(IApp element) {
+        for (INotificationRecipient recipient : element.getRecipients()) {
+            recipient.getApps().remove(element);
+            em.merge(recipient);
+        }
+        em.flush();
     }
 
 	/* (non-Javadoc)

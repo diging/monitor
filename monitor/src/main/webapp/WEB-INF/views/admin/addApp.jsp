@@ -83,3 +83,16 @@
   	</c:otherwise>
   </c:choose>
 </form:form>
+<script>
+	$('#select-all').click(function(event) {
+		if (this.checked) {
+			$(':checkbox').each(function() {
+				this.checked = true;
+			});
+		} else {
+			$(':checkbox').each(function() {
+				this.checked = false;
+			});
+		}
+	});
+</script>
