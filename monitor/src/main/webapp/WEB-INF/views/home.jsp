@@ -3,11 +3,63 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib uri="http://sargue.net/jsptags/time" prefix="time"%>
+<c:url value="/reload"  var ="reloadUrl"/>
+<script>
+	window.setInterval(function() {
+		ajaxCall()
+	}, 60000);
+	
+	window.onload = function() {
+		ajaxCall()
+	};
+	
+	function ajaxCall(){
+		$.ajax({
+			type : "GET",
+			dataType : "json",
+			url : "${reloadUrl}",
+			success : function(data) {
+				$('#ajax_reload_alert').hide()
+				data.forEach(update)
+			},
+			error : function(xhr, status, error) {
+				console.error(xhr.responseText)
+				console.error(status)
+				console.error(error.message)
+				$('#ajax_reload_alert').show()
+			}
+		});
+	}
+	
+	function update(data) {
+		$('#name_' + data.id).text(data.name)
+		$('#desc_' + data.id).text(data.description)
+		$('#url_' + data.id).text(data.healthUrl)
+		$('#status_' + data.id).text(
+				"App status is: " + data.lastAppTest.status)
+		$('#status_mod_' + data.id).text(data.lastAppTest.status)		
+		$('#time_' + data.id).text(parseDate(data.lastAppTest.pingTime))
+		$('#time_mod_'+ data.id).text($('#time_' + data.id).text())
+		
+	}
+	
+	function parseDate(jsonDate) {
+		return moment.parseZone(
+				[ jsonDate.year, (jsonDate.monthValue - 1),
+						jsonDate.dayOfMonth, jsonDate.hour, jsonDate.minute,
+						jsonDate.offset.id ], 'YYYY MM DD HH mm ZZ').local()
+				.format('MMMM D, YYYY h:mm A')
+	}
+</script>
 <h3>The following apps are being monitored:</h3>
 <sec:authorize access="isAuthenticated()">
 	<p>You are logged in.</p>
 </sec:authorize>
-
+<div class="alert alert-warning alert-dismissible" role="alert" id="ajax_reload_alert" style="display:none">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+  </button>
+  <strong>Connection to server lost. Trying to connect...</strong>
+</div>
 <c:forEach items="${apps}" var="app">
 	<sec:authorize access="hasAnyRole('ADMIN')">
 		<div class="pull-right">
@@ -15,7 +67,7 @@
 			<form action="${deleteUrl}" method="POST">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Delete App" type="submit" class="btn-link">
-					<i style="padding: 10px;padding-left:0px;" class="fa fa-trash" aria-hidden="true"></i>
+					<i style="padding:10px;padding-left:0px;" class="fa fa-trash" aria-hidden="true"></i>
 				</button>
 			</form>
 		</div>
@@ -24,7 +76,7 @@
 			<form action="${modifyUrl}" method="GET">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Modify App" type="submit" class="btn-link">
-					<i style="padding: 11px;padding-right:0px;padding-left:0px;" class="fa fa-edit" aria-hidden="true"></i>
+					<i style="padding:11px;padding-right:0px;padding-left:0px;" class="fa fa-edit" aria-hidden="true"></i>
 				</button>
 			</form>
 		</div>
@@ -33,7 +85,7 @@
 			<form action="${pingUrl}" method="POST">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Ping App" type="submit" class="btn-link">
-					<i style="padding:10px;padding-right:0px;padding-left:5px;" class="fa fa-bullseye" aria-hidden="true"></i>
+					<i style="padding:10px;padding-right:0px;padding-left:0px;" class="fa fa-bullseye" aria-hidden="true"></i>
 				</button>
 			</form>
 		</div>
@@ -65,14 +117,14 @@
 				<i class="fa fa-clock-o" aria-hidden="true"></i>
 		</c:otherwise>
 	</c:choose>
-	<strong>${app.name}</strong> (${app.healthUrl})
+	<strong id="name_${app.id}">${app.name}</strong> (<span id="url_${app.id}">${app.healthUrl}</span>)
 		<p>
-		<i>${app.description}</i>
+		<i id="desc_${app.id}">${app.description}</i>
 	</p>
 	<p>
 		Last check was run on:
-		<time:format value="${app.lastAppTest.pingTime}" style="MS" />
-		<br> App status is: ${app.lastAppTest.status}
+		<span id="time_${app.id }"><time:format value="${app.lastAppTest.pingTime}" pattern ="MMM d, yyyy h:mm a" /></span>
+		<br> <span id="status_${app.id}">App status is: ${app.lastAppTest.status}</span>
 	</p>
 	</div>
 	<div id="modal_${app.id}" class="modal fade;overflow:hidden" role="dialog" aria-hidden="false">
@@ -82,10 +134,10 @@
 					<p>App Name: <b>${app.name}</b></p>
 					<p>Health Url: <b>${app.healthUrl}</b></p>
 					<p>Description: <b>${app.description}</b></p>
-					<p>App Status is: <b>${app.lastAppTest.status}</b></p>
+					<p>App Status is: <b id="status_mod_${app.id}">${app.lastAppTest.status}</b></p>
 					<p>
 						Last check was run on:
-						<b><time:format value="${app.lastAppTest.pingTime}" style="MS" /></b>
+						<b id="time_mod_${app.id}"><time:format value="${app.lastAppTest.pingTime}" style="MS" /></b>
 					</p>
 					<p>Expected Return codes: <b>${app.expectedReturnCodes }</b></p>
 					<p>Warning Return codes: <b>${app.warningReturnCodes }</b></p>
