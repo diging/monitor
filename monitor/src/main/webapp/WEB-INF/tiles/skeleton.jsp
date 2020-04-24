@@ -55,6 +55,9 @@
           	
           	<sec:authorize access="hasAnyRole('ADMIN')">
           	<li role="presentation">
+          		<a href="<c:url value="/admin/register" />" >Add New User</a>
+          	</li>
+          	<li role="presentation">
           		<a href="<c:url value="/admin/apps/add" />" >Add App</a>
           	</li>
           	<li role="presentation">
