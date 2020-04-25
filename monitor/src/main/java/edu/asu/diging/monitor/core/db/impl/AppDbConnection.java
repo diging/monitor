@@ -44,8 +44,9 @@ public class AppDbConnection implements IAppDbConnection {
                 recipient.getApps().add((App) app);
                 em.merge(recipient);
             }
-        else
-            em.persist(app);
+		else {
+			em.persist(app);
+		}
         em.flush();
         return app;
     }
@@ -57,8 +58,9 @@ public class AppDbConnection implements IAppDbConnection {
                 recipient.getApps().add((App) app);
                 em.merge(recipient);
             }
-        } else
-            em.persist(app);
+		} else {
+			em.persist(app);
+		}
         em.flush();
         return app;
     }
