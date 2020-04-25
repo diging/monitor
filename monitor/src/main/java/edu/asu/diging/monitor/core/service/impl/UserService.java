@@ -6,6 +6,7 @@ import edu.asu.diging.monitor.web.admin.forms.UserForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.asu.diging.monitor.core.auth.User;
@@ -20,6 +21,9 @@ public class UserService implements IUserService {
     
     @Autowired
     private IUserDbConnection dbConnection;
+    
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public User registerNewUserAccount(UserForm userForm) throws UserAlreadyExistsException {
@@ -29,7 +33,7 @@ public class UserService implements IUserService {
         }
         User user = new User();
         user.setUsername(userForm.getUsername());
-        user.setPassword(userForm.getPassword());
+        user.setPassword(bCryptPasswordEncoder.encode(userForm.getPassword()));
         try {
             dbConnection.store(user);
         } catch (UnstorableObjectException e) {

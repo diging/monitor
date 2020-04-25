@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,13 +32,13 @@ public class UserRegistrationController {
     }
     
     @RequestMapping(value="/admin/register/add", method=RequestMethod.POST)
-    public String add(@ModelAttribute @Valid UserForm userForm, RedirectAttributes redirectAttrs) {
+    public String add(@ModelAttribute @Valid UserForm userForm, BindingResult bindingResult, RedirectAttributes redirectAttrs) {
         try {
             userService.registerNewUserAccount(userForm);
         } catch (UserAlreadyExistsException e) {
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", "User could not be stored. Username already registered.");
+            redirectAttrs.addFlashAttribute("alert_msg", "User could not be stored. Username already exists.");
             logger.error("Could not create new user", e);
         }
         return "redirect:/admin/register";

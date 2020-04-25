@@ -7,17 +7,5 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security.xsd">
 
-	<beans:bean id="encoder"
-		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
-		<beans:constructor-arg name="strength" value="4"></beans:constructor-arg>
-	</beans:bean>
-
-	<authentication-manager alias="authenticationManager"
-		erase-credentials="false">
-		<authentication-provider>
-			<user-service id="userDetailsService" properties="classpath:/user.properties" />
-		</authentication-provider>
-	</authentication-manager>
-
-
+	
 </beans:beans>
