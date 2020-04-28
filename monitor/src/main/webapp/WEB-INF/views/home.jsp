@@ -18,6 +18,7 @@
 			type : "GET",
 			dataType : "json",
 			url : "${reloadUrl}",
+			data: {${_csrf.parameterName}" : '"${_csrf.token}"'},
 			success : function(data) {
 				$('#ajax_reload_alert').hide()
 				data.forEach(update)

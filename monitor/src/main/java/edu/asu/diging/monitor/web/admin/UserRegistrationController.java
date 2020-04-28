@@ -19,28 +19,37 @@ import edu.asu.diging.monitor.web.admin.forms.UserForm;
 
 @Controller
 public class UserRegistrationController {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-    
-    @Autowired
-    private IUserService userService;
-    
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @RequestMapping(value="/admin/register")
-    public String show(Model model) {
-        model.addAttribute("userForm", new UserForm());
-        return "admin/register";
-    }
-    
-    @RequestMapping(value="/admin/register/add", method=RequestMethod.POST)
-    public String add(@ModelAttribute @Valid UserForm userForm, BindingResult bindingResult, RedirectAttributes redirectAttrs) {
-        try {
-            userService.registerNewUserAccount(userForm);
-        } catch (UserAlreadyExistsException e) {
-            redirectAttrs.addFlashAttribute("show_alert", true);
-            redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", "User could not be stored. Username already exists.");
-            logger.error("Could not create new user", e);
-        }
-        return "redirect:/admin/register";
-    }
+	@Autowired
+	private IUserService userService;
+
+	@RequestMapping(value = "/admin/register")
+	public String show(Model model) {
+		model.addAttribute("userForm", new UserForm());
+		return "admin/register";
+	}
+
+	@RequestMapping(value = "/admin/register/add", method = RequestMethod.POST)
+	public String add(@ModelAttribute @Valid UserForm userForm, BindingResult bindingResult,
+			RedirectAttributes redirectAttrs) {
+		if (bindingResult.getErrorCount() != 0) {
+			redirectAttrs.addFlashAttribute("show_alert", true);
+			redirectAttrs.addFlashAttribute("alert_type", "danger");
+			redirectAttrs.addFlashAttribute("alert_msg", "Cannot leave blank");
+		} else {
+			try {
+				userService.registerNewUserAccount(userForm);
+				redirectAttrs.addFlashAttribute("show_alert", true);
+				redirectAttrs.addFlashAttribute("alert_type", "success");
+				redirectAttrs.addFlashAttribute("alert_msg", "User account was successfully registered.");
+			} catch (UserAlreadyExistsException e) {
+				redirectAttrs.addFlashAttribute("show_alert", true);
+				redirectAttrs.addFlashAttribute("alert_type", "danger");
+				redirectAttrs.addFlashAttribute("alert_msg", "User could not be added. Username already exists.");
+				logger.error("Could not create new user", e);
+			}
+		}
+		return "redirect:/admin/register";
+	}
 }
