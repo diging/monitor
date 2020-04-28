@@ -53,13 +53,13 @@ public class AppDbConnection implements IAppDbConnection {
 	
     @Override
     public IApp update(IApp app) {
-        if (app.getRecipients() != null) {
+        if (app.getRecipients() != null && app.getRecipients().size() != 0) {
             for (INotificationRecipient recipient : app.getRecipients()) {
                 recipient.getApps().add((App) app);
                 em.merge(recipient);
             }
 		} else {
-			em.persist(app);
+			em.merge(app);
 		}
         em.flush();
         return app;
