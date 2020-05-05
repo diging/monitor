@@ -17,21 +17,21 @@ import edu.asu.diging.monitor.core.service.INotificationManager;
 @Controller
 public class HomeController {
 
-	@Autowired
-	private IAppManager appManager;
+    @Autowired
+    private IAppManager appManager;
 
-	@Autowired
-	private INotificationManager manager;
+    @Autowired
+    private INotificationManager manager;
 
-	@RequestMapping(value = "/")
-	public String home(Model model) {
-		model.addAttribute("apps", appManager.getApps());
-		model.addAttribute("recipientCount", manager.getAllRecipients().size());
-		return "home";
-	}
+    @RequestMapping(value = "/")
+    public String home(Model model) {
+        model.addAttribute("apps", appManager.getApps());
+        model.addAttribute("recipientCount", manager.getAllRecipients().size());
+        return "home";
+    }
 
-	@RequestMapping(value = "/reload", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<IApp> refresh(Model model) {
-		return appManager.getApps();
-	}
+    @RequestMapping(value = "/reload", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<IApp> refresh(Model model) {
+        return appManager.getApps();
+    }
 }
