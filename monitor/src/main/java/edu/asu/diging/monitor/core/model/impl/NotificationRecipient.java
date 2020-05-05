@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
 
 @Entity
@@ -19,6 +21,7 @@ public class NotificationRecipient implements INotificationRecipient {
     @Id
     private String email;
 
+    @JsonIgnore
     @ManyToMany(cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinTable(name = "AppNotificationRecipients", joinColumns = { @JoinColumn(name = "email") }, inverseJoinColumns = {
             @JoinColumn(name = "id") })

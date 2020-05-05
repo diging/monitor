@@ -2,7 +2,6 @@ package edu.asu.diging.monitor.core.model.impl;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -11,7 +10,6 @@ import javax.persistence.Transient;
 
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
-import edu.asu.diging.monitor.core.model.INotificationRecipient;
 import edu.asu.diging.monitor.core.model.RequestMethod;
 
 @Entity
