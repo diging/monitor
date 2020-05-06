@@ -16,20 +16,19 @@ import edu.asu.diging.monitor.core.exceptions.UserAlreadyExistsException;
 
 @Service
 public class UserService implements IUserService {
-    
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    
+
     @Autowired
     private IUserDbConnection dbConnection;
-    
+
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public User registerNewUserAccount(UserForm userForm) throws UserAlreadyExistsException {
         if (userExists(userForm.getUsername())) {
-            throw new UserAlreadyExistsException(
-                    "There is an account with the username:" + userForm.getUsername());
+            throw new UserAlreadyExistsException("There is an account with the username:" + userForm.getUsername());
         }
         User user = new User();
         user.setUsername(userForm.getUsername());
