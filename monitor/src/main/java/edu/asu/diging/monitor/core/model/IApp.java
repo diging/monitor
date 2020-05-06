@@ -1,5 +1,9 @@
 package edu.asu.diging.monitor.core.model;
 
+import java.util.List;
+
+import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
+
 public interface IApp {
 
 	String getId();
@@ -49,5 +53,9 @@ public interface IApp {
 	void setMethod(RequestMethod method);
 
 	RequestMethod getMethod();
+	
+	List<NotificationRecipient> getRecipients();
+	
+	void setRecipients(List<NotificationRecipient> recipients);
 
 }

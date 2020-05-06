@@ -13,62 +13,105 @@ import org.springframework.stereotype.Component;
 import edu.asu.diging.monitor.core.db.IAppDbConnection;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
+import edu.asu.diging.monitor.core.model.INotificationRecipient;
 import edu.asu.diging.monitor.core.model.impl.App;
 
 @Component
 @Transactional
 public class AppDbConnection implements IAppDbConnection {
 
-	@PersistenceContext
+    @PersistenceContext
     private EntityManager em;
-	
-	/* (non-Javadoc)
-	 * @see edu.asu.diging.monitor.core.db.impl.IAppDbConnection#getAppById(java.lang.String)
-	 */
-	@Override
-	public IApp getById(String id) {
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.asu.diging.monitor.core.db.impl.IAppDbConnection#getAppById(java.lang.
+     * String)
+     */
+    @Override
+    public IApp getById(String id) {
         return em.find(App.class, id);
     }
-	
-	/* (non-Javadoc)
-	 * @see edu.asu.diging.monitor.core.db.impl.IAppDbConnection#storeModifiedApp(edu.asu.diging.monitor.core.model.IApp)
-	 */
-	@Override
-	public IApp store(IApp app) throws UnstorableObjectException {
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.asu.diging.monitor.core.db.impl.IAppDbConnection#storeModifiedApp(edu.asu
+     * .diging.monitor.core.model.IApp)
+     */
+    @Override
+    public IApp store(IApp app) throws UnstorableObjectException {
         if (app.getId() == null) {
             throw new UnstorableObjectException("App does not have an id.");
         }
-        em.persist(app);
+        if (app.getRecipients() != null) {
+            for (INotificationRecipient recipient : app.getRecipients()) {
+                recipient.getApps().add((App) app);
+                em.merge(recipient);
+            }
+        } else {
+            em.persist(app);
+        }
         em.flush();
         return app;
     }
-	
-	@Override
-	public IApp update(IApp app) {
-		em.merge(app);
-		return app;
-	}
-	
-	@Override
-	public void updateLastAppTest(String appId, String appTestId) {
-		IApp app = getById(appId);
-		app.setLastTestId(appTestId);
-		em.flush();
-	}
-	
-	/* (non-Javadoc)
-	 * @see edu.asu.diging.monitor.core.db.impl.IAppDbConnection#delete(edu.asu.diging.monitor.core.model.IApp)
-	 */
-	@Override
-	public void delete(IApp element) {
+
+    @Override
+    public IApp update(IApp app) {
+        if (app.getRecipients() != null && app.getRecipients().size() != 0) {
+            for (INotificationRecipient recipient : app.getRecipients()) {
+                recipient.getApps().add((App) app);
+                em.merge(recipient);
+            }
+        } else {
+            em.merge(app);
+        }
+        em.flush();
+        return app;
+    }
+
+    @Override
+    public void updateLastAppTest(String appId, String appTestId) {
+        IApp app = getById(appId);
+        app.setLastTestId(appTestId);
+        em.flush();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.asu.diging.monitor.core.db.impl.IAppDbConnection#delete(edu.asu.diging.
+     * monitor.core.model.IApp)
+     */
+    @Override
+    public void delete(IApp element) {
+        for (INotificationRecipient recipient : element.getRecipients()) {
+            recipient.getApps().remove(element);
+        }
         em.remove(element);
     }
-    
-	/* (non-Javadoc)
-	 * @see edu.asu.diging.monitor.core.db.impl.IAppDbConnection#getAllRegisteredApps()
-	 */
-	@Override
-	public IApp[] getAllRegisteredApps() {
+
+    @Override
+    public void deleteRecipientsForApp(IApp element) {
+        for (INotificationRecipient recipient : element.getRecipients()) {
+            recipient.getApps().remove(element);
+            em.merge(recipient);
+        }
+        em.flush();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.asu.diging.monitor.core.db.impl.IAppDbConnection#getAllRegisteredApps()
+     */
+    @Override
+    public IApp[] getAllRegisteredApps() {
         TypedQuery<IApp> query = em.createQuery("SELECT a FROM App a", IApp.class);
         List<IApp> results = query.getResultList();
         if (results == null) {
@@ -76,12 +119,14 @@ public class AppDbConnection implements IAppDbConnection {
         }
         return results.toArray(new IApp[results.size()]);
     }
-	
-	/* (non-Javadoc)
-	 * @see edu.asu.diging.monitor.core.db.impl.IAppDbConnection#generateId()
-	 */
-	@Override
-	public String generateId() {
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see edu.asu.diging.monitor.core.db.impl.IAppDbConnection#generateId()
+     */
+    @Override
+    public String generateId() {
         String id = null;
         while (true) {
             id = "APP" + generateUniqueId();
@@ -92,10 +137,10 @@ public class AppDbConnection implements IAppDbConnection {
         }
         return id;
     }
-	
-	/**
-     * This methods generates a new 6 character long id. Note that this method
-     * does not assure that the id isn't in use yet.
+
+    /**
+     * This methods generates a new 6 character long id. Note that this method does
+     * not assure that the id isn't in use yet.
      * 
      * Adapted from
      * http://stackoverflow.com/questions/9543715/generating-human-readable
@@ -104,8 +149,7 @@ public class AppDbConnection implements IAppDbConnection {
      * @return 12 character id
      */
     protected String generateUniqueId() {
-        char[] chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-                .toCharArray();
+        char[] chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
 
         Random random = new Random();
         StringBuilder builder = new StringBuilder();
@@ -116,4 +160,3 @@ public class AppDbConnection implements IAppDbConnection {
         return builder.toString();
     }
 }
-

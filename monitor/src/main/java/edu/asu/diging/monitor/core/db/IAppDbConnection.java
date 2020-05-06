@@ -18,5 +18,7 @@ public interface IAppDbConnection {
 	String generateId();
 
 	void updateLastAppTest(String appId, String appTestId);
+	
+	void deleteRecipientsForApp(IApp app);
 
 }
