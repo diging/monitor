@@ -29,11 +29,12 @@ public class AppHelper implements IAppHelper {
         app.setWarningReturnCodes(appForm.getWarningReturnCodes());
         app.setPingInterval(appForm.getPingInterval());
         app.setMethod(appForm.getMethod());
-        if (appForm.getRecipientIds()!=null)
+        if (appForm.getRecipientIds() != null) {
             app.setRecipients(getRecipientsById(appForm.getRecipientIds()));
+        }
         return app;
     }
-    
+
     @Override
     public void copyAppInfoToForm(IApp app, AppForm appForm) {
         appForm.setDescription(app.getDescription());

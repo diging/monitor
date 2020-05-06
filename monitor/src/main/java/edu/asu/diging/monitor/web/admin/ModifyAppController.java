@@ -42,8 +42,9 @@ public class ModifyAppController {
     public String update(@ModelAttribute AppForm appForm, @PathVariable("id") String id,
             RedirectAttributes redirectAttrs) {
         IApp app = appManager.getApp(id);
-        if (app.getRecipients() != null)
+        if (app.getRecipients() != null) {
             appManager.deleteExistingRecipients(app);
+        }
         app = appHelper.copyAppInfo(appManager.getApp(id), appForm);
         appManager.updateApp(app);
         redirectAttrs.addFlashAttribute("show_alert", true);
