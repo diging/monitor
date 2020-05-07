@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import edu.asu.diging.monitor.core.auth.User;
+import edu.asu.diging.monitor.core.auth.IUser;
+import edu.asu.diging.monitor.core.auth.impl.User;
 import edu.asu.diging.monitor.core.db.IUserDbConnection;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.exceptions.UserAlreadyExistsException;
@@ -26,11 +27,11 @@ public class UserService implements IUserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public User registerNewUserAccount(UserForm userForm) throws UserAlreadyExistsException {
+    public void registerNewUserAccount(UserForm userForm) throws UserAlreadyExistsException {
         if (userExists(userForm.getUsername())) {
             throw new UserAlreadyExistsException("There is an account with the username:" + userForm.getUsername());
         }
-        User user = new User();
+        IUser user = new User();
         user.setUsername(userForm.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(userForm.getPassword()));
         try {
@@ -38,7 +39,6 @@ public class UserService implements IUserService {
         } catch (UnstorableObjectException e) {
             logger.error("Could not store user", e);
         }
-        return user;
     }
 
     private boolean userExists(String id) {
