@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
+import edu.asu.diging.monitor.core.model.impl.Group;
 
 public interface IAppManager {
 
@@ -22,5 +23,11 @@ public interface IAppManager {
 	void deleteApp(String id);
 	
 	void deleteExistingRecipients(IApp app);
+
+    Group getGroup(String id);
+
+    List<Group> getGroups();
+
+    Group createGroup(String name);
 
 }

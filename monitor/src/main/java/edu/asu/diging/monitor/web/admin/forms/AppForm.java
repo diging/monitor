@@ -18,6 +18,24 @@ public class AppForm {
     private RequestMethod method;
     private List<RecipientForm> recipients;
     private List<String> recipientIds;
+    private List<String> groupIds;
+    private String groupId;
+
+    public List<String> getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(List<String> groupIds) {
+        this.groupIds = groupIds;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
     public List<RecipientForm> getRecipients() {
         return recipients;

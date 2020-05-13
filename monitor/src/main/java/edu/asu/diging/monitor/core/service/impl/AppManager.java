@@ -16,6 +16,7 @@ import edu.asu.diging.monitor.core.db.IAppTestDbConnection;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
+import edu.asu.diging.monitor.core.model.impl.Group;
 import edu.asu.diging.monitor.core.service.IAppManager;
 
 @Service
@@ -66,6 +67,29 @@ public class AppManager implements IAppManager {
             return appList;
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public Group createGroup(String name) {
+        Group group = new Group();
+        group.setName(name);
+        try {
+            dbConnection.createGroup(group);
+        } catch (UnstorableObjectException e) {
+            logger.error("Could not store group", e);
+        }
+        return group;
+    }
+
+    @Override
+    public Group getGroup(String id) {
+        return dbConnection.getGroupById(id);
+    }
+
+    @Override
+    public List<Group> getGroups() {
+        Group[] groups = dbConnection.getAllGroups();
+        return Arrays.asList(groups);
     }
 
     @Override

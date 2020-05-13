@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.asu.diging.monitor.core.model.IApp;
+import edu.asu.diging.monitor.core.model.impl.Group;
 import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
 import edu.asu.diging.monitor.core.service.IAppHelper;
+import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
@@ -17,6 +19,9 @@ public class AppHelper implements IAppHelper {
 
     @Autowired
     private INotificationManager manager;
+    
+    @Autowired
+    private IAppManager appManager;
 
     @Override
     public IApp copyAppInfo(IApp app, AppForm appForm) {
@@ -32,7 +37,16 @@ public class AppHelper implements IAppHelper {
         if (appForm.getRecipientIds() != null) {
             app.setRecipients(getRecipientsById(appForm.getRecipientIds()));
         }
+        app.setGroup(getGroupById(appForm.getGroupId()));
         return app;
+    }
+    
+    private Group getGroupById(String id) {
+        Group group = appManager.getGroup(id);
+        if (group == null) {
+            group = appManager.createGroup(id);
+        }
+        return group;
     }
 
     @Override

@@ -39,6 +39,7 @@ public class AddAppController {
             recipient.setEmail(r.getEmail());
             return recipient;
         }).collect(Collectors.toList()));
+        appForm.setGroupIds(appManager.getGroups().stream().map(g -> g.getName()).collect(Collectors.toList()));
         return "admin/apps/show";
     }
 	

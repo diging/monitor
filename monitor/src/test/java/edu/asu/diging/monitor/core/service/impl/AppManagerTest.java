@@ -19,6 +19,7 @@ import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
 import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.model.impl.AppTest;
+import edu.asu.diging.monitor.core.service.IAppManager;
 
 public class AppManagerTest {
 
@@ -29,7 +30,7 @@ public class AppManagerTest {
     private IAppTestDbConnection appTestDbConnection;
 
     @InjectMocks
-    private AppManager managerToTest;
+    private IAppManager managerToTest;
     
     private IApp[] storedApps;
     private App app1;

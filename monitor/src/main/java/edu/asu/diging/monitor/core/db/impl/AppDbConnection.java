@@ -15,6 +15,7 @@ import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
 import edu.asu.diging.monitor.core.model.impl.App;
+import edu.asu.diging.monitor.core.model.impl.Group;
 
 @Component
 @Transactional
@@ -35,6 +36,20 @@ public class AppDbConnection implements IAppDbConnection {
         return em.find(App.class, id);
     }
 
+    @Override
+    public Group getGroupById(String id) {
+        return em.find(Group.class, id);
+    }
+
+    
+    @Override
+    public Group createGroup(Group group) throws UnstorableObjectException {
+        if (group.getName() == null) {
+            throw new UnstorableObjectException("Group doesn't have an id");
+        }
+        em.persist(group);
+        return group;
+    }
     /*
      * (non-Javadoc)
      * 
@@ -119,6 +134,18 @@ public class AppDbConnection implements IAppDbConnection {
         }
         return results.toArray(new IApp[results.size()]);
     }
+    
+    
+    
+    @Override
+    public Group[] getAllGroups() {
+        TypedQuery<Group> query = em.createQuery("SELECT a FROM Group a", Group.class);
+        List<Group> results = query.getResultList();
+        if (results == null) {
+            return new Group[0];
+        }
+        return results.toArray(new Group[results.size()]);
+    }
 
     /*
      * (non-Javadoc)
@@ -159,4 +186,5 @@ public class AppDbConnection implements IAppDbConnection {
 
         return builder.toString();
     }
+
 }

@@ -59,6 +59,11 @@
     	 <small>Minimum interval is 1 minute (60 seconds).</small>
   </div>
   <div class="form-group">
+ 	 <form:label path="groupId">Create a new Group:</form:label>
+    	 <form:input type="text" class="form-control" path="groupId"/>
+  </div>
+  
+  <div class="form-group">
 		<form:label path="recipientIds">Recipients:</form:label>
 		<p>
 		<i>
