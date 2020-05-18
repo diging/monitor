@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.asu.diging.monitor.core.model.GroupType;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
@@ -41,6 +42,14 @@ public class ModifyAppController {
     @RequestMapping(value = "/admin/apps/{id}/modify", method = RequestMethod.POST)
     public String update(@ModelAttribute AppForm appForm, @PathVariable("id") String id,
             RedirectAttributes redirectAttrs) {
+        if (appForm.getGroupType() == null
+                || appForm.getGroupType() == GroupType.NEW && appForm.getGroupId().trim().isEmpty()) {
+            redirectAttrs.addFlashAttribute("show_alert", true);
+            redirectAttrs.addFlashAttribute("alert_type", "danger");
+            redirectAttrs.addFlashAttribute("alert_msg",
+                    "App could not be updated. Please create a group for this app or select from an existing one.");
+            return "redirect:/";
+        }
         IApp app = appManager.getApp(id);
         if (app.getRecipients() != null) {
             appManager.deleteExistingRecipients(app);

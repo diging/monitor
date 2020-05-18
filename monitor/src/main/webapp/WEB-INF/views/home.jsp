@@ -61,7 +61,8 @@
   <strong>Connection to server lost. Trying to connect...</strong>
 </div>
 <c:forEach items="${appGroups}" var= "group">
-	<h5>${group.name}</h5>
+	<c:if test="${not empty group.apps}">
+	<h5><b>${group.name}</b></h5>
 	<c:forEach items="${group.apps}" var="app">
 		<sec:authorize access="hasAnyRole('ADMIN')">
 			<div class="pull-right">
@@ -173,4 +174,5 @@
 			</div>
 		</div>
 	</c:forEach>
+	</c:if>
 </c:forEach>

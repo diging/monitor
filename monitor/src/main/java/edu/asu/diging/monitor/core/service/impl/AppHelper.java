@@ -63,6 +63,8 @@ public class AppHelper implements IAppHelper {
             recipientForm.setEmail(r.getEmail());
             return recipientForm;
         }).collect(Collectors.toList()));
+        appForm.setGroupType(GroupType.EXISTING);
+        appForm.setGroupIds(appManager.getGroups().stream().map(g -> g.getName()).collect(Collectors.toList()));
         appForm.setRetries(app.getRetries());
         appForm.setTimeout(app.getTimeout());
         appForm.setWarningReturnCodes(app.getWarningReturnCodes());
