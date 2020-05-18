@@ -8,21 +8,21 @@ import edu.asu.diging.monitor.core.model.impl.Group;
 
 public interface IAppManager {
 
-	void addApp(IApp app);
-	
-	void updateApp(IApp app);
+    void addApp(IApp app);
 
-	List<IApp> getApps();
-	
-	IApp getApp(String id);
+    void updateApp(IApp app);
 
-	IAppTest getLatestAppTest(IApp app);
+    List<IApp> getApps();
 
-	void addAppTest(IAppTest test, boolean updateAppLastTest);
+    IApp getApp(String id);
 
-	void deleteApp(String id);
-	
-	void deleteExistingRecipients(IApp app);
+    IAppTest getLatestAppTest(IApp app);
+
+    void addAppTest(IAppTest test, boolean updateAppLastTest);
+
+    void deleteApp(String id);
+
+    void deleteExistingRecipients(IApp app);
 
     Group getGroup(String id);
 

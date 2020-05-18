@@ -6,21 +6,21 @@ import edu.asu.diging.monitor.core.model.impl.Group;
 
 public interface IAppDbConnection {
 
-	IApp getById(String id);
+    IApp getById(String id);
 
-	IApp store(IApp app) throws UnstorableObjectException;
-	
-	IApp update(IApp app);
+    IApp store(IApp app) throws UnstorableObjectException;
 
-	void delete(IApp element);
+    IApp update(IApp app);
 
-	IApp[] getAllRegisteredApps();
+    void delete(IApp element);
 
-	String generateId();
+    IApp[] getAllRegisteredApps();
 
-	void updateLastAppTest(String appId, String appTestId);
-	
-	void deleteRecipientsForApp(IApp app);
+    String generateId();
+
+    void updateLastAppTest(String appId, String appTestId);
+
+    void deleteRecipientsForApp(IApp app);
 
     Group getGroupById(String id);
 
