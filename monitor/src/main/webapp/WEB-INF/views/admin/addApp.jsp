@@ -58,12 +58,23 @@
     	 <form:input type="number" class="form-control" path="pingInterval" value="900" />
     	 <small>Minimum interval is 1 minute (60 seconds).</small>
   </div>
+  
   <div class="form-group">
+  <form:radiobutton id="groupCreate" name="group" value="NEW" path ="groupType"/>
  	 <form:label path="groupId">Create a new Group:</form:label>
     	 <form:input type="text" class="form-control" path="groupId"/>
   </div>
-  
-  <div class="form-group">
+  		<p>Or</p> 
+	<div class="form-group">
+		<form:radiobutton id="groupSelect" name="group" value="EXISTING"
+			path="groupType" />
+		<form:label path="existingGroupId">Select from an Existing Group:</form:label>
+		<form:select class="form-control" path="existingGroupId">
+			<form:options items="${appForm.groupIds}" />
+		</form:select>
+	</div>
+
+	<div class="form-group">
 		<form:label path="recipientIds">Recipients:</form:label>
 		<p>
 		<i>

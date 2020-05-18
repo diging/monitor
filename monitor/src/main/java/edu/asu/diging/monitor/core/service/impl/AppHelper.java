@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import edu.asu.diging.monitor.core.model.GroupType;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.impl.Group;
 import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
@@ -37,18 +39,15 @@ public class AppHelper implements IAppHelper {
         if (appForm.getRecipientIds() != null) {
             app.setRecipients(getRecipientsById(appForm.getRecipientIds()));
         }
-        app.setGroup(getGroupById(appForm.getGroupId()));
+        if (appForm.getGroupType()==GroupType.NEW) {
+            app.setGroup(appManager.createGroup(appForm.getGroupId()));
+        }
+        else {
+            app.setGroup(appManager.getGroup(appForm.getExistingGroupId()));
+        }
         return app;
     }
     
-    private Group getGroupById(String id) {
-        Group group = appManager.getGroup(id);
-        if (group == null) {
-            group = appManager.createGroup(id);
-        }
-        return group;
-    }
-
     @Override
     public void copyAppInfoToForm(IApp app, AppForm appForm) {
         appForm.setDescription(app.getDescription());

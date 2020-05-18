@@ -25,7 +25,7 @@ public class HomeController {
 
     @RequestMapping(value = "/")
     public String home(Model model) {
-        model.addAttribute("apps", appManager.getApps());
+        model.addAttribute("appGroups", appManager.getGroups());
         model.addAttribute("recipientCount", manager.getAllRecipients().size());
         return "home";
     }

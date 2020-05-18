@@ -2,6 +2,7 @@ package edu.asu.diging.monitor.web.admin.forms;
 
 import java.util.List;
 
+import edu.asu.diging.monitor.core.model.GroupType;
 import edu.asu.diging.monitor.core.model.RequestMethod;
 
 public class AppForm {
@@ -20,6 +21,24 @@ public class AppForm {
     private List<String> recipientIds;
     private List<String> groupIds;
     private String groupId;
+    private String existingGroupId;
+    public String getExistingGroupId() {
+        return existingGroupId;
+    }
+
+    public void setExistingGroupId(String existingGroupId) {
+        this.existingGroupId = existingGroupId;
+    }
+
+    private GroupType groupType;
+
+    public GroupType getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(GroupType groupType) {
+        this.groupType = groupType;
+    }
 
     public List<String> getGroupIds() {
         return groupIds;

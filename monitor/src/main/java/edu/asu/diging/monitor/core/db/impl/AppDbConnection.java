@@ -41,7 +41,6 @@ public class AppDbConnection implements IAppDbConnection {
         return em.find(Group.class, id);
     }
 
-    
     @Override
     public Group createGroup(Group group) throws UnstorableObjectException {
         if (group.getName() == null) {
@@ -50,6 +49,7 @@ public class AppDbConnection implements IAppDbConnection {
         em.persist(group);
         return group;
     }
+
     /*
      * (non-Javadoc)
      * 
@@ -134,9 +134,7 @@ public class AppDbConnection implements IAppDbConnection {
         }
         return results.toArray(new IApp[results.size()]);
     }
-    
-    
-    
+
     @Override
     public Group[] getAllGroups() {
         TypedQuery<Group> query = em.createQuery("SELECT a FROM Group a", Group.class);
@@ -185,6 +183,13 @@ public class AppDbConnection implements IAppDbConnection {
         }
 
         return builder.toString();
+    }
+
+    @Override
+    public void deleteGroup(Group group) {
+        if (group.getApps().size() == 1) {
+            em.remove(group);
+        }
     }
 
 }

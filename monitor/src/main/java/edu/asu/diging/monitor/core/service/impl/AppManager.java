@@ -126,6 +126,7 @@ public class AppManager implements IAppManager {
         if (app != null) {
             appTestDbConnection.deleteTestsForApp(id);
             dbConnection.delete(app);
+            dbConnection.deleteGroup(dbConnection.getGroupById(app.getGroup().getName()));
         }
     }
 
