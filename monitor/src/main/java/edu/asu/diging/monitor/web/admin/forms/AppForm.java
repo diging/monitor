@@ -1,6 +1,9 @@
 package edu.asu.diging.monitor.web.admin.forms;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import edu.asu.diging.monitor.core.model.GroupType;
 import edu.asu.diging.monitor.core.model.RequestMethod;
@@ -19,9 +22,11 @@ public class AppForm {
     private RequestMethod method;
     private List<RecipientForm> recipients;
     private List<String> recipientIds;
-    private List<String> groupIds;
+    private Set<Entry<String, String>> groupIds;
     private String groupId;
     private String existingGroupId;
+    private GroupType groupType;
+
     public String getExistingGroupId() {
         return existingGroupId;
     }
@@ -29,8 +34,6 @@ public class AppForm {
     public void setExistingGroupId(String existingGroupId) {
         this.existingGroupId = existingGroupId;
     }
-
-    private GroupType groupType;
 
     public GroupType getGroupType() {
         return groupType;
@@ -40,20 +43,20 @@ public class AppForm {
         this.groupType = groupType;
     }
 
-    public List<String> getGroupIds() {
-        return groupIds;
-    }
-
-    public void setGroupIds(List<String> groupIds) {
-        this.groupIds = groupIds;
-    }
-
     public String getGroupId() {
         return groupId;
     }
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    public Set<Entry<String, String>> getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(Set<Entry<String, String>> groupIds) {
+        this.groupIds = groupIds;
     }
 
     public List<RecipientForm> getRecipients() {

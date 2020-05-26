@@ -8,9 +8,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Component;
 
 import edu.asu.diging.monitor.core.db.IAppDbConnection;
+import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
@@ -37,7 +39,11 @@ public class AppDbConnection implements IAppDbConnection {
     }
 
     @Override
-    public Group getGroupById(String id) {
+    public Group getGroupById(String id) throws GroupNotFoundException {
+        Group group = em.find(Group.class, id);
+        if (group == null) {
+            throw new GroupNotFoundException("No group exists for this id");
+        }
         return em.find(Group.class, id);
     }
 
@@ -48,6 +54,11 @@ public class AppDbConnection implements IAppDbConnection {
         }
         em.persist(group);
         return group;
+    }
+
+    @Override
+    public void deleteGroup(Group group) {
+        em.remove(group);
     }
 
     /*
@@ -108,6 +119,7 @@ public class AppDbConnection implements IAppDbConnection {
             recipient.getApps().remove(element);
         }
         em.remove(element);
+        em.flush();
     }
 
     @Override
@@ -143,6 +155,19 @@ public class AppDbConnection implements IAppDbConnection {
             return new Group[0];
         }
         return results.toArray(new Group[results.size()]);
+    }
+
+    @Override
+    public String generateGroupId() {
+        String id = null;
+        while (true) {
+            id = "GRP" + generateUniqueId();
+            Object existingFile = getById(id);
+            if (existingFile == null) {
+                break;
+            }
+        }
+        return id;
     }
 
     /*
@@ -183,13 +208,6 @@ public class AppDbConnection implements IAppDbConnection {
         }
 
         return builder.toString();
-    }
-
-    @Override
-    public void deleteGroup(Group group) {
-        if (group.getApps().size() == 1) {
-            em.remove(group);
-        }
     }
 
 }

@@ -70,29 +70,6 @@ public class AppManager implements IAppManager {
     }
 
     @Override
-    public Group createGroup(String name) {
-        Group group = new Group();
-        group.setName(name);
-        try {
-            dbConnection.createGroup(group);
-        } catch (UnstorableObjectException e) {
-            logger.error("Could not store group", e);
-        }
-        return group;
-    }
-
-    @Override
-    public Group getGroup(String id) {
-        return dbConnection.getGroupById(id);
-    }
-
-    @Override
-    public List<Group> getGroups() {
-        Group[] groups = dbConnection.getAllGroups();
-        return Arrays.asList(groups);
-    }
-
-    @Override
     public IApp getApp(String id) {
         return dbConnection.getById(id);
     }
@@ -126,7 +103,8 @@ public class AppManager implements IAppManager {
         if (app != null) {
             appTestDbConnection.deleteTestsForApp(id);
             dbConnection.delete(app);
-            dbConnection.deleteGroup(dbConnection.getGroupById(app.getGroup().getName()));
+            if (app.getGroup().getApps().size() == 1)
+                dbConnection.deleteGroup(app.getGroup());
         }
     }
 

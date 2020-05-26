@@ -31,8 +31,20 @@ public class Group {
         this.apps = apps;
     }
 
+    
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Id
     @Column(name="groupId")
+    private String id;
+    
+    @Column(name="name")
     private String name;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)

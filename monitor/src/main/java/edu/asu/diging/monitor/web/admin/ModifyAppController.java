@@ -2,6 +2,8 @@ package edu.asu.diging.monitor.web.admin;
 
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,16 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.model.GroupType;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
-import edu.asu.diging.monitor.core.service.INotificationManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
-import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
 
 @Controller
 public class ModifyAppController {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private IAppManager appManager;
@@ -43,7 +46,8 @@ public class ModifyAppController {
     public String update(@ModelAttribute AppForm appForm, @PathVariable("id") String id,
             RedirectAttributes redirectAttrs) {
         if (appForm.getGroupType() == null
-                || appForm.getGroupType() == GroupType.NEW && appForm.getGroupId().trim().isEmpty()) {
+                || appForm.getGroupType() == GroupType.NEW && appForm.getGroupId().trim().isEmpty()
+                || appForm.getGroupType() == GroupType.EXISTING && appForm.getExistingGroupId() == null) {
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
             redirectAttrs.addFlashAttribute("alert_msg",
@@ -51,10 +55,20 @@ public class ModifyAppController {
             return "redirect:/";
         }
         IApp app = appManager.getApp(id);
-        if (app.getRecipients() != null) {
+        if (app.getRecipients() != null && !app.getRecipients().isEmpty()) {
             appManager.deleteExistingRecipients(app);
         }
-        app = appHelper.copyAppInfo(appManager.getApp(id), appForm);
+        try {
+            app = appHelper.copyAppInfo(appManager.getApp(id), appForm);
+        } catch (GroupNotFoundException e) {
+            logger.error("Could not find Group", e);
+            redirectAttrs.addFlashAttribute("show_alert", true);
+            redirectAttrs.addFlashAttribute("alert_type", "danger");
+            redirectAttrs.addFlashAttribute("alert_msg",
+                    "The selected group doesn't exist. Please create a group for this app or select from an existing one. ");
+            return "redirect:/";
+
+        }
         appManager.updateApp(app);
         redirectAttrs.addFlashAttribute("show_alert", true);
         redirectAttrs.addFlashAttribute("alert_type", "success");

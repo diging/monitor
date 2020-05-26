@@ -12,11 +12,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.service.IAppManager;
+import edu.asu.diging.monitor.core.service.IGroupManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
 
 @Controller
 public class HomeController {
 
+    @Autowired
+    private IGroupManager groupManager;
+    
     @Autowired
     private IAppManager appManager;
 
@@ -25,7 +29,7 @@ public class HomeController {
 
     @RequestMapping(value = "/")
     public String home(Model model) {
-        model.addAttribute("appGroups", appManager.getGroups());
+        model.addAttribute("appGroups", groupManager.getGroups());
         model.addAttribute("recipientCount", manager.getAllRecipients().size());
         return "home";
     }

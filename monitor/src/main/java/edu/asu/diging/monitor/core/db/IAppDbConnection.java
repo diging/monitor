@@ -1,5 +1,6 @@
 package edu.asu.diging.monitor.core.db;
 
+import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.impl.Group;
@@ -22,12 +23,14 @@ public interface IAppDbConnection {
 
     void deleteRecipientsForApp(IApp app);
 
-    Group getGroupById(String id);
+    Group getGroupById(String id) throws GroupNotFoundException;
 
     Group[] getAllGroups();
 
     Group createGroup(Group group) throws UnstorableObjectException;
 
     void deleteGroup(Group group);
+
+    String generateGroupId();
 
 }

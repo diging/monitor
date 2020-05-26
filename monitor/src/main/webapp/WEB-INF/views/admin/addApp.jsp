@@ -70,7 +70,7 @@
 			path="groupType" />
 		<form:label path="existingGroupId">Select from an Existing Group:</form:label>
 		<form:select class="form-control" path="existingGroupId">
-			<form:options items="${appForm.groupIds}" />
+			<form:options items="${appForm.groupIds}" var="groups" itemValue="key" itemLabel="value" />
 		</form:select>
 	</div>
 
