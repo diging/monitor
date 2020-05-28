@@ -1,5 +1,6 @@
 package edu.asu.diging.monitor.core.db.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -44,12 +45,12 @@ public class AppDbConnection implements IAppDbConnection {
         if (group == null) {
             throw new GroupNotFoundException("No group exists for this id");
         }
-        return em.find(Group.class, id);
+        return group;
     }
 
     @Override
     public Group createGroup(Group group) throws UnstorableObjectException {
-        if (group.getName() == null) {
+        if (group.getId() == null) {
             throw new UnstorableObjectException("Group doesn't have an id");
         }
         em.persist(group);
@@ -148,13 +149,13 @@ public class AppDbConnection implements IAppDbConnection {
     }
 
     @Override
-    public Group[] getAllGroups() {
+    public List<Group> getAllGroups() {
         TypedQuery<Group> query = em.createQuery("SELECT a FROM Group a", Group.class);
         List<Group> results = query.getResultList();
         if (results == null) {
-            return new Group[0];
+            return new ArrayList<>();
         }
-        return results.toArray(new Group[results.size()]);
+        return results;
     }
 
     @Override

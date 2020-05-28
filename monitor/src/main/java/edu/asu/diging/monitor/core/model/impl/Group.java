@@ -15,6 +15,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "`Group`")
 public class Group {
 
+    @Id
+    @Column(name = "groupId")
+    private String id;
+
+    @Column(name = "name")
+    private String name;
+
+    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<App> apps;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -30,25 +49,5 @@ public class Group {
     public void setApps(List<App> apps) {
         this.apps = apps;
     }
-
-    
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    @Id
-    @Column(name="groupId")
-    private String id;
-    
-    @Column(name="name")
-    private String name;
-
-    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
-    @JsonIgnore
-    private List<App> apps;
 
 }

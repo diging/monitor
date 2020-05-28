@@ -1,6 +1,5 @@
 package edu.asu.diging.monitor.core.service.impl;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import edu.asu.diging.monitor.core.db.IAppDbConnection;
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
-import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.impl.Group;
 import edu.asu.diging.monitor.core.service.IGroupManager;
 
@@ -45,7 +43,6 @@ public class GroupManager implements IGroupManager {
 
     @Override
     public List<Group> getGroups() {
-        Group[] groups = dbConnection.getAllGroups();
-        return Arrays.asList(groups);
+        return dbConnection.getAllGroups();
     }
 }

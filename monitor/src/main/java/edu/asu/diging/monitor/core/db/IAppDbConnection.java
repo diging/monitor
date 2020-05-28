@@ -1,5 +1,7 @@
 package edu.asu.diging.monitor.core.db;
 
+import java.util.List;
+
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
@@ -25,7 +27,7 @@ public interface IAppDbConnection {
 
     Group getGroupById(String id) throws GroupNotFoundException;
 
-    Group[] getAllGroups();
+    List<Group> getAllGroups();
 
     Group createGroup(Group group) throws UnstorableObjectException;
 
