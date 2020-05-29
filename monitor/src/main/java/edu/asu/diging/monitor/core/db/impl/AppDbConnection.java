@@ -39,24 +39,6 @@ public class AppDbConnection implements IAppDbConnection {
         return em.find(App.class, id);
     }
 
-    @Override
-    public Group getGroupById(String id) throws GroupNotFoundException {
-        Group group = em.find(Group.class, id);
-        if (group == null) {
-            throw new GroupNotFoundException("No group exists for this id");
-        }
-        return group;
-    }
-
-    @Override
-    public Group createGroup(Group group) throws UnstorableObjectException {
-        if (group.getId() == null) {
-            throw new UnstorableObjectException("Group doesn't have an id");
-        }
-        em.persist(group);
-        return group;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -141,29 +123,6 @@ public class AppDbConnection implements IAppDbConnection {
             return new IApp[0];
         }
         return results.toArray(new IApp[results.size()]);
-    }
-
-    @Override
-    public List<Group> getAllGroups() {
-        TypedQuery<Group> query = em.createQuery("SELECT a FROM Group a", Group.class);
-        List<Group> results = query.getResultList();
-        if (results == null) {
-            return new ArrayList<>();
-        }
-        return results;
-    }
-
-    @Override
-    public String generateGroupId() {
-        String id = null;
-        while (true) {
-            id = "GRP" + generateUniqueId();
-            Object existingFile = getById(id);
-            if (existingFile == null) {
-                break;
-            }
-        }
-        return id;
     }
 
     /*

@@ -1,6 +1,7 @@
 package edu.asu.diging.monitor.core.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -10,20 +11,22 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.OngoingStubbing;
 
-import edu.asu.diging.monitor.core.db.IAppDbConnection;
+import edu.asu.diging.monitor.core.db.IGroupDbConnection;
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
+import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.model.impl.Group;
 
 public class GroupManagerTest {
 
     @Mock
-    private IAppDbConnection dbConnection;
+    private IGroupDbConnection dbConnection;
 
     @InjectMocks
     private GroupManager managerToTest;
-    
+
     private List<Group> storedGroups;
     private Group group1;
     private Group group2;
@@ -47,19 +50,25 @@ public class GroupManagerTest {
     }
 
     @Test
-    public void test_createGroup_success() throws UnstorableObjectException {
+    public void test_createGroup_success() throws UnstorableObjectException, GroupNotFoundException {
         String id = "GROUP1";
         Mockito.when(dbConnection.generateGroupId()).thenReturn(id);
-        Group group =  managerToTest.createGroup(id);
+        Group group = managerToTest.createGroup(id);
         Mockito.verify(dbConnection).createGroup(group);
         Assert.assertEquals(id, group.getId());
     }
-    
+
     @Test
     public void test_getGroups_success() {
         List<Group> results = managerToTest.getGroups();
         Assert.assertArrayEquals(storedGroups.toArray(), results.toArray());
     }
-    
 
+    @Test
+    public void test_getGroups_noGroups() {
+        Mockito.when(dbConnection.getAllGroups()).thenReturn(new ArrayList<Group>());
+        Assert.assertTrue(managerToTest.getGroups().isEmpty());
+    }
+
+    
 }

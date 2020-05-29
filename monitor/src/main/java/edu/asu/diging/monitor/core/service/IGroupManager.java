@@ -11,6 +11,6 @@ public interface IGroupManager {
 
     Group getGroup(String id) throws GroupNotFoundException;
 
-    Group createGroup(String name);
+    Group createGroup(String name) throws GroupNotFoundException;
 
 }

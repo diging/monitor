@@ -33,31 +33,9 @@ public class App implements IApp {
     private RequestMethod method;
     @ManyToMany(mappedBy = "apps", fetch = FetchType.EAGER)
     private List<NotificationRecipient> recipients;
-
     @ManyToOne
     @JoinColumn(name = "groupId")
     private Group group;
-
-    
-    @Override
-    public Group getGroup() {
-        return group;
-    }
-
-    @Override
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
-    @Override
-    public List<NotificationRecipient> getRecipients() {
-        return recipients;
-    }
-
-    @Override
-    public void setRecipients(List<NotificationRecipient> recipients) {
-        this.recipients = recipients;
-    }
 
     @Override
     public String toString() {
@@ -270,4 +248,23 @@ public class App implements IApp {
         this.method = method;
     }
 
+    @Override
+    public List<NotificationRecipient> getRecipients() {
+        return recipients;
+    }
+
+    @Override
+    public void setRecipients(List<NotificationRecipient> recipients) {
+        this.recipients = recipients;
+    }
+
+    @Override
+    public Group getGroup() {
+        return group;
+    }
+
+    @Override
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 }

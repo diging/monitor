@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.asu.diging.monitor.core.db.IAppDbConnection;
+import edu.asu.diging.monitor.core.db.IGroupDbConnection;
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.impl.Group;
@@ -21,10 +21,10 @@ public class GroupManager implements IGroupManager {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private IAppDbConnection dbConnection;
+    private IGroupDbConnection dbConnection;
 
     @Override
-    public Group createGroup(String name) {
+    public Group createGroup(String name) throws GroupNotFoundException {
         Group group = new Group();
         group.setName(name);
         group.setId(dbConnection.generateGroupId());
@@ -32,6 +32,7 @@ public class GroupManager implements IGroupManager {
             dbConnection.createGroup(group);
         } catch (UnstorableObjectException e) {
             logger.error("Could not store group", e);
+            throw new GroupNotFoundException("Group couldn't be created", e);
         }
         return group;
     }
