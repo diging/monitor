@@ -57,11 +57,6 @@ public class AppDbConnection implements IAppDbConnection {
         return group;
     }
 
-    @Override
-    public void deleteGroup(Group group) {
-        em.remove(group);
-    }
-
     /*
      * (non-Javadoc)
      * 

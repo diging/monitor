@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "`Group`")
+@Table(name = "AppGroup")
 public class Group {
 
     @Id

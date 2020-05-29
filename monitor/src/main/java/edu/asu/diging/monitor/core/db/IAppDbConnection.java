@@ -31,8 +31,6 @@ public interface IAppDbConnection {
 
     Group createGroup(Group group) throws UnstorableObjectException;
 
-    void deleteGroup(Group group);
-
     String generateGroupId();
 
 }
