@@ -46,7 +46,7 @@ public class ModifyAppController {
     public String update(@ModelAttribute AppForm appForm, @PathVariable("id") String id,
             RedirectAttributes redirectAttrs) {
         if (appForm.getGroupType() == null
-                || appForm.getGroupType() == GroupType.NEW && appForm.getGroupId().trim().isEmpty()
+                || appForm.getGroupType() == GroupType.NEW && appForm.getGroupName().trim().isEmpty()
                 || appForm.getGroupType() == GroupType.EXISTING && appForm.getExistingGroupId() == null) {
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");

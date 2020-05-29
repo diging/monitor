@@ -22,7 +22,7 @@ public class AppForm {
     private List<RecipientForm> recipients;
     private List<String> recipientIds;
     private Set<Entry<String, String>> groupIds;
-    private String groupId;
+    private String groupName;
     private String existingGroupId;
     private GroupType groupType;
 
@@ -130,12 +130,12 @@ public class AppForm {
         this.groupIds = groupIds;
     }
 
-    public String getGroupId() {
-        return groupId;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public String getExistingGroupId() {

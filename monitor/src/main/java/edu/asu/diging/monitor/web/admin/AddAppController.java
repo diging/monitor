@@ -59,7 +59,7 @@ public class AddAppController {
     public String add(@ModelAttribute AppForm appForm, RedirectAttributes redirectAttrs) {
         IApp app = new App();
         if (appForm.getGroupType() == null
-                || appForm.getGroupType() == GroupType.NEW && appForm.getGroupId().trim().isEmpty()
+                || appForm.getGroupType() == GroupType.NEW && appForm.getGroupName().trim().isEmpty()
                 || appForm.getGroupType() == GroupType.EXISTING && appForm.getExistingGroupId() == null) {
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");

@@ -44,7 +44,7 @@ public class AppHelper implements IAppHelper {
             app.setRecipients(getRecipientsById(appForm.getRecipientIds()));
         }
         if (appForm.getGroupType() == GroupType.NEW) {
-            app.setGroup(groupManager.createGroup(appForm.getGroupId()));
+            app.setGroup(groupManager.createGroup(appForm.getGroupName()));
         } else {
             app.setGroup(groupManager.getGroup(appForm.getExistingGroupId()));
         }

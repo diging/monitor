@@ -61,8 +61,8 @@
   
   <div class="form-group">
   <form:radiobutton id="groupCreate" name="group" value="NEW" path ="groupType"/>
- 	 <form:label path="groupId">Create a new Group:</form:label>
-    	 <form:input type="text" class="form-control" path="groupId"/>
+ 	 <form:label path="groupName">Create a new Group:</form:label>
+    	 <form:input type="text" class="form-control" path="groupName"/>
   </div>
   		<p>Or</p> 
 	<div class="form-group">
