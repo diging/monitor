@@ -24,22 +24,22 @@ public class GroupManager implements IGroupManager {
     private IGroupDbConnection dbConnection;
 
     @Override
-    public Group createGroup(String name) throws GroupNotFoundException {
+    public Group createGroup(String name) throws UnstorableObjectException {
         Group group = new Group();
         group.setName(name);
         group.setId(dbConnection.generateGroupId());
-        try {
-            dbConnection.createGroup(group);
-        } catch (UnstorableObjectException e) {
-            logger.error("Could not store group", e);
-            throw new GroupNotFoundException("Group couldn't be created", e);
-        }
+        dbConnection.createGroup(group);
         return group;
     }
 
     @Override
     public Group getGroup(String id) throws GroupNotFoundException {
-        return dbConnection.getGroupById(id);
+        Group group = dbConnection.getGroupById(id);
+        if (group == null) {
+            logger.error("Selected group doesn't have an id");
+            throw new GroupNotFoundException("No group exists for this id");
+        }
+        return group;
     }
 
     @Override

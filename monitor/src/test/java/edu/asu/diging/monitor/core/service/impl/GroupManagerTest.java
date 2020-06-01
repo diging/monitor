@@ -1,5 +1,7 @@
 package edu.asu.diging.monitor.core.service.impl;
 
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,6 +60,14 @@ public class GroupManagerTest {
         Assert.assertEquals(id, group.getId());
     }
 
+    @Test(expected = UnstorableObjectException.class)
+    public void test_createGroup_failure() throws UnstorableObjectException, GroupNotFoundException {
+        String id = "GROUP1";
+        Mockito.when(dbConnection.generateGroupId()).thenReturn(null);
+        Group group = managerToTest.createGroup(id);
+        Mockito.verify(dbConnection).createGroup(group);
+    }
+
     @Test
     public void test_getGroups_success() {
         List<Group> results = managerToTest.getGroups();
@@ -70,5 +80,4 @@ public class GroupManagerTest {
         Assert.assertTrue(managerToTest.getGroups().isEmpty());
     }
 
-    
 }

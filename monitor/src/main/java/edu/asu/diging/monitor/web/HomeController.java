@@ -1,6 +1,7 @@
 package edu.asu.diging.monitor.web;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,6 +31,7 @@ public class HomeController {
     @RequestMapping(value = "/")
     public String home(Model model) {
         model.addAttribute("appGroups", groupManager.getGroups());
+        model.addAttribute("apps",appManager.getApps().stream().filter( a -> a.getGroup()==null).collect(Collectors.toList()));
         model.addAttribute("recipientCount", manager.getAllRecipients().size());
         return "home";
     }

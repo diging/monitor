@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
+import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.GroupType;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.service.IAppHelper;
@@ -45,8 +46,7 @@ public class ModifyAppController {
     @RequestMapping(value = "/admin/apps/{id}/modify", method = RequestMethod.POST)
     public String update(@ModelAttribute AppForm appForm, @PathVariable("id") String id,
             RedirectAttributes redirectAttrs) {
-        if (appForm.getGroupType() == null
-                || appForm.getGroupType() == GroupType.NEW && appForm.getGroupName().trim().isEmpty()
+        if (appForm.getGroupType() == GroupType.NEW && appForm.getGroupName().trim().isEmpty()
                 || appForm.getGroupType() == GroupType.EXISTING && appForm.getExistingGroupId() == null) {
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
@@ -60,7 +60,7 @@ public class ModifyAppController {
         }
         try {
             app = appHelper.copyAppInfo(appManager.getApp(id), appForm);
-        } catch (GroupNotFoundException e) {
+        } catch (GroupNotFoundException | UnstorableObjectException e) {
             logger.error("Could not find Group", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");

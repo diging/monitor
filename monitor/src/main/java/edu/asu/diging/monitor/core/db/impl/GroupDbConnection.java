@@ -45,12 +45,7 @@ public class GroupDbConnection implements IGroupDbConnection {
         String id = null;
         while (true) {
             id = "GRP" + appDbConn.generateUniqueId();
-            Object existingFile = null;
-            try {
-                existingFile = getGroupById(id);
-            } catch (GroupNotFoundException e) {
-                logger.info("No group found with this id. Creating a new Group..");
-            }
+            Object existingFile = getGroupById(id);
             if (existingFile == null) {
                 break;
             }
@@ -59,12 +54,8 @@ public class GroupDbConnection implements IGroupDbConnection {
     }
 
     @Override
-    public Group getGroupById(String id) throws GroupNotFoundException {
-        Group group = em.find(Group.class, id);
-        if (group == null) {
-            throw new GroupNotFoundException("No group exists for this id");
-        }
-        return group;
+    public Group getGroupById(String id) {
+        return em.find(Group.class, id);
     }
 
     @Override

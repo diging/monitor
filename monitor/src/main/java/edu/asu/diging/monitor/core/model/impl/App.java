@@ -34,7 +34,7 @@ public class App implements IApp {
     @ManyToMany(mappedBy = "apps", fetch = FetchType.EAGER)
     private List<NotificationRecipient> recipients;
     @ManyToOne
-    @JoinColumn(name = "groupId")
+    @JoinColumn(name = "groupId", nullable = true)
     private Group group;
 
     @Override

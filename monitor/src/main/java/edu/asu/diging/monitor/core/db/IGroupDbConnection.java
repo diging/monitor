@@ -10,7 +10,7 @@ public interface IGroupDbConnection {
 
     Group createGroup(Group group) throws UnstorableObjectException;
 
-    Group getGroupById(String id) throws GroupNotFoundException;
+    Group getGroupById(String id);
 
     String generateGroupId();
 
