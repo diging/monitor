@@ -18,22 +18,10 @@ public class AppForm {
     private RequestMethod method;
     private List<RecipientForm> recipients;
     private List<String> recipientIds;
+    private String username;
+    private String password;
 
-    public List<RecipientForm> getRecipients() {
-        return recipients;
-    }
-
-    public void setRecipients(List<RecipientForm> recipients) {
-        this.recipients = recipients;
-    }
-
-    public List<String> getRecipientIds() {
-        return recipientIds;
-    }
-
-    public void setRecipientIds(List<String> recipientIds) {
-        this.recipientIds = recipientIds;
-    }
+    
 
     public String getId() {
         return id;
@@ -113,6 +101,38 @@ public class AppForm {
 
     public void setMethod(RequestMethod method) {
         this.method = method;
+    }
+
+    public List<RecipientForm> getRecipients() {
+        return recipients;
+    }
+
+    public void setRecipients(List<RecipientForm> recipients) {
+        this.recipients = recipients;
+    }
+
+    public List<String> getRecipientIds() {
+        return recipientIds;
+    }
+
+    public void setRecipientIds(List<String> recipientIds) {
+        this.recipientIds = recipientIds;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

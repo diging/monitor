@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import edu.asu.diging.monitor.core.auth.impl.User;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
 import edu.asu.diging.monitor.core.service.IAppHelper;
@@ -17,6 +20,10 @@ public class AppHelper implements IAppHelper {
 
     @Autowired
     private INotificationManager manager;
+    
+    @Autowired
+    private BCryptPasswordEncoder bcryptEncoder;
+    
 
     @Override
     public IApp copyAppInfo(IApp app, AppForm appForm) {
@@ -32,6 +39,10 @@ public class AppHelper implements IAppHelper {
         if (appForm.getRecipientIds() != null) {
             app.setRecipients(getRecipientsById(appForm.getRecipientIds()));
         }
+        User user = new User();
+        user.setUsername(appForm.getUsername());
+        user.setPassword(bcryptEncoder.encode(appForm.getPassword()));
+        app.setUser(user);
         return app;
     }
 
