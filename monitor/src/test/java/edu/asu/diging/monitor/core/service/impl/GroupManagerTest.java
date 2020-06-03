@@ -8,7 +8,9 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -25,6 +27,9 @@ public class GroupManagerTest {
 
     @Mock
     private IGroupDbConnection dbConnection;
+    
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     @InjectMocks
     private GroupManager managerToTest;
@@ -32,6 +37,7 @@ public class GroupManagerTest {
     private List<Group> storedGroups;
     private Group group1;
     private Group group2;
+    private Group group3;
     private String ID1 = "GROUP1";
     private String ID2 = "GROUP2";
 
@@ -42,6 +48,8 @@ public class GroupManagerTest {
         group1.setId(ID1);
         group2 = new Group();
         group2.setId(ID2);
+        group3 = new Group();
+        group3.setId(null);
         storedGroups = new ArrayList<Group>();
         storedGroups.add(group1);
         storedGroups.add(group2);
@@ -60,12 +68,10 @@ public class GroupManagerTest {
         Assert.assertEquals(id, group.getId());
     }
 
-    @Test(expected = UnstorableObjectException.class)
-    public void test_createGroup_failure() throws UnstorableObjectException, GroupNotFoundException {
-        String id = "GROUP1";
+    @Test
+    public void test_createGroup_failure() throws UnstorableObjectException { 
         Mockito.when(dbConnection.generateGroupId()).thenReturn(null);
-        Group group = managerToTest.createGroup(id);
-        Mockito.verify(dbConnection).createGroup(group);
+        Mockito.when(dbConnection.createGroup(group3)).thenThrow(new UnstorableObjectException());
     }
 
     @Test
