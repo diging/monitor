@@ -36,7 +36,7 @@ public class GroupManager implements IGroupManager {
     public Group getGroup(String id) throws GroupNotFoundException {
         Group group = dbConnection.getGroupById(id);
         if (group == null) {
-            logger.error("Selected group doesn't have an id");
+            logger.error("No group exists for this id");
             throw new GroupNotFoundException("No group exists for this id");
         }
         return group;

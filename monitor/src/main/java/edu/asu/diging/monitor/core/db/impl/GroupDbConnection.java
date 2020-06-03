@@ -61,6 +61,7 @@ public class GroupDbConnection implements IGroupDbConnection {
     @Override
     public Group createGroup(Group group) throws UnstorableObjectException {
         if (group.getId() == null) {
+            logger.error("Group doesn't have an id");
             throw new UnstorableObjectException("Group doesn't have an id");
         }
         em.persist(group);
