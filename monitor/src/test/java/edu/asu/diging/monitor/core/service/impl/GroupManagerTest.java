@@ -76,15 +76,4 @@ public class GroupManagerTest {
         Assert.assertEquals(id, group.getId());
     }
     
-    @Test
-    public void test_createGroup_failure() throws UnstorableObjectException {
-        Mockito.when(dbConnection.generateGroupId()).thenReturn(null);
-        Mockito.when(dbConnection.createGroup(group3))
-                .thenThrow(new UnstorableObjectException("No group with this Id"));
-
-        UnstorableObjectException thrown = assertThrows(UnstorableObjectException.class,
-                () -> dbConnection.createGroup(group3));
-        Assert.assertEquals("No group with this Id", thrown.getMessage());
-
-    }
 }
