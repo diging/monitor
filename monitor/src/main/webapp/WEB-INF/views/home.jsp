@@ -63,31 +63,41 @@
 <c:forEach items="${apps}" var="app">
 	<sec:authorize access="hasAnyRole('ADMIN')">
 		<div class="pull-right">
-			<c:url value="/admin/apps/${app.id}/delete" var="deleteUrl" />
+			<%-- <c:url value="/admin/apps/${app.id}/delete" var="deleteUrl" />
 			<form action="${deleteUrl}" method="POST">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Delete App" type="submit" class="btn-link">
 					<i style="padding:10px;padding-left:0px;" class="fa fa-trash" aria-hidden="true"></i>
 				</button>
-			</form>
+			</form> --%>
+			<button title="Delete App" type="submit" class="btn-link" data-toggle="modal" data-target="#loginDeleteModal_${app.id }" data-backdrop="false">
+					<i style="padding:10px;padding-left:0px;" class="fa fa-trash" aria-hidden="true"></i>
+				</button>
 		</div>
 		<div class="pull-right">
-			<c:url value="/admin/apps/${app.id}/modify" var="modifyUrl" />
+			<%-- <c:url value="/admin/apps/${app.id}/modify" var="modifyUrl" />
 			<form action="${modifyUrl}" method="GET">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Modify App" type="submit" class="btn-link">
 					<i style="padding:11px;padding-right:0px;padding-left:0px;" class="fa fa-edit" aria-hidden="true"></i>
 				</button>
-			</form>
+				</form> --%>
+				<button title="Modify App" type="submit" class="btn-link" data-toggle="modal" data-target="#loginModifyModal_${app.id }" data-backdrop="false">
+					<i style="padding:11px;padding-right:0px;padding-left:0px;" class="fa fa-edit" aria-hidden="true"></i>
+				</button>
+			
 		</div>
 		<div class="pull-right">
-			<c:url value="/admin/apps/${app.id}/ping" var="pingUrl"/>
+			<%-- <c:url value="/admin/apps/${app.id}/ping" var="pingUrl"/>
 			<form action="${pingUrl}" method="POST">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<button title="Ping App" type="submit" class="btn-link">
 					<i style="padding:10px;padding-right:0px;padding-left:0px;" class="fa fa-bullseye" aria-hidden="true"></i>
 				</button>
-			</form>
+				</form> --%>
+				<button title="Ping App" type="submit" class="btn-link" data-toggle="modal" data-target="#loginPingModal_${app.id }" data-backdrop="false">
+					<i style="padding:10px;padding-right:0px;padding-left:0px;" class="fa fa-bullseye" aria-hidden="true"></i>
+				</button>
 		</div>
 		<div class="pull-right">
 				<button title="Details" type="submit" class="btn-link" data-toggle="modal" data-target="#modal_${app.id }" data-backdrop="false">
@@ -170,4 +180,88 @@
 			</div>
 		</div>
 	</div>
+	<sec:authorize access="hasAnyRole('ADMIN')">
+	<div id="loginPingModal_${app.id}" class="modal fade;overflow:hidden"
+		role="dialog" aria-hidden="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<c:url value="/admin/apps/${app.id}/ping" var="url" />
+					<form name="loginForm" method="POST" action="${url}">
+						<div class="form-group">
+							<label >Username:</label>
+							<input type="text" class="form-control" name ="username"/>
+						</div>
+
+						<div class="form-group">
+							<label >Password:</label>
+							<input type="password" class="form-control" name ="password"/>
+						</div>
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+							<input class="btn btn-primary" type="submit" value="Ping App"/>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-alert" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="loginModifyModal_${app.id}" class="modal fade;overflow:hidden"
+		role="dialog" aria-hidden="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<c:url value="/admin/apps/${app.id}/modify" var="url" />
+					<form name="loginForm" method="GET" action="${url}">
+						<div class="form-group">
+							<label >Username:</label>
+							<input type="text" class="form-control" name ="username"/>
+						</div>
+
+						<div class="form-group">
+							<label >Password:</label>
+							<input type="password" class="form-control" name ="password"/>
+						</div>
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+							<input class="btn btn-primary" type="submit" value="Modify App"/>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-alert" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="loginDeleteModal_${app.id}" class="modal fade;overflow:hidden"
+		role="dialog" aria-hidden="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<c:url value="/admin/apps/${app.id}/delete" var="url" />
+					<form name="loginForm" method="POST" action="${url}">
+						<div class="form-group">
+							<label >Username:</label>
+							<input type="text" class="form-control" name ="username"/>
+						</div>
+
+						<div class="form-group">
+							<label >Password:</label>
+							<input type="password" class="form-control" name ="password"/>
+						</div>
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+							<input class="btn btn-primary" type="submit" value="Delete App"/>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-alert" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	</sec:authorize>
+
 </c:forEach>
