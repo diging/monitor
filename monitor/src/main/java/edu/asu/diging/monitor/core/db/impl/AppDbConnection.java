@@ -93,6 +93,7 @@ public class AppDbConnection implements IAppDbConnection {
             recipient.getApps().remove(element);
         }
         em.remove(element);
+        em.remove(element.getUser());
     }
 
     @Override

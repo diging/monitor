@@ -58,15 +58,19 @@
     	 <form:input type="number" class="form-control" path="pingInterval" value="900" />
     	 <small>Minimum interval is 1 minute (60 seconds).</small>
   </div>
-  <div class="form-group">
- 	 <form:label path="username">Username:</form:label>
-    	 <form:input type="text" class="form-control" path="username" />
-  </div>
-  <div class="form-group">
- 	 <form:label path="password">Password:</form:label>
-    	 <form:input type="password" class="form-control" path="password" />
-  </div>
-  <div class="form-group">
+	<c:choose>
+		<c:when test="${empty appForm.id}">
+			<div class="form-group">
+				<form:label path="username">Username:</form:label>
+				<form:input type="text" class="form-control" path="username" />
+			</div>
+			<div class="form-group">
+				<form:label path="password">Password:</form:label>
+				<form:input type="password" class="form-control" path="password" />
+			</div>
+		</c:when>
+	</c:choose>
+	<div class="form-group">
 		<form:label path="recipientIds">Recipients:</form:label>
 		<p>
 		<i>

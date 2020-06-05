@@ -51,6 +51,12 @@ public class AddAppController {
             redirectAttrs.addFlashAttribute("alert_msg", "Cannot store App without valid user credentials");
             return "redirect:/admin/apps/add";
         }
+        if (appManager.getApps().stream().anyMatch(a -> a.getUser().getUsername().equals(appForm.getUsername()))) {
+            redirectAttrs.addFlashAttribute("show_alert", true);
+            redirectAttrs.addFlashAttribute("alert_type", "danger");
+            redirectAttrs.addFlashAttribute("alert_msg", "The chosen username already exists");
+            return "redirect:/admin/apps/add";
+        }
         IApp app = new App();
         appHelper.copyAppInfo(app, appForm);
         appManager.addApp(app);
