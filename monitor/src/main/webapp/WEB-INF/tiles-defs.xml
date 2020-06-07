@@ -23,6 +23,10 @@
 	</definition>
 	
 	<definition name="admin/groups/show" extends="base.definition">
+		<put-attribute name="content" value="/WEB-INF/views/admin/showGroup.jsp" />	
+	</definition>
+	
+	<definition name="admin/groups/add" extends="base.definition">
 		<put-attribute name="content" value="/WEB-INF/views/admin/addGroup.jsp" />	
 	</definition>
 	

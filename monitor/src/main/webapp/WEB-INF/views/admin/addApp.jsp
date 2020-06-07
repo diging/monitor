@@ -73,6 +73,11 @@
 			<form:options items="${appForm.groupIds}" var="groups" itemValue="key" itemLabel="value" />
 		</form:select>
 	</div>
+	<p>Or</p>
+	<div class="form-group">
+  <form:radiobutton id="groupNone" name="group" value="NONE" path ="groupType"/>
+  	<label> Select this to choose no group for this app</label>
+  </div>
 
 	<div class="form-group">
 		<form:label path="recipientIds">Recipients:</form:label>

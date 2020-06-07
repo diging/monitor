@@ -58,7 +58,7 @@
           		<a href="<c:url value="/admin/apps/add" />" >Add App</a>
           	</li>
           	<li role="presentation">
-          		<a href="<c:url value="/admin/groups/add" />" >Add Group</a>
+          		<a href="<c:url value="/admin/groups/show" />" >Show Groups</a>
           	</li>
           	<li role="presentation">
           		<a href="<c:url value="/admin/recipient/list" />" >Show Recipients</a>

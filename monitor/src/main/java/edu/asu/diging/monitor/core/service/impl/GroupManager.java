@@ -46,4 +46,9 @@ public class GroupManager implements IGroupManager {
     public List<Group> getGroups() {
         return dbConnection.getAllGroups();
     }
+
+    @Override
+    public void updateGroup(Group group) {
+        dbConnection.update(group);
+    }
 }

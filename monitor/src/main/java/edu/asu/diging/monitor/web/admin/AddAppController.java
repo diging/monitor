@@ -64,7 +64,7 @@ public class AddAppController {
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
             redirectAttrs.addFlashAttribute("alert_msg",
-                    "App could not be Stored. Please create a group for this app or select from an existing one.");
+                    "App could not be Stored. New group name cannot be blank.");
             return "redirect:/admin/apps/add";
         }
         try {

@@ -70,6 +70,8 @@ public class AppHelper implements IAppHelper {
         if (app.getGroup() != null) {
             appForm.setExistingGroupId(app.getGroup().getId());
             appForm.setGroupType(GroupType.EXISTING);
+        } else {
+            appForm.setGroupType(GroupType.NONE);
         }
         appForm.setRetries(app.getRetries());
         appForm.setTimeout(app.getTimeout());

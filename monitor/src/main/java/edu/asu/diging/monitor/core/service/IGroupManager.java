@@ -14,4 +14,6 @@ public interface IGroupManager {
 
     Group createGroup(String name) throws UnstorableObjectException;
 
+    void updateGroup(Group group);
+
 }

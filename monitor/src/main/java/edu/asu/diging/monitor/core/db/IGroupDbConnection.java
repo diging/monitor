@@ -16,4 +16,6 @@ public interface IGroupDbConnection {
 
     List<Group> getAllGroups();
 
+    void update(Group group);
+
 }

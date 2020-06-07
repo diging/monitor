@@ -21,7 +21,7 @@ import edu.asu.diging.monitor.web.admin.forms.GroupForm;
 
 @Controller
 public class AddGroupController {
-    
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -30,8 +30,16 @@ public class AddGroupController {
     @Autowired
     private IGroupManager groupManager;
 
+    @RequestMapping(value = "/admin/groups/show", method = RequestMethod.GET)
+    public String showGroups(Model model) {
+        model.addAttribute("groups", groupManager.getGroups());
+        model.addAttribute("appCount", appManager.getApps().size());
+        return "admin/groups/show";
+
+    }
+
     @RequestMapping(value = "/admin/groups/add", method = RequestMethod.GET)
-    public String showGroupAdd(Model model) {
+    public String showAddGroup(Model model) {
         GroupForm groupForm = new GroupForm();
         groupForm.setApps(appManager.getApps().stream().map(a -> {
             AppForm app = new AppForm();
@@ -40,7 +48,7 @@ public class AddGroupController {
             return app;
         }).collect(Collectors.toList()));
         model.addAttribute("groupForm", groupForm);
-        return "admin/groups/show";
+        return "admin/groups/add";// this method is returning stuff for addGroup.jsp
     }
 
     @RequestMapping(value = "/admin/groups/add", method = RequestMethod.POST)
@@ -54,14 +62,11 @@ public class AddGroupController {
         try {
 
             Group group = groupManager.createGroup(groupForm.getName());
-            groupForm.getAppIds().stream().map(id -> appManager.getApp(id)).forEach(a -> {
-                a.setGroup(group);
-                appManager.updateApp(a);
-            });
-            redirectAttrs.addFlashAttribute("show_alert", true);
-            redirectAttrs.addFlashAttribute("alert_type", "success");
-            redirectAttrs.addFlashAttribute("alert_msg", "Group was successfully added.");
-            return "redirect:/";
+            if (groupForm.getAppIds() != null)
+                groupForm.getAppIds().stream().map(id -> appManager.getApp(id)).forEach(a -> {
+                    a.setGroup(group);
+                    appManager.updateApp(a);
+                });
         } catch (UnstorableObjectException e) {
             logger.error("Could not store group.", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
@@ -69,5 +74,9 @@ public class AddGroupController {
             redirectAttrs.addFlashAttribute("alert_msg", "Group could not be added.");
             return "redirect:/";
         }
+        redirectAttrs.addFlashAttribute("show_alert", true);
+        redirectAttrs.addFlashAttribute("alert_type", "success");
+        redirectAttrs.addFlashAttribute("alert_msg", "Group was successfully added.");
+        return "redirect:/";
     }
 }
