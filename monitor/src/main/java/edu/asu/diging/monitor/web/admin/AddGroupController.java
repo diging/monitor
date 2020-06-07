@@ -48,7 +48,7 @@ public class AddGroupController {
             return app;
         }).collect(Collectors.toList()));
         model.addAttribute("groupForm", groupForm);
-        return "admin/groups/add";// this method is returning stuff for addGroup.jsp
+        return "admin/groups/add";
     }
 
     @RequestMapping(value = "/admin/groups/add", method = RequestMethod.POST)
