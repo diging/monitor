@@ -48,7 +48,7 @@ public class ModifyGroupController {
             logger.error("Could not modify group", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", "The selected group could not be updated.");
+            redirectAttrs.addFlashAttribute("alert_msg", "The selected group doesn't exist.");
             return "redirect:/admin/groups/show";
         }
         groupForm.setId(id);
@@ -65,31 +65,34 @@ public class ModifyGroupController {
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
             redirectAttrs.addFlashAttribute("alert_msg", "Group could not be updated. Please provide a group name.");
-            return "redirect:/admin/groups/" + id + "/modify";
+            return "redirect:/admin/groups/{id}/modify";
         }
+        Group group = null;
         try {
 
-            Group group = groupManager.getGroup(id);
-            if (group.getName() != groupForm.getName()) {
-                group.setName(groupForm.getName());
-                groupManager.updateGroup(group);
-            }
-            group.getApps().stream().forEach(a -> {
-                a.setGroup(null);
-                appManager.updateApp(a);
-            });
-            if (groupForm.getAppIds() != null) {
-                groupForm.getAppIds().stream().map(appId -> appManager.getApp(appId)).forEach(a -> {
-                    a.setGroup(group);
-                    appManager.updateApp(a);
-                });
-            }
+             group = groupManager.getGroup(id);
+            
         } catch (GroupNotFoundException e) {
             logger.error("Could not update group.", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
             redirectAttrs.addFlashAttribute("alert_msg", "Group could not be updated.");
             return "redirect:/";
+        }
+        if (!group.getName().equals(groupForm.getName())) {
+            group.setName(groupForm.getName());
+            groupManager.updateGroup(group);
+        }
+        group.getApps().stream().forEach(a -> {
+            a.setGroup(null);
+            appManager.updateApp(a);
+        });
+        Group updatedGroup = group;
+        if (groupForm.getAppIds() != null) {
+            groupForm.getAppIds().stream().map(appId -> appManager.getApp(appId)).forEach(a -> {
+                a.setGroup(updatedGroup);
+                appManager.updateApp(a);
+            });
         }
         redirectAttrs.addFlashAttribute("show_alert", true);
         redirectAttrs.addFlashAttribute("alert_type", "success");

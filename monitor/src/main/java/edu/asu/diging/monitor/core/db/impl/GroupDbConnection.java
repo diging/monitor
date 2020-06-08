@@ -69,8 +69,8 @@ public class GroupDbConnection implements IGroupDbConnection {
     }
 
     @Override
-    public void update(Group group) {
-        em.merge(group);
+    public Group update(Group group) {
+        return em.merge(group);
     }
 
 }
