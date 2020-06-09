@@ -3,12 +3,15 @@ package edu.asu.diging.monitor.core.cron.impl;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.jasypt.util.text.AES256TextEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import edu.asu.diging.monitor.core.auth.impl.ENCRYPTION;
 import edu.asu.diging.monitor.core.cron.IAppChecker;
 import edu.asu.diging.monitor.core.model.AppStatus;
 import edu.asu.diging.monitor.core.model.IApp;
@@ -69,8 +73,15 @@ public class AppChecker implements IAppChecker {
 		test.getPingResults().add(pingResult);
 
 		try {
+			AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
+			textEncryptor.setPassword(ENCRYPTION.PASSWORD.toString());
+			String password = textEncryptor.decrypt(app.getUser().getPassword());
+			String auth = app.getUser().getUsername() + ":" + password;
+			byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
+			String authHeaderValue = "Basic " + new String(encodedAuth);
 			HttpURLConnection connection = (HttpURLConnection) new URL(app.getHealthUrl()).openConnection();
 			connection.setRequestMethod(app.getMethod() != null ? app.getMethod().toString() : "HEAD");
+			connection.setRequestProperty("Authorization", authHeaderValue);
 			int timeout = app.getTimeout() > 0 ? app.getTimeout() : new Integer(pingConnectionTimeout);
 			connection.setConnectTimeout(timeout);
 			connection.setReadTimeout(timeout);

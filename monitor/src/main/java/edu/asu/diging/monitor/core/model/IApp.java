@@ -2,6 +2,7 @@ package edu.asu.diging.monitor.core.model;
 
 import java.util.List;
 
+import edu.asu.diging.monitor.core.auth.impl.User;
 import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
 
 public interface IApp {
@@ -57,5 +58,9 @@ public interface IApp {
 	List<NotificationRecipient> getRecipients();
 	
 	void setRecipients(List<NotificationRecipient> recipients);
+
+	void setUser(User user);
+
+	User getUser();
 
 }
