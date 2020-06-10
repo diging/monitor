@@ -75,7 +75,7 @@ public class ModifyGroupController {
             logger.error("Could not update group.", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", "Group could not be updated.");
+            redirectAttrs.addFlashAttribute("alert_msg", "Group does not exist");
             return "redirect:/";
         }
         if (!group.getName().equals(groupForm.getName())) {
