@@ -60,24 +60,21 @@
   </div>
   
   <div class="form-group">
-  <form:radiobutton id="groupCreate" name="group" value="NEW" path ="groupType"/>
- 	 <form:label path="groupName">Create a new Group:</form:label>
-    	 <form:input type="text" class="form-control" path="groupName"/>
+	  <form:label path="groupType">Group:</form:label>
+	  <br>
+	  <form:radiobutton id="groupCreate" name="group" value="NEW" path ="groupType" onclick="javascript:showHideGroups();"/>
+	 	 <form:label path="groupName"><i>Create a new Group:</i></form:label>
+	 	 <form:radiobutton id="groupSelect" name="group" value="EXISTING" path="groupType" onclick="javascript:showHideGroups();" />
+	 	 <form:label path="existingGroupId"><i>Select from an Existing Group:</i></form:label>
+	 	 <form:radiobutton id="groupNone" name="group" value="NONE" path ="groupType" onclick="javascript:showHideGroups();"/>
+	 	 <label><i>None</i></label>
   </div>
-  		<p>Or</p> 
 	<div class="form-group">
-		<form:radiobutton id="groupSelect" name="group" value="EXISTING"
-			path="groupType" />
-		<form:label path="existingGroupId">Select from an Existing Group:</form:label>
-		<form:select class="form-control" path="existingGroupId">
+		<form:input type="text" class="form-control" path="groupName" style="display:none" id ="groupNew"/>
+			<form:select class="form-control" path="existingGroupId" style="display:none" id = "groupExisting">
 			<form:options items="${appForm.groupIds}" var="groups" itemValue="key" itemLabel="value" />
 		</form:select>
 	</div>
-	<p>Or</p>
-	<div class="form-group">
-  <form:radiobutton id="groupNone" name="group" value="NONE" path ="groupType"/>
-  	<label> Select this to choose no group for this app</label>
-  </div>
 
 	<div class="form-group">
 		<form:label path="recipientIds">Recipients:</form:label>
@@ -116,23 +113,22 @@
 			});
 		}
 	});
-	$(':radio').mousedown(function(e) {
-		var $self = $(this);
-		if ($self.is(':checked')) {
-			var uncheck = function() {
-				setTimeout(function() {
-					$self.removeAttr('checked');
-				}, 0);
-			};
-			var unbind = function() {
-				$self.unbind('mouseup', up);
-			};
-			var up = function() {
-				uncheck();
-				unbind();
-			};
-			$self.bind('mouseup', up);
-			$self.one('mouseout', unbind);
+	function showHideGroups() {
+		if (document.getElementById('groupCreate').checked) {
+			$('#groupNew').css('display', 'block');
+			$('#groupExisting').css('display', 'none');
+
+		} else if (document.getElementById('groupSelect').checked) {
+			$('#groupNew').css('display', 'none');
+			$('#groupExisting').css('display', 'block');
+		} else {
+			$('#groupNew').css('display', 'none');
+			$('#groupExisting').css('display', 'none');
 		}
-	});
+	}
 </script>
+<style>
+input[type="radio"] {
+	margin: 0 10px 0 10px;
+}
+</style>

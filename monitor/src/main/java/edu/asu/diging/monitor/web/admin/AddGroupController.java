@@ -72,11 +72,11 @@ public class AddGroupController {
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
             redirectAttrs.addFlashAttribute("alert_msg", "Group could not be added.");
-            return "redirect:/";
+            return "redirect:/admin/groups/show";
         }
         redirectAttrs.addFlashAttribute("show_alert", true);
         redirectAttrs.addFlashAttribute("alert_type", "success");
         redirectAttrs.addFlashAttribute("alert_msg", "Group was successfully added.");
-        return "redirect:/";
+        return "redirect:/admin/groups/show";
     }
 }

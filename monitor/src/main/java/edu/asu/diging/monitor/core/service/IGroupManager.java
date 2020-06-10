@@ -16,4 +16,5 @@ public interface IGroupManager {
 
     void updateGroup(Group group);
 
+    void deleteGroup(Group group);
 }

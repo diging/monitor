@@ -51,4 +51,8 @@ public class GroupManager implements IGroupManager {
     public void updateGroup(Group group) {
         dbConnection.update(group);
     }
+
+    public void deleteGroup(Group group) {
+        dbConnection.deleteGroup(group);
+    }
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
-import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.impl.Group;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.IGroupManager;
@@ -70,8 +69,8 @@ public class ModifyGroupController {
         Group group = null;
         try {
 
-             group = groupManager.getGroup(id);
-            
+            group = groupManager.getGroup(id);
+
         } catch (GroupNotFoundException e) {
             logger.error("Could not update group.", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
@@ -98,6 +97,26 @@ public class ModifyGroupController {
         redirectAttrs.addFlashAttribute("alert_type", "success");
         redirectAttrs.addFlashAttribute("alert_msg", "Group was successfully updated.");
         return "redirect:/";
+    }
+
+    @RequestMapping(value = "/admin/groups/{id}/delete", method = RequestMethod.GET)
+    public String delete( @PathVariable("id") String id, RedirectAttributes redirectAttrs) {
+        Group group = null;
+        try {
+            group = groupManager.getGroup(id);
+        } catch (GroupNotFoundException e) {
+            logger.error("Group couldn't be deleted", e);
+            redirectAttrs.addFlashAttribute("show_alert", true);
+            redirectAttrs.addFlashAttribute("alert_type", "danger");
+            redirectAttrs.addFlashAttribute("alert_msg", "Group could not be deleted.");
+            return "redirect:/admin/groups/show";
+        }
+        group.getApps().stream().forEach(a -> {
+            a.setGroup(null);
+            appManager.updateApp(a);
+        });
+        groupManager.deleteGroup(group);
+        return "redirect:/admin/groups/show";
     }
 
 }

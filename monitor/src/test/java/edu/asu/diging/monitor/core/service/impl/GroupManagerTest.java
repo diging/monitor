@@ -84,12 +84,9 @@ public class GroupManagerTest {
     }
     
     @Test
-    public void test_updateGroup_success() throws GroupNotFoundException, UnstorableObjectException {
-        Mockito.when(dbConnection.update(group1)).thenReturn(group2);
-        Group group = managerToTest.getGroup(ID1);
-        group.setName("Update group");
-        managerToTest.updateGroup(group);
-        Mockito.verify(dbConnection).update(group);
+    public void test_updateGroup_success() {
+        managerToTest.updateGroup(group1);
+        Mockito.verify(dbConnection).update(group1);
     }
 
 }

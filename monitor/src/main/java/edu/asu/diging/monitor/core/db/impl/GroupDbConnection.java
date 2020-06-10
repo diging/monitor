@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import edu.asu.diging.monitor.core.db.IGroupDbConnection;
-import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.impl.Group;
 
@@ -69,8 +68,12 @@ public class GroupDbConnection implements IGroupDbConnection {
     }
 
     @Override
-    public Group update(Group group) {
-        return em.merge(group);
+    public void update(Group group) {
+        em.merge(group);
     }
 
+    @Override
+    public void deleteGroup(Group group) {
+        em.remove(em.contains(group) ? group : em.merge(group));
+    }
 }

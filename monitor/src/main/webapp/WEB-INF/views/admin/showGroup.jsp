@@ -33,6 +33,15 @@
 			<td align="right">
 				<sec:authorize access="hasAnyRole('ADMIN')">
 					<div class="pull-right">
+						<c:url value="/admin/groups/${group.id}/delete" var="deleteUrl" />
+						<form action="${deleteUrl}" method="GET">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<button title="Delete Group" type="submit" class="btn-link">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+							</button>
+						</form>
+					</div>
+					<div class="pull-right">
 						<c:url value="/admin/groups/${group.id}/modify" var="modifyUrl" />
 						<form action="${modifyUrl}" method="GET">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
