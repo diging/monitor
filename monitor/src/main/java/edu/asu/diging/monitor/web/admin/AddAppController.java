@@ -14,11 +14,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
-import edu.asu.diging.monitor.core.model.GroupType;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
+import edu.asu.diging.monitor.core.service.IGroupHelper;
 import edu.asu.diging.monitor.core.service.IGroupManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
@@ -34,6 +34,9 @@ public class AddAppController {
 
     @Autowired
     private IAppHelper appHelper;
+    
+    @Autowired
+    private IGroupHelper groupHelper;
 
     @Autowired
     private INotificationManager manager;
@@ -59,22 +62,24 @@ public class AddAppController {
     @RequestMapping(value = "/admin/apps/add", method = RequestMethod.POST)
     public String add(@ModelAttribute AppForm appForm, RedirectAttributes redirectAttrs) {
         IApp app = new App();
-        if (appForm.getGroupType() == GroupType.NEW && appForm.getGroupName().trim().isEmpty()
-                || appForm.getGroupType() == GroupType.EXISTING && appForm.getExistingGroupId() == null) {
-            redirectAttrs.addFlashAttribute("show_alert", true);
-            redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg",
-                    "App could not be Stored. New group name cannot be blank.");
+        if (!groupHelper.isValid(appForm, redirectAttrs)) {
             return "redirect:/admin/apps/add";
         }
         try {
             appHelper.copyAppInfo(app, appForm);
-        } catch (GroupNotFoundException | UnstorableObjectException e) {
+        } catch (GroupNotFoundException e) {
             logger.error("Could not find Group", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
             redirectAttrs.addFlashAttribute("alert_msg",
-                    "App could not be stored. Please create a new Group or select from an existing one. ");
+                    "App creation failed. The selected group does not exist.");
+            return "redirect:/";
+        } catch (UnstorableObjectException e){
+            logger.error("Could not store Group", e);
+            redirectAttrs.addFlashAttribute("show_alert", true);
+            redirectAttrs.addFlashAttribute("alert_type", "danger");
+            redirectAttrs.addFlashAttribute("alert_msg",
+                    "App creation failed. New group couldn't be stored ");
             return "redirect:/";
         }
         appManager.addApp(app);

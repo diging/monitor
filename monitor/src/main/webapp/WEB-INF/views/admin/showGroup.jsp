@@ -34,7 +34,7 @@
 				<sec:authorize access="hasAnyRole('ADMIN')">
 					<div class="pull-right">
 						<c:url value="/admin/groups/${group.id}/delete" var="deleteUrl" />
-						<form action="${deleteUrl}" method="GET">
+						<form action="${deleteUrl}" method="POST">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							<button title="Delete Group" type="submit" class="btn-link">
 								<i class="fa fa-trash" aria-hidden="true"></i>
@@ -43,12 +43,12 @@
 					</div>
 					<div class="pull-right">
 						<c:url value="/admin/groups/${group.id}/modify" var="modifyUrl" />
-						<form action="${modifyUrl}" method="GET">
+						<a href="${modifyUrl}">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							<button title="Modify Group" type="submit" class="btn-link">
 								<i class="fa fa-edit" aria-hidden="true"></i>
 							</button>
-						</form>
+						</a>
 					</div>
 				</sec:authorize>
 			</td>

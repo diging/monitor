@@ -15,10 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
-import edu.asu.diging.monitor.core.model.GroupType;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
+import edu.asu.diging.monitor.core.service.IGroupHelper;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
 @Controller
@@ -31,6 +31,9 @@ public class ModifyAppController {
 
     @Autowired
     private IAppHelper appHelper;
+    
+    @Autowired
+    private IGroupHelper groupHelper;
 
     @RequestMapping(value = "/admin/apps/{id}/modify", method = RequestMethod.GET)
     public String show(Model model, @PathVariable("id") String id) {
@@ -46,12 +49,7 @@ public class ModifyAppController {
     @RequestMapping(value = "/admin/apps/{id}/modify", method = RequestMethod.POST)
     public String update(@ModelAttribute AppForm appForm, @PathVariable("id") String id,
             RedirectAttributes redirectAttrs) {
-        if (appForm.getGroupType() == GroupType.NEW && appForm.getGroupName().trim().isEmpty()
-                || appForm.getGroupType() == GroupType.EXISTING && appForm.getExistingGroupId() == null) {
-            redirectAttrs.addFlashAttribute("show_alert", true);
-            redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg",
-                    "App could not be updated. Please create a group for this app or select from an existing one.");
+        if (!groupHelper.isUpdateInfoValid(appForm, redirectAttrs)) {
             return "redirect:/";
         }
         IApp app = appManager.getApp(id);
@@ -60,14 +58,20 @@ public class ModifyAppController {
         }
         try {
             app = appHelper.copyAppInfo(appManager.getApp(id), appForm);
-        } catch (GroupNotFoundException | UnstorableObjectException e) {
+        } catch (GroupNotFoundException e) {
             logger.error("Could not find Group", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
             redirectAttrs.addFlashAttribute("alert_msg",
-                    "The selected group doesn't exist. Please create a group for this app or select from an existing one. ");
+                    "App update failed. The selected group does not exist.");
             return "redirect:/";
-
+        } catch (UnstorableObjectException e){
+            logger.error("Could not store Group", e);
+            redirectAttrs.addFlashAttribute("show_alert", true);
+            redirectAttrs.addFlashAttribute("alert_type", "danger");
+            redirectAttrs.addFlashAttribute("alert_msg",
+                    "App update failed. New group couldn't be stored ");
+            return "redirect:/";
         }
         appManager.updateApp(app);
         redirectAttrs.addFlashAttribute("show_alert", true);

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.model.impl.Group;
 import edu.asu.diging.monitor.core.service.IAppManager;
+import edu.asu.diging.monitor.core.service.IGroupHelper;
 import edu.asu.diging.monitor.core.service.IGroupManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 import edu.asu.diging.monitor.web.admin.forms.GroupForm;
@@ -30,6 +31,9 @@ public class ModifyGroupController {
 
     @Autowired
     private IGroupManager groupManager;
+
+    @Autowired
+    private IGroupHelper groupHelper;
 
     @RequestMapping(value = "/admin/groups/{id}/modify", method = RequestMethod.GET)
     public String show(Model model, @PathVariable("id") String id, RedirectAttributes redirectAttrs) {
@@ -60,10 +64,7 @@ public class ModifyGroupController {
     @RequestMapping(value = "/admin/groups/{id}/modify", method = RequestMethod.POST)
     public String add(@ModelAttribute GroupForm groupForm, RedirectAttributes redirectAttrs,
             @PathVariable("id") String id) {
-        if (groupForm.getName() == null || groupForm.getName().trim().isEmpty()) {
-            redirectAttrs.addFlashAttribute("show_alert", true);
-            redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", "Group could not be updated. Please provide a group name.");
+        if (!groupHelper.isGroupNameValid(groupForm, redirectAttrs)) {
             return "redirect:/admin/groups/{id}/modify";
         }
         Group group = null;
@@ -97,26 +98,6 @@ public class ModifyGroupController {
         redirectAttrs.addFlashAttribute("alert_type", "success");
         redirectAttrs.addFlashAttribute("alert_msg", "Group was successfully updated.");
         return "redirect:/";
-    }
-
-    @RequestMapping(value = "/admin/groups/{id}/delete", method = RequestMethod.GET)
-    public String delete( @PathVariable("id") String id, RedirectAttributes redirectAttrs) {
-        Group group = null;
-        try {
-            group = groupManager.getGroup(id);
-        } catch (GroupNotFoundException e) {
-            logger.error("Group couldn't be deleted", e);
-            redirectAttrs.addFlashAttribute("show_alert", true);
-            redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", "Group could not be deleted.");
-            return "redirect:/admin/groups/show";
-        }
-        group.getApps().stream().forEach(a -> {
-            a.setGroup(null);
-            appManager.updateApp(a);
-        });
-        groupManager.deleteGroup(group);
-        return "redirect:/admin/groups/show";
     }
 
 }

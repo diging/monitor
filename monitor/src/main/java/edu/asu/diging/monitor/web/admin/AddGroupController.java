@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.impl.Group;
 import edu.asu.diging.monitor.core.service.IAppManager;
+import edu.asu.diging.monitor.core.service.IGroupHelper;
 import edu.asu.diging.monitor.core.service.IGroupManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 import edu.asu.diging.monitor.web.admin.forms.GroupForm;
@@ -29,6 +30,9 @@ public class AddGroupController {
 
     @Autowired
     private IGroupManager groupManager;
+    
+    @Autowired
+    private IGroupHelper groupHelper;
 
     @RequestMapping(value = "/admin/groups/show", method = RequestMethod.GET)
     public String showGroups(Model model) {
@@ -53,10 +57,7 @@ public class AddGroupController {
 
     @RequestMapping(value = "/admin/groups/add", method = RequestMethod.POST)
     public String add(@ModelAttribute GroupForm groupForm, RedirectAttributes redirectAttrs) {
-        if (groupForm.getName() == null || groupForm.getName().trim().isEmpty()) {
-            redirectAttrs.addFlashAttribute("show_alert", true);
-            redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", "Group could not be stored. Please provide a group name.");
+        if (!groupHelper.isGroupNameValid(groupForm, redirectAttrs)) {
             return "redirect:/admin/groups/add";
         }
         try {
@@ -71,7 +72,7 @@ public class AddGroupController {
             logger.error("Could not store group.", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", "Group could not be added.");
+            redirectAttrs.addFlashAttribute("alert_msg", "Group could not be created.");
             return "redirect:/admin/groups/show";
         }
         redirectAttrs.addFlashAttribute("show_alert", true);

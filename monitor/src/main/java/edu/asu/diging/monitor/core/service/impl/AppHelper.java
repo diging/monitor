@@ -83,4 +83,5 @@ public class AppHelper implements IAppHelper {
             return (NotificationRecipient) manager.getRecipient(id);
         }).collect(Collectors.toList());
     }
+    
 }

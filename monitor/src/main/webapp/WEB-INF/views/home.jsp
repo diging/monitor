@@ -220,12 +220,12 @@
 			</div>
 			<div class="pull-right">
 				<c:url value="/admin/apps/${app.id}/modify" var="modifyUrl" />
-				<form action="${modifyUrl}" method="GET">
+				<a href="${modifyUrl}">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					<button title="Modify App" type="submit" class="btn-link">
 						<i style="padding:11px;padding-right:0px;padding-left:0px;" class="fa fa-edit" aria-hidden="true"></i>
 					</button>
-				</form>
+				</a>
 			</div>
 			<div class="pull-right">
 				<c:url value="/admin/apps/${app.id}/ping" var="pingUrl"/>
