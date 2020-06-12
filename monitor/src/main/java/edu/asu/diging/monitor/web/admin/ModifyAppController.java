@@ -7,6 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +22,7 @@ import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
-import edu.asu.diging.monitor.core.service.IGroupHelper;
+import edu.asu.diging.monitor.core.service.impl.AppValidator;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
 @Controller
@@ -31,9 +35,14 @@ public class ModifyAppController {
 
     @Autowired
     private IAppHelper appHelper;
-    
+
     @Autowired
-    private IGroupHelper groupHelper;
+    private AppValidator appValidator;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addValidators(appValidator);
+    }
 
     @RequestMapping(value = "/admin/apps/{id}/modify", method = RequestMethod.GET)
     public String show(Model model, @PathVariable("id") String id) {
@@ -47,10 +56,13 @@ public class ModifyAppController {
     }
 
     @RequestMapping(value = "/admin/apps/{id}/modify", method = RequestMethod.POST)
-    public String update(@ModelAttribute AppForm appForm, @PathVariable("id") String id,
-            RedirectAttributes redirectAttrs) {
-        if (!groupHelper.isUpdateInfoValid(appForm, redirectAttrs)) {
-            return "redirect:/";
+    public String update(@ModelAttribute @Validated AppForm appForm, BindingResult result,
+            @PathVariable("id") String id, RedirectAttributes redirectAttrs) {
+        if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("show_alert", true);
+            redirectAttrs.addFlashAttribute("alert_type", "danger");
+            redirectAttrs.addFlashAttribute("alert_msg", result.getFieldError().getCode());
+            return "redirect:/admin/apps/{id}/modify";
         }
         IApp app = appManager.getApp(id);
         if (app.getRecipients() != null && !app.getRecipients().isEmpty()) {
@@ -62,15 +74,13 @@ public class ModifyAppController {
             logger.error("Could not find Group", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg",
-                    "App update failed. The selected group does not exist.");
+            redirectAttrs.addFlashAttribute("alert_msg", "App update failed. The selected group does not exist.");
             return "redirect:/";
-        } catch (UnstorableObjectException e){
+        } catch (UnstorableObjectException e) {
             logger.error("Could not store Group", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg",
-                    "App update failed. New group couldn't be stored ");
+            redirectAttrs.addFlashAttribute("alert_msg", "App update failed. New group couldn't be stored ");
             return "redirect:/";
         }
         appManager.updateApp(app);

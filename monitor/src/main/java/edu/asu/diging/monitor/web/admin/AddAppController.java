@@ -7,6 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,9 +22,9 @@ import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
-import edu.asu.diging.monitor.core.service.IGroupHelper;
 import edu.asu.diging.monitor.core.service.IGroupManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
+import edu.asu.diging.monitor.core.service.impl.AppValidator;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
 
@@ -36,7 +40,12 @@ public class AddAppController {
     private IAppHelper appHelper;
     
     @Autowired
-    private IGroupHelper groupHelper;
+    private AppValidator appValidator;
+    
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+       binder.addValidators(appValidator);
+    }
 
     @Autowired
     private INotificationManager manager;
@@ -60,9 +69,14 @@ public class AddAppController {
     }
 
     @RequestMapping(value = "/admin/apps/add", method = RequestMethod.POST)
-    public String add(@ModelAttribute AppForm appForm, RedirectAttributes redirectAttrs) {
+    public String add(@ModelAttribute @Validated AppForm appForm, BindingResult bindingResult, RedirectAttributes redirectAttrs) {
         IApp app = new App();
-        if (!groupHelper.isValid(appForm, redirectAttrs)) {
+        
+        
+        if (bindingResult.hasErrors()) {
+            redirectAttrs.addFlashAttribute("show_alert", true);
+            redirectAttrs.addFlashAttribute("alert_type", "danger");
+            redirectAttrs.addFlashAttribute("alert_msg", bindingResult.getFieldError().getCode());
             return "redirect:/admin/apps/add";
         }
         try {

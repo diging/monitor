@@ -7,6 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,8 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.impl.Group;
 import edu.asu.diging.monitor.core.service.IAppManager;
-import edu.asu.diging.monitor.core.service.IGroupHelper;
 import edu.asu.diging.monitor.core.service.IGroupManager;
+import edu.asu.diging.monitor.core.service.impl.GroupValidator;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 import edu.asu.diging.monitor.web.admin.forms.GroupForm;
 
@@ -32,7 +36,12 @@ public class AddGroupController {
     private IGroupManager groupManager;
     
     @Autowired
-    private IGroupHelper groupHelper;
+    private GroupValidator groupValidator;
+    
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+       binder.addValidators(groupValidator);
+    }
 
     @RequestMapping(value = "/admin/groups/show", method = RequestMethod.GET)
     public String showGroups(Model model) {
@@ -56,8 +65,11 @@ public class AddGroupController {
     }
 
     @RequestMapping(value = "/admin/groups/add", method = RequestMethod.POST)
-    public String add(@ModelAttribute GroupForm groupForm, RedirectAttributes redirectAttrs) {
-        if (!groupHelper.isGroupNameValid(groupForm, redirectAttrs)) {
+    public String add(@ModelAttribute @Validated GroupForm groupForm, BindingResult result, RedirectAttributes redirectAttrs) {
+        if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("show_alert", true);
+            redirectAttrs.addFlashAttribute("alert_type", "danger");
+            redirectAttrs.addFlashAttribute("alert_msg", result.getFieldError().getCode());
             return "redirect:/admin/groups/add";
         }
         try {

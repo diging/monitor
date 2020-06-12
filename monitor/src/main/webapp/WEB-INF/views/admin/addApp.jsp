@@ -71,6 +71,7 @@
   </div>
 	<div class="form-group">
 		<form:input type="text" class="form-control" path="groupName" style="display:none" id ="groupNew"/>
+			<form:errors path="groupName" cssClass="error" />
 			<form:select class="form-control" path="existingGroupId" style="display:none" id = "groupExisting">
 			<form:options items="${appForm.groupIds}" var="groups" itemValue="key" itemLabel="value" />
 		</form:select>
