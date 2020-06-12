@@ -3,16 +3,14 @@ package edu.asu.diging.monitor.core.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.jasypt.util.text.AES256TextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.asu.diging.monitor.core.auth.impl.ENCRYPTION;
-import edu.asu.diging.monitor.core.auth.impl.User;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
 import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.INotificationManager;
+import edu.asu.diging.monitor.core.service.IPasswordEncryptor;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
 
@@ -21,6 +19,9 @@ public class AppHelper implements IAppHelper {
 
     @Autowired
     private INotificationManager manager;
+
+    @Autowired
+    private IPasswordEncryptor passwordEncryptor;
 
     @Override
     public IApp copyAppInfo(IApp app, AppForm appForm) {
@@ -36,12 +37,11 @@ public class AppHelper implements IAppHelper {
         if (appForm.getRecipientIds() != null) {
             app.setRecipients(getRecipientsById(appForm.getRecipientIds()));
         }
-        if (app.getUser() == null) {
-            User user = new User();
-            user.setUsername(appForm.getUsername());
-            user.setPassword(encryptPassword(appForm.getPassword()));
-            app.setUser(user);
-        } 
+        if (!appForm.getUsername().isEmpty() && !appForm.getPassword().isEmpty()) {
+            app.setUsername(appForm.getUsername());
+            app.setPassword(passwordEncryptor.encrypt(appForm.getPassword()));
+           
+        }
         return app;
     }
 
@@ -63,14 +63,6 @@ public class AppHelper implements IAppHelper {
         appForm.setRetries(app.getRetries());
         appForm.setTimeout(app.getTimeout());
         appForm.setWarningReturnCodes(app.getWarningReturnCodes());
-    }
-    
-    
-    private String encryptPassword(String userPassword) {
-    	AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
-    	textEncryptor.setPassword(ENCRYPTION.PASSWORD.toString());
-    	String encryptedPassword = textEncryptor.encrypt(userPassword);
-    	return encryptedPassword;
     }
 
     private List<NotificationRecipient> getRecipientsById(List<String> recipientIds) {

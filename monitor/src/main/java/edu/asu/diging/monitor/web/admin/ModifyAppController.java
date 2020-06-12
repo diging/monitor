@@ -14,9 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
-import edu.asu.diging.monitor.core.service.INotificationManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
-import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
 
 @Controller
 public class ModifyAppController {

@@ -18,9 +18,8 @@ public class AppForm {
     private RequestMethod method;
     private List<RecipientForm> recipients;
     private List<String> recipientIds;
-	private String username;
+    private String username;
     private String password;
-    
 
     public List<RecipientForm> getRecipients() {
         return recipients;
@@ -117,21 +116,21 @@ public class AppForm {
     public void setMethod(RequestMethod method) {
         this.method = method;
     }
-    
+
     public String getUsername() {
-		return username;
-	}
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
 }

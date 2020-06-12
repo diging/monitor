@@ -2,65 +2,68 @@ package edu.asu.diging.monitor.core.model;
 
 import java.util.List;
 
-import edu.asu.diging.monitor.core.auth.impl.User;
 import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
 
 public interface IApp {
 
-	String getId();
+    String getId();
 
-	void setId(String id);
+    void setId(String id);
 
-	String getName();
+    String getName();
 
-	void setName(String name);
+    void setName(String name);
 
-	String getHealthUrl();
+    String getHealthUrl();
 
-	void setHealthUrl(String healthUrl);
+    void setHealthUrl(String healthUrl);
 
-	String getDescription();
+    String getDescription();
 
-	void setDescription(String description);
+    void setDescription(String description);
 
-	String getExpectedReturnCodes();
+    String getExpectedReturnCodes();
 
-	void setExpectedReturnCodes(String expectedReturnCodes);
+    void setExpectedReturnCodes(String expectedReturnCodes);
 
-	String getWarningReturnCodes();
+    String getWarningReturnCodes();
 
-	void setWarningReturnCodes(String warningReturnCodes);
+    void setWarningReturnCodes(String warningReturnCodes);
 
-	int getTimeout();
+    int getTimeout();
 
-	void setTimeout(int timeout);
+    void setTimeout(int timeout);
 
-	int getRetries();
+    int getRetries();
 
-	void setRetries(int retries);
+    void setRetries(int retries);
 
-	void setPingInterval(int pingInterval);
+    void setPingInterval(int pingInterval);
 
-	int getPingInterval();
+    int getPingInterval();
 
-	void setLastTestId(String lastTestId);
+    void setLastTestId(String lastTestId);
 
-	String getLastTestId();
+    String getLastTestId();
 
-	void setLastAppTest(IAppTest lastAppTest);
+    void setLastAppTest(IAppTest lastAppTest);
 
-	IAppTest getLastAppTest();
+    IAppTest getLastAppTest();
 
-	void setMethod(RequestMethod method);
+    void setMethod(RequestMethod method);
 
-	RequestMethod getMethod();
-	
-	List<NotificationRecipient> getRecipients();
-	
-	void setRecipients(List<NotificationRecipient> recipients);
+    RequestMethod getMethod();
 
-	void setUser(User user);
+    List<NotificationRecipient> getRecipients();
 
-	User getUser();
+    void setRecipients(List<NotificationRecipient> recipients);
+
+    String getPassword();
+
+    void setPassword(String password);
+
+    String getUsername();
+
+    void setUsername(String username);
 
 }

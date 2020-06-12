@@ -20,7 +20,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import edu.asu.diging.monitor.core.auth.impl.ENCRYPTION;
 import edu.asu.diging.monitor.core.cron.IAppChecker;
 import edu.asu.diging.monitor.core.model.AppStatus;
 import edu.asu.diging.monitor.core.model.IApp;
@@ -30,6 +29,7 @@ import edu.asu.diging.monitor.core.model.impl.AppTest;
 import edu.asu.diging.monitor.core.model.impl.PingResult;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
+import edu.asu.diging.monitor.core.service.IPasswordEncryptor;
 
 @Component
 @PropertySource(value = "classpath:/config.properties")
@@ -45,6 +45,9 @@ public class AppChecker implements IAppChecker {
 	
 	@Autowired
 	private INotificationManager notificationManager;
+	
+	@Autowired
+	private IPasswordEncryptor passwordDecryptor;
 
 	/*
 	 * (non-Javadoc)
@@ -71,17 +74,19 @@ public class AppChecker implements IAppChecker {
 		pingResult.setPingTime(execTime);
 		test.setPingResults(new ArrayList<>());
 		test.getPingResults().add(pingResult);
-
+		String authHeaderValue = null;
+        if (app.getUsername() != null && app.getPassword() != null) {
+            String password = passwordDecryptor.decrypt(app.getPassword());
+            String auth = app.getUsername() + ":" + password;
+            byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
+            authHeaderValue = "Basic " + new String(encodedAuth);
+        }
 		try {
-			AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
-			textEncryptor.setPassword(ENCRYPTION.PASSWORD.toString());
-			String password = textEncryptor.decrypt(app.getUser().getPassword());
-			String auth = app.getUser().getUsername() + ":" + password;
-			byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-			String authHeaderValue = "Basic " + new String(encodedAuth);
 			HttpURLConnection connection = (HttpURLConnection) new URL(app.getHealthUrl()).openConnection();
 			connection.setRequestMethod(app.getMethod() != null ? app.getMethod().toString() : "HEAD");
-			connection.setRequestProperty("Authorization", authHeaderValue);
+			if (authHeaderValue != null) {
+			    connection.setRequestProperty("Authorization", authHeaderValue);
+			}
 			int timeout = app.getTimeout() > 0 ? app.getTimeout() : new Integer(pingConnectionTimeout);
 			connection.setConnectTimeout(timeout);
 			connection.setReadTimeout(timeout);

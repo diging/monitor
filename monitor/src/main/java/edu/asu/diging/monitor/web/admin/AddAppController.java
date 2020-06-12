@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.impl.App;
@@ -19,15 +20,15 @@ import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
 
 @Controller
 public class AddAppController {
-	
-	@Autowired
-	private IAppManager appManager;
-	
-	@Autowired
-	private IAppHelper appHelper;
-	
-	@Autowired
-	private INotificationManager manager;
+
+    @Autowired
+    private IAppManager appManager;
+
+    @Autowired
+    private IAppHelper appHelper;
+
+    @Autowired
+    private INotificationManager manager;
 
     @RequestMapping(value = "/admin/apps/add")
     public String show(Model model) {
@@ -41,12 +42,12 @@ public class AddAppController {
         }).collect(Collectors.toList()));
         return "admin/apps/show";
     }
-	
-	@RequestMapping(value="/admin/apps/add", method=RequestMethod.POST)
-	public String add(@ModelAttribute AppForm appForm) {
-		IApp app = new App();
-		appHelper.copyAppInfo(app, appForm);
-		appManager.addApp(app);
-		return "redirect:/admin/apps/add";
-	}
+
+    @RequestMapping(value = "/admin/apps/add", method = RequestMethod.POST)
+    public String add(@ModelAttribute AppForm appForm, RedirectAttributes redirectAttrs) {
+        IApp app = new App();
+        appHelper.copyAppInfo(app, appForm);
+        appManager.addApp(app);
+        return "redirect:/admin/apps/add";
+    }
 }
