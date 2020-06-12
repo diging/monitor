@@ -38,13 +38,13 @@ public class AddAppController {
 
     @Autowired
     private IAppHelper appHelper;
-    
+
     @Autowired
     private AppValidator appValidator;
-    
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-       binder.addValidators(appValidator);
+        binder.addValidators(appValidator);
     }
 
     @Autowired
@@ -69,10 +69,10 @@ public class AddAppController {
     }
 
     @RequestMapping(value = "/admin/apps/add", method = RequestMethod.POST)
-    public String add(@ModelAttribute @Validated AppForm appForm, BindingResult bindingResult, RedirectAttributes redirectAttrs) {
+    public String add(@ModelAttribute @Validated AppForm appForm, BindingResult bindingResult,
+            RedirectAttributes redirectAttrs) {
         IApp app = new App();
-        
-        
+
         if (bindingResult.hasErrors()) {
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
@@ -85,15 +85,13 @@ public class AddAppController {
             logger.error("Could not find Group", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg",
-                    "App creation failed. The selected group does not exist.");
+            redirectAttrs.addFlashAttribute("alert_msg", "App creation failed. The selected group does not exist.");
             return "redirect:/";
-        } catch (UnstorableObjectException e){
+        } catch (UnstorableObjectException e) {
             logger.error("Could not store Group", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg",
-                    "App creation failed. New group couldn't be stored ");
+            redirectAttrs.addFlashAttribute("alert_msg", "App creation failed. New group couldn't be stored ");
             return "redirect:/";
         }
         appManager.addApp(app);

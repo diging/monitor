@@ -38,10 +38,10 @@ public class ModifyGroupController {
 
     @Autowired
     private GroupValidator groupValidator;
-    
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-       binder.addValidators(groupValidator);
+        binder.addValidators(groupValidator);
     }
 
     @RequestMapping(value = "/admin/groups/{id}/modify", method = RequestMethod.GET)
@@ -71,8 +71,8 @@ public class ModifyGroupController {
     }
 
     @RequestMapping(value = "/admin/groups/{id}/modify", method = RequestMethod.POST)
-    public String add(@ModelAttribute @Validated GroupForm groupForm, BindingResult result, RedirectAttributes redirectAttrs,
-            @PathVariable("id") String id) {
+    public String add(@ModelAttribute @Validated GroupForm groupForm, BindingResult result,
+            RedirectAttributes redirectAttrs, @PathVariable("id") String id) {
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");

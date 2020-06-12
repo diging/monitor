@@ -34,13 +34,13 @@ public class AddGroupController {
 
     @Autowired
     private IGroupManager groupManager;
-    
+
     @Autowired
     private GroupValidator groupValidator;
-    
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-       binder.addValidators(groupValidator);
+        binder.addValidators(groupValidator);
     }
 
     @RequestMapping(value = "/admin/groups/show", method = RequestMethod.GET)
@@ -65,7 +65,8 @@ public class AddGroupController {
     }
 
     @RequestMapping(value = "/admin/groups/add", method = RequestMethod.POST)
-    public String add(@ModelAttribute @Validated GroupForm groupForm, BindingResult result, RedirectAttributes redirectAttrs) {
+    public String add(@ModelAttribute @Validated GroupForm groupForm, BindingResult result,
+            RedirectAttributes redirectAttrs) {
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
