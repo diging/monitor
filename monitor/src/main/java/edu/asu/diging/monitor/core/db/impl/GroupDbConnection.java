@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import edu.asu.diging.monitor.core.db.IGroupDbConnection;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
+import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.impl.Group;
 
 @Component
@@ -69,7 +70,19 @@ public class GroupDbConnection implements IGroupDbConnection {
 
     @Override
     public void update(Group group) {
+        for (IApp app : group.getApps()) {
+            app.setGroup(group);
+            em.merge(app);
+        }
         em.merge(group);
+    }
+
+    public void deleteGroupForApp(Group group) {
+        for (IApp app : group.getApps()) {
+            app.setGroup(null);
+            em.merge(app);
+        }
+        em.flush();
     }
 
     @Override

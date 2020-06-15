@@ -15,6 +15,8 @@
 	<div class="form-group">
 		<form:label path="name">Group Name:</form:label>
 		<form:input type="text" class="form-control" path="name" />
+		<form:errors path="name" cssClass="error" />
+		
 	</div>
 	
 	<div class="form-group">

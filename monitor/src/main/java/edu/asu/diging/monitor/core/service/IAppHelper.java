@@ -12,4 +12,6 @@ public interface IAppHelper {
 
     void copyAppInfoToForm(IApp app, AppForm appForm);
 
+    void copyGroupAndRecipientInfoToForm(AppForm appForm);
+
 }

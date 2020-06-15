@@ -17,7 +17,7 @@ public class GroupValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "Group name cannot be blank.");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "group.name.empty");
 
     }
 

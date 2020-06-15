@@ -46,14 +46,8 @@ public class ModifyGroupController {
 
     @RequestMapping(value = "/admin/groups/{id}/modify", method = RequestMethod.GET)
     public String show(Model model, @PathVariable("id") String id, RedirectAttributes redirectAttrs) {
-        GroupForm groupForm = new GroupForm();
-        groupForm.setApps(appManager.getApps().stream().map(a -> {
-            AppForm app = new AppForm();
-            app.setId(a.getId());
-            app.setName(a.getName());
-            return app;
-        }).collect(Collectors.toList()));
         Group group = null;
+        GroupForm groupForm = null;
         try {
             group = groupManager.getGroup(id);
         } catch (GroupNotFoundException e) {
@@ -63,20 +57,32 @@ public class ModifyGroupController {
             redirectAttrs.addFlashAttribute("alert_msg", "The selected group doesn't exist.");
             return "redirect:/admin/groups/show";
         }
-        groupForm.setId(id);
-        groupForm.setName(group.getName());
-        model.addAttribute("groupForm", groupForm);
+
+        if (!model.containsAttribute("groupForm")) {
+            groupForm = new GroupForm();
+            groupForm.setId(id);
+            groupForm.setName(group.getName());
+            model.addAttribute("groupForm", groupForm);
+        } else {
+            groupForm = (GroupForm) model.getAttribute("groupForm");
+        }
         model.addAttribute("appIds", group.getApps().stream().map(a -> a.getId()).collect(Collectors.toList()));
+        groupForm.setApps(appManager.getApps().stream().map(a -> {
+            AppForm app = new AppForm();
+            app.setId(a.getId());
+            app.setName(a.getName());
+            return app;
+        }).collect(Collectors.toList()));
+
         return "admin/groups/add";
     }
 
     @RequestMapping(value = "/admin/groups/{id}/modify", method = RequestMethod.POST)
-    public String add(@ModelAttribute @Validated GroupForm groupForm, BindingResult result,
+    public String modify(@ModelAttribute @Validated GroupForm groupForm, BindingResult result,
             RedirectAttributes redirectAttrs, @PathVariable("id") String id) {
         if (result.hasErrors()) {
-            redirectAttrs.addFlashAttribute("show_alert", true);
-            redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", result.getFieldError().getCode());
+            redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.groupForm", result);
+            redirectAttrs.addFlashAttribute("groupForm", groupForm);
             return "redirect:/admin/groups/{id}/modify";
         }
         Group group = null;
@@ -91,21 +97,11 @@ public class ModifyGroupController {
             redirectAttrs.addFlashAttribute("alert_msg", "Group does not exist");
             return "redirect:/";
         }
-        if (!group.getName().equals(groupForm.getName())) {
-            group.setName(groupForm.getName());
-            groupManager.updateGroup(group);
+        if (group.getApps() != null && !group.getApps().isEmpty()) {
+            groupManager.deleteExistingApps(group);
         }
-        group.getApps().stream().forEach(a -> {
-            a.setGroup(null);
-            appManager.updateApp(a);
-        });
-        Group updatedGroup = group;
-        if (groupForm.getAppIds() != null) {
-            groupForm.getAppIds().stream().map(appId -> appManager.getApp(appId)).forEach(a -> {
-                a.setGroup(updatedGroup);
-                appManager.updateApp(a);
-            });
-        }
+        groupManager.updateGroup(group, groupForm);
+
         redirectAttrs.addFlashAttribute("show_alert", true);
         redirectAttrs.addFlashAttribute("alert_type", "success");
         redirectAttrs.addFlashAttribute("alert_msg", "Group was successfully updated.");

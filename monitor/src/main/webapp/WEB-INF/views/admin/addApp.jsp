@@ -12,6 +12,7 @@
   <div class="form-group">
  	 <form:label path="name">App Name:</form:label>
     	 <form:input type="text" class="form-control" path="name" />
+    	 <form:errors path="name" cssClass="error" />
   </div>
   
   <div class="form-group">
@@ -75,6 +76,7 @@
 			<form:select class="form-control" path="existingGroupId" style="display:none" id = "groupExisting">
 			<form:options items="${appForm.groupIds}" var="groups" itemValue="key" itemLabel="value" />
 		</form:select>
+		<form:errors path="existingGroupId" cssClass="error" />
 	</div>
 
 	<div class="form-group">
@@ -127,6 +129,10 @@
 			$('#groupExisting').css('display', 'none');
 		}
 	}
+	
+	window.onload = function() {
+		showHideGroups();
+		};
 </script>
 <style>
 input[type="radio"] {

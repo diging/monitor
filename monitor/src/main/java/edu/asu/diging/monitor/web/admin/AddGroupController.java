@@ -43,24 +43,21 @@ public class AddGroupController {
         binder.addValidators(groupValidator);
     }
 
-    @RequestMapping(value = "/admin/groups/show", method = RequestMethod.GET)
-    public String showGroups(Model model) {
-        model.addAttribute("groups", groupManager.getGroups());
-        model.addAttribute("appCount", appManager.getApps().size());
-        return "admin/groups/show";
-
-    }
-
     @RequestMapping(value = "/admin/groups/add", method = RequestMethod.GET)
     public String showAddGroup(Model model) {
-        GroupForm groupForm = new GroupForm();
+        GroupForm groupForm = null;
+        if (!model.containsAttribute("groupForm")) {
+            groupForm = new GroupForm();
+            model.addAttribute("groupForm", groupForm);
+        } else {
+            groupForm = (GroupForm) model.getAttribute("groupForm");
+        }
         groupForm.setApps(appManager.getApps().stream().map(a -> {
             AppForm app = new AppForm();
             app.setId(a.getId());
             app.setName(a.getName());
             return app;
         }).collect(Collectors.toList()));
-        model.addAttribute("groupForm", groupForm);
         return "admin/groups/add";
     }
 
@@ -68,9 +65,8 @@ public class AddGroupController {
     public String add(@ModelAttribute @Validated GroupForm groupForm, BindingResult result,
             RedirectAttributes redirectAttrs) {
         if (result.hasErrors()) {
-            redirectAttrs.addFlashAttribute("show_alert", true);
-            redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", result.getFieldError().getCode());
+            redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.groupForm", result);
+            redirectAttrs.addFlashAttribute("groupForm", groupForm);
             return "redirect:/admin/groups/add";
         }
         try {

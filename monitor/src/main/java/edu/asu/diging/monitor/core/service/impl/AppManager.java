@@ -16,7 +16,6 @@ import edu.asu.diging.monitor.core.db.IAppTestDbConnection;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
-import edu.asu.diging.monitor.core.model.impl.Group;
 import edu.asu.diging.monitor.core.service.IAppManager;
 
 @Service

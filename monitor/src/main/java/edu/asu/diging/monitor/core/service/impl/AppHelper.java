@@ -59,14 +59,7 @@ public class AppHelper implements IAppHelper {
         appForm.setMethod(app.getMethod());
         appForm.setName(app.getName());
         appForm.setPingInterval(app.getPingInterval());
-        appForm.setRecipients(manager.getAllRecipients().stream().map(r -> {
-            RecipientForm recipientForm = new RecipientForm();
-            recipientForm.setName(r.getName());
-            recipientForm.setEmail(r.getEmail());
-            return recipientForm;
-        }).collect(Collectors.toList()));
-        appForm.setGroupIds(groupManager.getGroups().stream()
-                .collect(Collectors.toMap(g -> g.getId(), g -> g.getName())).entrySet());
+        copyGroupAndRecipientInfoToForm(appForm);
         if (app.getGroup() != null) {
             appForm.setExistingGroupId(app.getGroup().getId());
             appForm.setGroupType(GroupType.EXISTING);
@@ -76,6 +69,18 @@ public class AppHelper implements IAppHelper {
         appForm.setRetries(app.getRetries());
         appForm.setTimeout(app.getTimeout());
         appForm.setWarningReturnCodes(app.getWarningReturnCodes());
+    }
+
+    @Override
+    public void copyGroupAndRecipientInfoToForm(AppForm appForm) {
+        appForm.setGroupIds(groupManager.getGroups().stream()
+                .collect(Collectors.toMap(g -> g.getId(), g -> g.getName())).entrySet());
+        appForm.setRecipients(manager.getAllRecipients().stream().map(r -> {
+            RecipientForm recipientForm = new RecipientForm();
+            recipientForm.setName(r.getName());
+            recipientForm.setEmail(r.getEmail());
+            return recipientForm;
+        }).collect(Collectors.toList()));
     }
 
     private List<NotificationRecipient> getRecipientsById(List<String> recipientIds) {

@@ -46,22 +46,25 @@ public class ModifyAppController {
 
     @RequestMapping(value = "/admin/apps/{id}/modify", method = RequestMethod.GET)
     public String show(Model model, @PathVariable("id") String id) {
-        AppForm appForm = new AppForm();
         IApp app = appManager.getApp(id);
-        appHelper.copyAppInfoToForm(app, appForm);
-        model.addAttribute("appForm", appForm);
+        if (!model.containsAttribute("appForm")) {
+            AppForm appForm = new AppForm();
+            model.addAttribute("appForm", appForm);
+            appHelper.copyAppInfoToForm(app, appForm);
+        } else {
+            appHelper.copyGroupAndRecipientInfoToForm((AppForm) model.getAttribute("appForm"));
+        }
         model.addAttribute("appRecipients",
                 app.getRecipients().stream().map(x -> x.getEmail()).collect(Collectors.toList()));
         return "admin/apps/show";
     }
 
     @RequestMapping(value = "/admin/apps/{id}/modify", method = RequestMethod.POST)
-    public String update(@ModelAttribute @Validated AppForm appForm, BindingResult result,
+    public String update(@ModelAttribute("appForm") @Validated AppForm appForm, BindingResult result,
             @PathVariable("id") String id, RedirectAttributes redirectAttrs) {
         if (result.hasErrors()) {
-            redirectAttrs.addFlashAttribute("show_alert", true);
-            redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", result.getFieldError().getCode());
+            redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.appForm", result);
+            redirectAttrs.addFlashAttribute("appForm", appForm);
             return "redirect:/admin/apps/{id}/modify";
         }
         IApp app = appManager.getApp(id);

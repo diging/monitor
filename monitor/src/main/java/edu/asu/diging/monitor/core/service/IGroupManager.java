@@ -5,6 +5,7 @@ import java.util.List;
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.impl.Group;
+import edu.asu.diging.monitor.web.admin.forms.GroupForm;
 
 public interface IGroupManager {
 
@@ -14,7 +15,9 @@ public interface IGroupManager {
 
     Group createGroup(String name) throws UnstorableObjectException;
 
-    void updateGroup(Group group);
+    void updateGroup(Group group, GroupForm groupForm);
 
     void deleteGroup(Group group);
+
+    void deleteExistingApps(Group group);
 }

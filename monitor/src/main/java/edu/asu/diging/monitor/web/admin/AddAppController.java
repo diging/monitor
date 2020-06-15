@@ -55,8 +55,15 @@ public class AddAppController {
 
     @RequestMapping(value = "/admin/apps/add")
     public String show(Model model) {
-        AppForm appForm = new AppForm();
+        AppForm appForm = null;
+        if (!model.containsAttribute("appForm")) {
+        appForm = new AppForm();
         model.addAttribute("appForm", appForm);
+        
+        } else {
+            
+         appForm = (AppForm) model.getAttribute("appForm");   
+        }
         appForm.setRecipients(manager.getAllRecipients().stream().map(r -> {
             RecipientForm recipient = new RecipientForm();
             recipient.setName(r.getName());
@@ -69,14 +76,13 @@ public class AddAppController {
     }
 
     @RequestMapping(value = "/admin/apps/add", method = RequestMethod.POST)
-    public String add(@ModelAttribute @Validated AppForm appForm, BindingResult bindingResult,
+    public String add(@ModelAttribute @Validated AppForm appForm, BindingResult result,
             RedirectAttributes redirectAttrs) {
         IApp app = new App();
 
-        if (bindingResult.hasErrors()) {
-            redirectAttrs.addFlashAttribute("show_alert", true);
-            redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", bindingResult.getFieldError().getCode());
+        if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.appForm", result);
+            redirectAttrs.addFlashAttribute("appForm", appForm);
             return "redirect:/admin/apps/add";
         }
         try {

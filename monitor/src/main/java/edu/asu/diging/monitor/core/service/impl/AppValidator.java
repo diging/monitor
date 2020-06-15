@@ -19,12 +19,12 @@ public class AppValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         AppForm appForm = (AppForm) target;
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "App name cannot be blank.");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "app.name.empty");
         if (appForm.getGroupType() == GroupType.NEW) {
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "groupName", "Group name cannot be blank.");
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "groupName", "group.name.empty");
         }
         if (appForm.getGroupType() == GroupType.EXISTING) {
-            ValidationUtils.rejectIfEmpty(errors, "existingGroupId", "Please select a valid group from dropdown.");
+            ValidationUtils.rejectIfEmpty(errors, "existingGroupId", "group.dropdown.empty");
         }
     }
 }

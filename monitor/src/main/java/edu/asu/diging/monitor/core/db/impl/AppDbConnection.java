@@ -1,6 +1,5 @@
 package edu.asu.diging.monitor.core.db.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -9,16 +8,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Component;
 
 import edu.asu.diging.monitor.core.db.IAppDbConnection;
-import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
 import edu.asu.diging.monitor.core.model.impl.App;
-import edu.asu.diging.monitor.core.model.impl.Group;
 
 @Component
 @Transactional

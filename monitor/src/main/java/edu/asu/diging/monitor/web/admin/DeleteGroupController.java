@@ -11,23 +11,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.model.impl.Group;
-import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.IGroupManager;
-
 
 @Controller
 public class DeleteGroupController {
-    
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    
-    @Autowired
-    private IAppManager appManager;
 
     @Autowired
     private IGroupManager groupManager;
-    
+
     @RequestMapping(value = "/admin/groups/{id}/delete", method = RequestMethod.POST)
-    public String delete( @PathVariable("id") String id, RedirectAttributes redirectAttrs) {
+    public String delete(@PathVariable("id") String id, RedirectAttributes redirectAttrs) {
         Group group = null;
         try {
             group = groupManager.getGroup(id);
@@ -38,10 +33,7 @@ public class DeleteGroupController {
             redirectAttrs.addFlashAttribute("alert_msg", "Group could not be deleted.");
             return "redirect:/admin/groups/show";
         }
-        group.getApps().stream().forEach(a -> {
-            a.setGroup(null);
-            appManager.updateApp(a);
-        });
+        groupManager.deleteExistingApps(group);
         groupManager.deleteGroup(group);
         return "redirect:/admin/groups/show";
     }
