@@ -17,6 +17,7 @@ import edu.asu.diging.monitor.core.db.impl.GroupDbConnection;
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.impl.Group;
+import edu.asu.diging.monitor.web.admin.forms.GroupForm;
 
 public class GroupManagerTest {
 
@@ -39,6 +40,7 @@ public class GroupManagerTest {
         MockitoAnnotations.initMocks(this);
         group1 = new Group();
         group1.setId(ID1);
+        group1.setName("G1");
         group2 = new Group();
         group2.setId(ID2);
         group3 = new Group();
@@ -85,7 +87,7 @@ public class GroupManagerTest {
     
     @Test
     public void test_updateGroup_success() {
-        managerToTest.updateGroup(group1);
+        managerToTest.updateGroup(group1, new GroupForm());
         Mockito.verify(dbConnection).update(group1);
     }
 
