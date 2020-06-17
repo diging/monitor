@@ -31,7 +31,7 @@ public class AppManager implements IAppManager {
 
     @Autowired
     private IAppTestDbConnection appTestDbConnection;
-    
+
     @Autowired
     private IPasswordEncryptor passwordEncryptor;
 
@@ -43,7 +43,8 @@ public class AppManager implements IAppManager {
      * monitor.core.model.IApp)
      */
     @Override
-    public void addApp(IApp app) {
+    public void addApp(IApp app, AppForm appForm) {
+        encryptPassword(appForm, app);
         app.setId(dbConnection.generateId());
         try {
             dbConnection.store(app);
@@ -54,7 +55,8 @@ public class AppManager implements IAppManager {
     }
 
     @Override
-    public void updateApp(IApp app) {
+    public void updateApp(IApp app, AppForm appForm) {
+        encryptPassword(appForm, app);
         dbConnection.update(app);
     }
 
@@ -115,12 +117,10 @@ public class AppManager implements IAppManager {
         dbConnection.deleteRecipientsForApp(app);
     }
 
-    @Override
-    public void encryptPassword(AppForm appForm, IApp app) {
+    protected void encryptPassword(AppForm appForm, IApp app) {
         if (!appForm.getUsername().isEmpty() && !appForm.getPassword().isEmpty()) {
             app.setUsername(appForm.getUsername());
             app.setPassword(passwordEncryptor.encrypt(appForm.getPassword()));
-
         }
 
     }

@@ -8,9 +8,9 @@ import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
 public interface IAppManager {
 
-	void addApp(IApp app);
+	void addApp(IApp app,  AppForm appForm);
 	
-	void updateApp(IApp app);
+	void updateApp(IApp app,  AppForm appForm);
 
 	List<IApp> getApps();
 	
@@ -24,6 +24,4 @@ public interface IAppManager {
 	
 	void deleteExistingRecipients(IApp app);
 	
-	void encryptPassword(AppForm appForm, IApp app);
-
 }

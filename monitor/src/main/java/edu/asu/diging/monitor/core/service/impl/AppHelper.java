@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
 import edu.asu.diging.monitor.core.service.IAppHelper;
-import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
@@ -19,9 +18,6 @@ public class AppHelper implements IAppHelper {
 
     @Autowired
     private INotificationManager manager;
-
-    @Autowired
-    private IAppManager appManager;
 
     @Override
     public IApp copyAppInfo(IApp app, AppForm appForm) {
@@ -37,7 +33,6 @@ public class AppHelper implements IAppHelper {
         if (appForm.getRecipientIds() != null) {
             app.setRecipients(getRecipientsById(appForm.getRecipientIds()));
         }
-        appManager.encryptPassword(appForm, app);
         return app;
     }
 

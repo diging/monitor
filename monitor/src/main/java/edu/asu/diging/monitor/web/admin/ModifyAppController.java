@@ -44,7 +44,7 @@ public class ModifyAppController {
             appManager.deleteExistingRecipients(app);
         }
         app = appHelper.copyAppInfo(appManager.getApp(id), appForm);
-        appManager.updateApp(app);
+        appManager.updateApp(app, appForm);
         redirectAttrs.addFlashAttribute("show_alert", true);
         redirectAttrs.addFlashAttribute("alert_type", "success");
         redirectAttrs.addFlashAttribute("alert_msg", "App was successfully updated.");

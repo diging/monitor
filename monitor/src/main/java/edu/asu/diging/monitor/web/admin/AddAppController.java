@@ -47,7 +47,7 @@ public class AddAppController {
     public String add(@ModelAttribute AppForm appForm, RedirectAttributes redirectAttrs) {
         IApp app = new App();
         appHelper.copyAppInfo(app, appForm);
-        appManager.addApp(app);
+        appManager.addApp(app, appForm);
         return "redirect:/admin/apps/add";
     }
 }
