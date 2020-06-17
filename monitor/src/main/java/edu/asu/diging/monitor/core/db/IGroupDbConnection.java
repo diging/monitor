@@ -19,6 +19,6 @@ public interface IGroupDbConnection {
     
     void deleteGroup(Group group);
 
-    void deleteGroupForApp(Group group);
+    void deleteGroupForApps(Group group);
 
 }

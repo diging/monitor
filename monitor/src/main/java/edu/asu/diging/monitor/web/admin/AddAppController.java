@@ -55,15 +55,8 @@ public class AddAppController {
 
     @RequestMapping(value = "/admin/apps/add")
     public String show(Model model) {
-        AppForm appForm = null;
-        if (!model.containsAttribute("appForm")) {
-        appForm = new AppForm();
+        AppForm appForm = new AppForm();
         model.addAttribute("appForm", appForm);
-        
-        } else {
-            
-         appForm = (AppForm) model.getAttribute("appForm");   
-        }
         appForm.setRecipients(manager.getAllRecipients().stream().map(r -> {
             RecipientForm recipient = new RecipientForm();
             recipient.setName(r.getName());
@@ -81,9 +74,15 @@ public class AddAppController {
         IApp app = new App();
 
         if (result.hasErrors()) {
-            redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.appForm", result);
-            redirectAttrs.addFlashAttribute("appForm", appForm);
-            return "redirect:/admin/apps/add";
+            appForm.setRecipients(manager.getAllRecipients().stream().map(r -> {
+                RecipientForm recipient = new RecipientForm();
+                recipient.setName(r.getName());
+                recipient.setEmail(r.getEmail());
+                return recipient;
+            }).collect(Collectors.toList()));
+            appForm.setGroupIds(groupManager.getGroups().stream()
+                    .collect(Collectors.toMap(g -> g.getId(), g -> g.getName())).entrySet());
+            return "admin/apps/show";
         }
         try {
             appHelper.copyAppInfo(app, appForm);

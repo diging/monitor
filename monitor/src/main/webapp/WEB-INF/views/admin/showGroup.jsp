@@ -44,10 +44,7 @@
 					<div class="pull-right">
 						<c:url value="/admin/groups/${group.id}/modify" var="modifyUrl" />
 						<a href="${modifyUrl}">
-							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-							<button title="Modify Group" type="submit" class="btn-link">
-								<i class="fa fa-edit" aria-hidden="true"></i>
-							</button>
+							<i class="fa fa-edit" style="padding-top:7px;padding-right:10px" title="Modify Group" aria-hidden="true"></i>
 						</a>
 					</div>
 				</sec:authorize>

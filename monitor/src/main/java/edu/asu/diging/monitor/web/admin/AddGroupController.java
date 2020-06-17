@@ -45,13 +45,8 @@ public class AddGroupController {
 
     @RequestMapping(value = "/admin/groups/add", method = RequestMethod.GET)
     public String showAddGroup(Model model) {
-        GroupForm groupForm = null;
-        if (!model.containsAttribute("groupForm")) {
-            groupForm = new GroupForm();
-            model.addAttribute("groupForm", groupForm);
-        } else {
-            groupForm = (GroupForm) model.getAttribute("groupForm");
-        }
+        GroupForm groupForm = new GroupForm();
+        model.addAttribute("groupForm", groupForm);
         groupForm.setApps(appManager.getApps().stream().map(a -> {
             AppForm app = new AppForm();
             app.setId(a.getId());
@@ -65,9 +60,14 @@ public class AddGroupController {
     public String add(@ModelAttribute @Validated GroupForm groupForm, BindingResult result,
             RedirectAttributes redirectAttrs) {
         if (result.hasErrors()) {
-            redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.groupForm", result);
-            redirectAttrs.addFlashAttribute("groupForm", groupForm);
-            return "redirect:/admin/groups/add";
+            groupForm.setApps(appManager.getApps().stream().map(a -> {
+                AppForm app = new AppForm();
+                app.setId(a.getId());
+                app.setName(a.getName());
+                return app;
+            }).collect(Collectors.toList()));
+            return "admin/groups/add";
+
         }
         try {
 

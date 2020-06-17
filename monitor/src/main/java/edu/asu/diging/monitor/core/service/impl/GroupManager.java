@@ -57,10 +57,7 @@ public class GroupManager implements IGroupManager {
 
     @Override
     public void updateGroup(Group group, GroupForm groupForm) {
-
-        if (!group.getName().equals(groupForm.getName())) {
-            group.setName(groupForm.getName());
-        }
+        group.setName(groupForm.getName());
         if (groupForm.getAppIds() != null) {
             group.setApps(
                     groupForm.getAppIds().stream().map(id -> (App) appManager.getApp(id)).collect(Collectors.toList()));
@@ -76,6 +73,6 @@ public class GroupManager implements IGroupManager {
 
     @Override
     public void deleteExistingApps(Group group) {
-        dbConnection.deleteGroupForApp(group);
+        dbConnection.deleteGroupForApps(group);
     }
 }

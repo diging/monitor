@@ -47,27 +47,25 @@ public class ModifyAppController {
     @RequestMapping(value = "/admin/apps/{id}/modify", method = RequestMethod.GET)
     public String show(Model model, @PathVariable("id") String id) {
         IApp app = appManager.getApp(id);
-        if (!model.containsAttribute("appForm")) {
-            AppForm appForm = new AppForm();
-            model.addAttribute("appForm", appForm);
-            appHelper.copyAppInfoToForm(app, appForm);
-        } else {
-            appHelper.copyGroupAndRecipientInfoToForm((AppForm) model.getAttribute("appForm"));
-        }
+        AppForm appForm = new AppForm();
+        model.addAttribute("appForm", appForm);
+        appHelper.copyAppInfoToForm(app, appForm);
         model.addAttribute("appRecipients",
                 app.getRecipients().stream().map(x -> x.getEmail()).collect(Collectors.toList()));
         return "admin/apps/show";
     }
 
     @RequestMapping(value = "/admin/apps/{id}/modify", method = RequestMethod.POST)
-    public String update(@ModelAttribute("appForm") @Validated AppForm appForm, BindingResult result,
+    public String update(Model model, @ModelAttribute("appForm") @Validated AppForm appForm, BindingResult result,
             @PathVariable("id") String id, RedirectAttributes redirectAttrs) {
-        if (result.hasErrors()) {
-            redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.appForm", result);
-            redirectAttrs.addFlashAttribute("appForm", appForm);
-            return "redirect:/admin/apps/{id}/modify";
-        }
         IApp app = appManager.getApp(id);
+        if (result.hasErrors()) {
+            appHelper.copyGroupAndRecipientInfoToForm(appForm);
+            model.addAttribute("appRecipients",
+                    app.getRecipients().stream().map(x -> x.getEmail()).collect(Collectors.toList()));
+            return "admin/apps/show";
+        }
+
         if (app.getRecipients() != null && !app.getRecipients().isEmpty()) {
             appManager.deleteExistingRecipients(app);
         }

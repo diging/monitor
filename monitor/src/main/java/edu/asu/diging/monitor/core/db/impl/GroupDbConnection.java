@@ -77,7 +77,7 @@ public class GroupDbConnection implements IGroupDbConnection {
         em.merge(group);
     }
 
-    public void deleteGroupForApp(Group group) {
+    public void deleteGroupForApps(Group group) {
         for (IApp app : group.getApps()) {
             app.setGroup(null);
             em.merge(app);
