@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
+import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
 public interface IAppManager {
 
@@ -22,5 +23,7 @@ public interface IAppManager {
 	void deleteApp(String id);
 	
 	void deleteExistingRecipients(IApp app);
+	
+	void encryptPassword(AppForm appForm, IApp app);
 
 }

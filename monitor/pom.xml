@@ -13,6 +13,7 @@
 		<spring-security-version>5.3.3.RELEASE</spring-security-version>
 		<encoding.type>{bcrypt}</encoding.type>
 		<admin.password>$2y$12$AJZLdMlxFVueyEUwjPNjo.df2235U0BTudUjY915T4on73our8x0C</admin.password>
+		<encryption.password>password</encryption.password>
 		<log.level>debug</log.level>
 
 		<!-- DB config -->
