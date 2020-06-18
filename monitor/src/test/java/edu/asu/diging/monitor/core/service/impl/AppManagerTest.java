@@ -19,6 +19,7 @@ import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
 import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.model.impl.AppTest;
+import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
 public class AppManagerTest {
 
@@ -27,6 +28,9 @@ public class AppManagerTest {
     
     @Mock
     private IAppTestDbConnection appTestDbConnection;
+    
+    @Mock
+    private PasswordEncryptor passwordEncryptor;
 
     @InjectMocks
     private AppManager managerToTest;
@@ -64,7 +68,10 @@ public class AppManagerTest {
         String id = "ID1";
         Mockito.when(dbConnection.generateId()).thenReturn(id);
         IApp app = new App();
-        managerToTest.addApp(app);
+        AppForm appForm = new AppForm();
+        appForm.setUsername("user");
+        appForm.setPassword("password");
+        managerToTest.addApp(app, appForm);
         
         Mockito.verify(dbConnection).store(app);
         Assert.assertEquals(id, app.getId());

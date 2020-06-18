@@ -6,7 +6,6 @@ import edu.asu.diging.monitor.core.exceptions.EmailAlreadyRegisteredException;
 import edu.asu.diging.monitor.core.model.AppStatus;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
-import edu.asu.diging.monitor.core.model.impl.App;
 
 public interface INotificationManager {
 

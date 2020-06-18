@@ -2,7 +2,6 @@ package edu.asu.diging.monitor.core.service.impl;
 
 import org.jasypt.util.text.AES256TextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import edu.asu.diging.monitor.core.service.IPasswordEncryptor;
