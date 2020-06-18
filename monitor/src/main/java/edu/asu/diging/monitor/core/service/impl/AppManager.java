@@ -107,6 +107,8 @@ public class AppManager implements IAppManager {
 
     @Override
     public void deleteExistingRecipients(IApp app) {
-        dbConnection.deleteRecipientsForApp(app);
+        if (app.getRecipients() != null && !app.getRecipients().isEmpty()) {
+            dbConnection.deleteRecipientsForApp(app);
+        }
     }
 }

@@ -66,9 +66,7 @@ public class ModifyAppController {
             return "admin/apps/show";
         }
 
-        if (app.getRecipients() != null && !app.getRecipients().isEmpty()) {
-            appManager.deleteExistingRecipients(app);
-        }
+        appManager.deleteExistingRecipients(app);
         try {
             app = appHelper.copyAppInfo(appManager.getApp(id), appForm);
         } catch (GroupNotFoundException e) {

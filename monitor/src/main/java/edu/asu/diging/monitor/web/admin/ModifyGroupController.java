@@ -97,9 +97,7 @@ public class ModifyGroupController {
             return "admin/groups/add";
         }
 
-        if (group.getApps() != null && !group.getApps().isEmpty()) {
-            groupManager.deleteExistingApps(group);
-        }
+        groupManager.deleteGroupForApps(group);
         groupManager.updateGroup(group, groupForm);
 
         redirectAttrs.addFlashAttribute("show_alert", true);

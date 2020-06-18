@@ -19,5 +19,7 @@ public interface IGroupManager {
 
     void deleteGroup(Group group);
 
-    void deleteExistingApps(Group group);
+    void deleteGroupForApps(Group group);
+
+    void addAppsToGroup(Group group, GroupForm groupForm);
 }

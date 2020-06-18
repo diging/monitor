@@ -62,7 +62,7 @@ public class GroupManager implements IGroupManager {
             group.setApps(
                     groupForm.getAppIds().stream().map(id -> (App) appManager.getApp(id)).collect(Collectors.toList()));
         } else {
-            group.setApps(new ArrayList<App>());
+            group.setApps(new ArrayList<>());
         }
         dbConnection.update(group);
     }
@@ -72,7 +72,19 @@ public class GroupManager implements IGroupManager {
     }
 
     @Override
-    public void deleteExistingApps(Group group) {
-        dbConnection.deleteGroupForApps(group);
+    public void deleteGroupForApps(Group group) {
+        if (group.getApps() != null && !group.getApps().isEmpty()) {
+            dbConnection.deleteGroupForApps(group);
+        }
+    }
+
+    @Override
+    public void addAppsToGroup(Group group, GroupForm groupForm) {
+        if (groupForm.getAppIds() != null) {
+            group.setApps(
+                    groupForm.getAppIds().stream().map(id -> (App) appManager.getApp(id)).collect(Collectors.toList()));
+        }
+        dbConnection.update(group);
+
     }
 }

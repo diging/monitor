@@ -69,14 +69,11 @@ public class AddGroupController {
             return "admin/groups/add";
 
         }
+        Group group = null;
         try {
 
-            Group group = groupManager.createGroup(groupForm.getName());
-            if (groupForm.getAppIds() != null)
-                groupForm.getAppIds().stream().map(id -> appManager.getApp(id)).forEach(a -> {
-                    a.setGroup(group);
-                    appManager.updateApp(a);
-                });
+            group = groupManager.createGroup(groupForm.getName());
+
         } catch (UnstorableObjectException e) {
             logger.error("Could not store group.", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
@@ -84,6 +81,8 @@ public class AddGroupController {
             redirectAttrs.addFlashAttribute("alert_msg", "Group could not be created.");
             return "redirect:/admin/groups/show";
         }
+        groupManager.addAppsToGroup(group, groupForm);
+
         redirectAttrs.addFlashAttribute("show_alert", true);
         redirectAttrs.addFlashAttribute("alert_type", "success");
         redirectAttrs.addFlashAttribute("alert_msg", "Group was successfully added.");
