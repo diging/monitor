@@ -11,9 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.asu.diging.monitor.core.db.IAppTestDbConnection;
 import edu.asu.diging.monitor.core.db.IGroupDbConnection;
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
+import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.model.impl.Group;
 import edu.asu.diging.monitor.core.service.IAppManager;
@@ -30,6 +32,9 @@ public class GroupManager implements IGroupManager {
 
     @Autowired
     private IAppManager appManager;
+
+    @Autowired
+    private IAppTestDbConnection appTestDbConnection;
 
     @Override
     public Group createGroup(GroupForm groupForm) throws UnstorableObjectException {
@@ -53,7 +58,19 @@ public class GroupManager implements IGroupManager {
 
     @Override
     public List<Group> getGroups() {
-        return dbConnection.getAllGroups();
+        List<Group> groupList = dbConnection.getAllGroups();
+        if (groupList != null) {
+            for (Group group : groupList) {
+                for (IApp app : group.getApps()) {
+                    if (app.getLastTestId() != null) {
+                        app.setLastAppTest(appTestDbConnection.getById(app.getLastTestId()));
+                    }
+                }
+
+            }
+            return groupList;
+        }
+        return new ArrayList<>();
     }
 
     @Override

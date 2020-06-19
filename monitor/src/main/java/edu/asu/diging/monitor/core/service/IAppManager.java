@@ -10,7 +10,7 @@ import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
 public interface IAppManager {
 
-    void addApp(IApp app);
+    IApp addApp(AppForm appForm) throws UnstorableObjectException, GroupNotFoundException;
 
     void updateApp(IApp app, AppForm appForm) throws UnstorableObjectException, GroupNotFoundException;
 

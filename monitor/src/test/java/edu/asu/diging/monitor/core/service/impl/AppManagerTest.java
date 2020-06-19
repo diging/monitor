@@ -14,11 +14,14 @@ import org.mockito.MockitoAnnotations;
 
 import edu.asu.diging.monitor.core.db.IAppDbConnection;
 import edu.asu.diging.monitor.core.db.IAppTestDbConnection;
+import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
 import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.model.impl.AppTest;
+import edu.asu.diging.monitor.core.service.IAppHelper;
+import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
 public class AppManagerTest {
 
@@ -27,6 +30,9 @@ public class AppManagerTest {
     
     @Mock
     private IAppTestDbConnection appTestDbConnection;
+    
+    @Mock
+    private IAppHelper appHelper;
 
     @InjectMocks
     private AppManager managerToTest;
@@ -60,12 +66,10 @@ public class AppManagerTest {
     }
     
     @Test
-    public void test_addApp_success() throws UnstorableObjectException {
+    public void test_addApp_success() throws UnstorableObjectException, GroupNotFoundException {
         String id = "ID1";
         Mockito.when(dbConnection.generateId()).thenReturn(id);
-        IApp app = new App();
-        managerToTest.addApp(app);
-        
+        IApp app = managerToTest.addApp(new AppForm());
         Mockito.verify(dbConnection).store(app);
         Assert.assertEquals(id, app.getId());
     }

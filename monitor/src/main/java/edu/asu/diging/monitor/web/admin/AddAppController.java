@@ -18,9 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
-import edu.asu.diging.monitor.core.model.IApp;
-import edu.asu.diging.monitor.core.model.impl.App;
-import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.IGroupManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
@@ -35,9 +32,6 @@ public class AddAppController {
 
     @Autowired
     private IAppManager appManager;
-
-    @Autowired
-    private IAppHelper appHelper;
 
     @Autowired
     private AppValidator appValidator;
@@ -71,8 +65,6 @@ public class AddAppController {
     @RequestMapping(value = "/admin/apps/add", method = RequestMethod.POST)
     public String add(@ModelAttribute @Validated AppForm appForm, BindingResult result,
             RedirectAttributes redirectAttrs) {
-        IApp app = new App();
-
         if (result.hasErrors()) {
             appForm.setRecipients(manager.getAllRecipients().stream().map(r -> {
                 RecipientForm recipient = new RecipientForm();
@@ -85,7 +77,7 @@ public class AddAppController {
             return "admin/apps/show";
         }
         try {
-            appHelper.copyAppInfo(app, appForm);
+            appManager.addApp(appForm);
         } catch (GroupNotFoundException e) {
             logger.error("Could not find Group", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
@@ -96,10 +88,10 @@ public class AddAppController {
             logger.error("Could not store Group", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", "App creation failed. New group couldn't be stored ");
+            redirectAttrs.addFlashAttribute("alert_msg", "App creation failed. New group couldn't be stored.");
             return "redirect:/";
         }
-        appManager.addApp(app);
+
         redirectAttrs.addFlashAttribute("show_alert", true);
         redirectAttrs.addFlashAttribute("alert_type", "success");
         redirectAttrs.addFlashAttribute("alert_msg", "App was successfully added.");

@@ -17,6 +17,7 @@ import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
+import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
@@ -32,7 +33,7 @@ public class AppManager implements IAppManager {
 
     @Autowired
     private IAppTestDbConnection appTestDbConnection;
-    
+
     @Autowired
     private IAppHelper appHelper;
 
@@ -44,14 +45,17 @@ public class AppManager implements IAppManager {
      * monitor.core.model.IApp)
      */
     @Override
-    public void addApp(IApp app) {
+    public IApp addApp(AppForm appForm) throws UnstorableObjectException, GroupNotFoundException {
+        IApp app = new App();
         app.setId(dbConnection.generateId());
+        appHelper.copyAppInfo(app, appForm);
         try {
             dbConnection.store(app);
         } catch (UnstorableObjectException e) {
             // should never happen, we're setting the id
             logger.error("Could not store app.", e);
         }
+        return app;
     }
 
     @Override

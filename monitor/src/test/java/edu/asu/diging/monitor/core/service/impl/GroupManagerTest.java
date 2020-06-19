@@ -41,8 +41,10 @@ public class GroupManagerTest {
         group1 = new Group();
         group1.setId(ID1);
         group1.setName("G1");
+        group1.setApps(new ArrayList<>());
         group2 = new Group();
         group2.setId(ID2);
+        group2.setApps(new ArrayList<>());
         group3 = new Group();
         group3.setId(null);
         storedGroups = new ArrayList<Group>();
