@@ -65,9 +65,8 @@ public class ModifyAppController {
                     app.getRecipients().stream().map(x -> x.getEmail()).collect(Collectors.toList()));
             return "admin/apps/show";
         }
-        appManager.deleteExistingRecipients(app);
         try {
-            app = appHelper.copyAppInfo(appManager.getApp(id), appForm);
+            appManager.updateApp(app, appForm);
         } catch (GroupNotFoundException e) {
             logger.error("Could not find Group", e);
             redirectAttrs.addFlashAttribute("show_alert", true);
@@ -81,7 +80,6 @@ public class ModifyAppController {
             redirectAttrs.addFlashAttribute("alert_msg", "App update failed. New group couldn't be stored ");
             return "redirect:/";
         }
-        appManager.updateApp(app);
         redirectAttrs.addFlashAttribute("show_alert", true);
         redirectAttrs.addFlashAttribute("alert_type", "success");
         redirectAttrs.addFlashAttribute("alert_msg", "App was successfully updated.");

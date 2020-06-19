@@ -132,7 +132,7 @@
 	
 	window.onload = function() {
 		showHideGroups();
-		};
+	};
 </script>
 <style>
 input[type="radio"] {

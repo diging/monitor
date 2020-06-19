@@ -1,5 +1,6 @@
 package edu.asu.diging.monitor.core.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,8 @@ public class AppHelper implements IAppHelper {
         app.setMethod(appForm.getMethod());
         if (appForm.getRecipientIds() != null) {
             app.setRecipients(getRecipientsById(appForm.getRecipientIds()));
+        } else {
+            app.setRecipients(new ArrayList<>());
         }
         if (appForm.getGroupType() == GroupType.NEW) {
             GroupForm groupForm = new GroupForm();
