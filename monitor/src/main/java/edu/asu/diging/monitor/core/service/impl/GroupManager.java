@@ -32,11 +32,12 @@ public class GroupManager implements IGroupManager {
     private IAppManager appManager;
 
     @Override
-    public Group createGroup(String name) throws UnstorableObjectException {
+    public Group createGroup(GroupForm groupForm) throws UnstorableObjectException {
         Group group = new Group();
-        group.setName(name);
+        group.setName(groupForm.getName());
         group.setId(dbConnection.generateGroupId());
         dbConnection.createGroup(group);
+        addAppsToGroup(group, groupForm);
         return group;
     }
 
@@ -57,6 +58,7 @@ public class GroupManager implements IGroupManager {
 
     @Override
     public void updateGroup(Group group, GroupForm groupForm) {
+        deleteGroupForApps(group);
         group.setName(groupForm.getName());
         if (groupForm.getAppIds() != null) {
             group.setApps(
@@ -67,24 +69,24 @@ public class GroupManager implements IGroupManager {
         dbConnection.update(group);
     }
 
+    @Override
     public void deleteGroup(Group group) {
+        deleteGroupForApps(group);
         dbConnection.deleteGroup(group);
     }
 
-    @Override
-    public void deleteGroupForApps(Group group) {
+    protected void deleteGroupForApps(Group group) {
         if (group.getApps() != null && !group.getApps().isEmpty()) {
             dbConnection.deleteGroupForApps(group);
         }
     }
 
-    @Override
-    public void addAppsToGroup(Group group, GroupForm groupForm) {
+    protected void addAppsToGroup(Group group, GroupForm groupForm) {
         if (groupForm.getAppIds() != null) {
             group.setApps(
                     groupForm.getAppIds().stream().map(id -> (App) appManager.getApp(id)).collect(Collectors.toList()));
-        }
-        dbConnection.update(group);
 
+            dbConnection.update(group);
+        }
     }
 }

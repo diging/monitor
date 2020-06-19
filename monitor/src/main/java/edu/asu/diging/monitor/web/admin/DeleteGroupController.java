@@ -33,7 +33,6 @@ public class DeleteGroupController {
             redirectAttrs.addFlashAttribute("alert_msg", "Group could not be deleted.");
             return "redirect:/admin/groups/show";
         }
-        groupManager.deleteGroupForApps(group);
         groupManager.deleteGroup(group);
         return "redirect:/admin/groups/show";
     }

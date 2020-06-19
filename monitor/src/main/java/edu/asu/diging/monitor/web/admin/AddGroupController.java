@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
-import edu.asu.diging.monitor.core.model.impl.Group;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.IGroupManager;
 import edu.asu.diging.monitor.core.service.impl.GroupValidator;
@@ -69,10 +68,9 @@ public class AddGroupController {
             return "admin/groups/add";
 
         }
-        Group group = null;
         try {
 
-            group = groupManager.createGroup(groupForm.getName());
+            groupManager.createGroup(groupForm);
 
         } catch (UnstorableObjectException e) {
             logger.error("Could not store group.", e);
@@ -81,7 +79,6 @@ public class AddGroupController {
             redirectAttrs.addFlashAttribute("alert_msg", "Group could not be created.");
             return "redirect:/admin/groups/show";
         }
-        groupManager.addAppsToGroup(group, groupForm);
 
         redirectAttrs.addFlashAttribute("show_alert", true);
         redirectAttrs.addFlashAttribute("alert_type", "success");

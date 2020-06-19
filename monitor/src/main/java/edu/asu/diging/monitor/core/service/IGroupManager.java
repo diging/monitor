@@ -13,13 +13,10 @@ public interface IGroupManager {
 
     Group getGroup(String id) throws GroupNotFoundException;
 
-    Group createGroup(String name) throws UnstorableObjectException;
+    Group createGroup(GroupForm groupForm) throws UnstorableObjectException;
 
     void updateGroup(Group group, GroupForm groupForm);
 
     void deleteGroup(Group group);
 
-    void deleteGroupForApps(Group group);
-
-    void addAppsToGroup(Group group, GroupForm groupForm);
 }

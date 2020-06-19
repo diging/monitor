@@ -15,6 +15,7 @@ import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IGroupManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
+import edu.asu.diging.monitor.web.admin.forms.GroupForm;
 import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
 
 @Service
@@ -41,7 +42,9 @@ public class AppHelper implements IAppHelper {
             app.setRecipients(getRecipientsById(appForm.getRecipientIds()));
         }
         if (appForm.getGroupType() == GroupType.NEW) {
-            app.setGroup(groupManager.createGroup(appForm.getGroupName()));
+            GroupForm groupForm = new GroupForm();
+            groupForm.setName(appForm.getGroupName());
+            app.setGroup(groupManager.createGroup(groupForm));
         } else if (appForm.getGroupType() == GroupType.EXISTING) {
             app.setGroup(groupManager.getGroup(appForm.getExistingGroupId()));
         } else {

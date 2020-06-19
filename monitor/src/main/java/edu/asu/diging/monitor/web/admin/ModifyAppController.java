@@ -65,7 +65,6 @@ public class ModifyAppController {
                     app.getRecipients().stream().map(x -> x.getEmail()).collect(Collectors.toList()));
             return "admin/apps/show";
         }
-
         appManager.deleteExistingRecipients(app);
         try {
             app = appHelper.copyAppInfo(appManager.getApp(id), appForm);

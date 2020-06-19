@@ -97,7 +97,6 @@ public class ModifyGroupController {
             return "admin/groups/add";
         }
 
-        groupManager.deleteGroupForApps(group);
         groupManager.updateGroup(group, groupForm);
 
         redirectAttrs.addFlashAttribute("show_alert", true);
