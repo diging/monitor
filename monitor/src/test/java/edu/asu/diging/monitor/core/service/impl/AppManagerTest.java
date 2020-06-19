@@ -64,7 +64,7 @@ public class AppManagerTest {
     }
     
     @Test
-    public void test_addApp_success() throws UnstorableObjectException {
+    public void test_addApp_with_encryption_success() throws UnstorableObjectException {
         String id = "ID1";
         Mockito.when(dbConnection.generateId()).thenReturn(id);
         IApp app = new App();
@@ -72,7 +72,21 @@ public class AppManagerTest {
         appForm.setUsername("user");
         appForm.setPassword("password");
         managerToTest.addApp(app, appForm);
-        
+        Mockito.verify(passwordEncryptor).encrypt("password");
+        Mockito.verify(dbConnection).store(app);
+        Assert.assertEquals(id, app.getId());
+    }
+    
+    @Test
+    public void test_addApp_without_encryption_success() throws UnstorableObjectException {
+        String id = "ID1";
+        Mockito.when(dbConnection.generateId()).thenReturn(id);
+        IApp app = new App();
+        AppForm appForm = new AppForm();
+        appForm.setUsername("");
+        appForm.setPassword("");
+        managerToTest.addApp(app, appForm);
+        Mockito.verify(passwordEncryptor, never()).encrypt("password");
         Mockito.verify(dbConnection).store(app);
         Assert.assertEquals(id, app.getId());
     }

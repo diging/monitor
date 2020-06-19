@@ -121,6 +121,9 @@ public class AppManager implements IAppManager {
         if (!appForm.getUsername().isEmpty() && !appForm.getPassword().isEmpty()) {
             app.setUsername(appForm.getUsername());
             app.setPassword(passwordEncryptor.encrypt(appForm.getPassword()));
+        } else {
+            app.setUsername(null);
+            app.setPassword(null);
         }
 
     }
