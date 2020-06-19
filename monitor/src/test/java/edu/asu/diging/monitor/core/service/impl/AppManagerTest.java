@@ -90,7 +90,25 @@ public class AppManagerTest {
         Mockito.verify(dbConnection).store(app);
         Assert.assertEquals(id, app.getId());
     }
+    @Test
+    public void test_updateApp_with_encryption_success() {
+        AppForm appForm = new AppForm();
+        appForm.setUsername("user");
+        appForm.setPassword("password");
+        managerToTest.updateApp(app1, appForm);
+        Mockito.verify(passwordEncryptor).encrypt("password");
+        Mockito.verify(dbConnection).update(app1);
+    }
     
+    @Test
+    public void test_updateApp_without_encryption_success() {
+        AppForm appForm = new AppForm();
+        appForm.setUsername("");
+        appForm.setPassword("");
+        managerToTest.updateApp(app1, appForm);
+        Mockito.verify(passwordEncryptor, never()).encrypt("password");
+        Mockito.verify(dbConnection).update(app1);
+    }
     @Test
     public void test_getApps_success() {
         List<IApp> results = managerToTest.getApps();
