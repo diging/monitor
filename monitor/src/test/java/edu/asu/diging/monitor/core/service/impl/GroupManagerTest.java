@@ -71,7 +71,9 @@ public class GroupManagerTest {
     public void test_createGroup_success() throws UnstorableObjectException, GroupNotFoundException {
         String id = "GROUP1";
         Mockito.when(dbConnection.generateGroupId()).thenReturn(id);
-        Group group = managerToTest.createGroup(id);
+        GroupForm groupForm = new GroupForm();
+        groupForm.setId(id);
+        Group group = managerToTest.createGroup(groupForm);
         Mockito.verify(dbConnection).createGroup(group);
         Assert.assertEquals(id, group.getId());
     }
