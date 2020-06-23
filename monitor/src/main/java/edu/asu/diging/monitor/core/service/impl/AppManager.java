@@ -16,6 +16,7 @@ import edu.asu.diging.monitor.core.db.IAppTestDbConnection;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
+import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.IPasswordEncryptor;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
@@ -34,6 +35,9 @@ public class AppManager implements IAppManager {
 
     @Autowired
     private IPasswordEncryptor passwordEncryptor;
+    
+    @Autowired
+    private IAppHelper appHelper;
 
     /*
      * (non-Javadoc)
@@ -57,6 +61,7 @@ public class AppManager implements IAppManager {
     @Override
     public void updateApp(IApp app, AppForm appForm) {
         encryptPassword(appForm, app);
+        appHelper.copyAppInfo(app, appForm);
         dbConnection.update(app);
     }
 
