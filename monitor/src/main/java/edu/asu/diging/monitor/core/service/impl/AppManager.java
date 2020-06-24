@@ -16,6 +16,7 @@ import edu.asu.diging.monitor.core.db.IAppTestDbConnection;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
+import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.IPasswordEncryptor;
@@ -35,7 +36,7 @@ public class AppManager implements IAppManager {
 
     @Autowired
     private IPasswordEncryptor passwordEncryptor;
-    
+
     @Autowired
     private IAppHelper appHelper;
 
@@ -47,7 +48,9 @@ public class AppManager implements IAppManager {
      * monitor.core.model.IApp)
      */
     @Override
-    public void addApp(IApp app, AppForm appForm) {
+    public IApp addApp(AppForm appForm) {
+        IApp app = new App();
+        appHelper.copyAppInfo(app, appForm);
         encryptPassword(appForm, app);
         app.setId(dbConnection.generateId());
         try {
@@ -56,13 +59,14 @@ public class AppManager implements IAppManager {
             // should never happen, we're setting the id
             logger.error("Could not store app.", e);
         }
+        return app;
     }
 
     @Override
-    public void updateApp(IApp app, AppForm appForm) {
+    public IApp updateApp(IApp app, AppForm appForm) {
         encryptPassword(appForm, app);
         appHelper.copyAppInfo(app, appForm);
-        dbConnection.update(app);
+        return dbConnection.update(app);
     }
 
     @Override

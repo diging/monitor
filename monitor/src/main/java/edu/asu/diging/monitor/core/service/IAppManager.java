@@ -8,9 +8,9 @@ import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
 public interface IAppManager {
 
-	void addApp(IApp app,  AppForm appForm);
+	IApp addApp(AppForm appForm);
 	
-	void updateApp(IApp app,  AppForm appForm);
+	IApp updateApp(IApp app,  AppForm appForm);
 
 	List<IApp> getApps();
 	

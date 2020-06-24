@@ -43,6 +43,7 @@ public class AppManagerTest {
     private IApp[] storedApps;
     private App app1;
     private App app2;
+    private App app3;
     private String ID1 = "ID1";
     private String ID2 = "ID2";
     private AppTest test1;
@@ -51,15 +52,17 @@ public class AppManagerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-
         app1 = new App();
         app1.setId(ID1);
         app2 = new App();
         app2.setId(ID2);
+        app3 = new App();
+        app3.setName("name");
         storedApps = new App[] { app1, app2 };
 
         Mockito.when(dbConnection.getAllRegisteredApps()).thenReturn(storedApps);
         Mockito.when(dbConnection.getById(ID1)).thenReturn(app1);
+        Mockito.when(dbConnection.update(app1)).thenReturn(app3);
 
         test1 = new AppTest();
         test1.setAppId(ID1);
@@ -72,11 +75,10 @@ public class AppManagerTest {
     public void test_addApp_with_encryption_success() throws UnstorableObjectException {
         String id = "ID1";
         Mockito.when(dbConnection.generateId()).thenReturn(id);
-        IApp app = new App();
         AppForm appForm = new AppForm();
         appForm.setUsername("user");
         appForm.setPassword("password");
-        managerToTest.addApp(app, appForm);
+        IApp app = managerToTest.addApp(appForm);
         Mockito.verify(passwordEncryptor).encrypt("password");
         Mockito.verify(dbConnection).store(app);
         Assert.assertEquals(id, app.getId());
@@ -86,11 +88,10 @@ public class AppManagerTest {
     public void test_addApp_without_encryption_success() throws UnstorableObjectException {
         String id = "ID1";
         Mockito.when(dbConnection.generateId()).thenReturn(id);
-        IApp app = new App();
         AppForm appForm = new AppForm();
         appForm.setUsername("");
         appForm.setPassword("");
-        managerToTest.addApp(app, appForm);
+        IApp app = managerToTest.addApp(appForm);
         Mockito.verify(passwordEncryptor, never()).encrypt("password");
         Mockito.verify(dbConnection).store(app);
         Assert.assertEquals(id, app.getId());
@@ -101,10 +102,12 @@ public class AppManagerTest {
         AppForm appForm = new AppForm();
         appForm.setUsername("user");
         appForm.setPassword("password");
-        managerToTest.updateApp(app1, appForm);
+        appForm.setName(app3.getName());
+        IApp updatedApp = managerToTest.updateApp(app1, appForm);
         Mockito.verify(passwordEncryptor).encrypt("password");
         Mockito.verify(dbConnection).update(app1);
         Mockito.verify(appHelper).copyAppInfo(app1, appForm);
+        Assert.assertEquals(updatedApp.getName(), appForm.getName());
     }
 
     @Test
@@ -112,10 +115,12 @@ public class AppManagerTest {
         AppForm appForm = new AppForm();
         appForm.setUsername("");
         appForm.setPassword("");
-        managerToTest.updateApp(app1, appForm);
+        appForm.setName(app3.getName());
+        IApp updatedApp = managerToTest.updateApp(app1, appForm);
         Mockito.verify(passwordEncryptor, never()).encrypt("password");
         Mockito.verify(dbConnection).update(app1);
         Mockito.verify(appHelper).copyAppInfo(app1, appForm);
+        Assert.assertEquals(updatedApp.getName(), appForm.getName());
     }
 
     @Test
