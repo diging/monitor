@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 
 import edu.asu.diging.monitor.core.db.IAppDbConnection;
 import edu.asu.diging.monitor.core.db.IAppTestDbConnection;
+import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
@@ -30,12 +31,12 @@ public class AppManagerTest {
 
     @Mock
     private IAppTestDbConnection appTestDbConnection;
+    
+    @Mock
+    private IAppHelper appHelper;
 
     @Mock
     private IPasswordEncryptor passwordEncryptor;
-
-    @Mock
-    private IAppHelper appHelper;
 
     @InjectMocks
     private AppManager managerToTest;
@@ -72,7 +73,7 @@ public class AppManagerTest {
     }
 
     @Test
-    public void test_addApp_with_encryption_success() throws UnstorableObjectException {
+    public void test_addApp_with_encryption_success() throws UnstorableObjectException, GroupNotFoundException {
         String id = "ID1";
         Mockito.when(dbConnection.generateId()).thenReturn(id);
         AppForm appForm = new AppForm();
@@ -85,7 +86,7 @@ public class AppManagerTest {
     }
 
     @Test
-    public void test_addApp_without_encryption_success() throws UnstorableObjectException {
+    public void test_addApp_without_encryption_success() throws UnstorableObjectException, GroupNotFoundException {
         String id = "ID1";
         Mockito.when(dbConnection.generateId()).thenReturn(id);
         AppForm appForm = new AppForm();
@@ -98,7 +99,7 @@ public class AppManagerTest {
     }
 
     @Test
-    public void test_updateApp_with_encryption_success() {
+    public void test_updateApp_with_encryption_success() throws UnstorableObjectException, GroupNotFoundException {
         AppForm appForm = new AppForm();
         appForm.setUsername("user");
         appForm.setPassword("password");
@@ -111,7 +112,7 @@ public class AppManagerTest {
     }
 
     @Test
-    public void test_updateApp_without_encryption_success() {
+    public void test_updateApp_without_encryption_success() throws UnstorableObjectException, GroupNotFoundException {
         AppForm appForm = new AppForm();
         appForm.setUsername("");
         appForm.setPassword("");

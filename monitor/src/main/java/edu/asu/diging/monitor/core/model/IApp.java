@@ -2,6 +2,7 @@ package edu.asu.diging.monitor.core.model;
 
 import java.util.List;
 
+import edu.asu.diging.monitor.core.model.impl.Group;
 import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
 
 public interface IApp {
@@ -65,5 +66,9 @@ public interface IApp {
     String getUsername();
 
     void setUsername(String username);
+
+    void setGroup(Group group);
+
+    Group getGroup();
 
 }

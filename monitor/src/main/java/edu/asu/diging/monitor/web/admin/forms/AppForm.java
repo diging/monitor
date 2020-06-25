@@ -1,7 +1,10 @@
 package edu.asu.diging.monitor.web.admin.forms;
 
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
+import edu.asu.diging.monitor.core.model.GroupType;
 import edu.asu.diging.monitor.core.model.RequestMethod;
 
 public class AppForm {
@@ -20,22 +23,10 @@ public class AppForm {
     private List<String> recipientIds;
     private String username;
     private String password;
-
-    public List<RecipientForm> getRecipients() {
-        return recipients;
-    }
-
-    public void setRecipients(List<RecipientForm> recipients) {
-        this.recipients = recipients;
-    }
-
-    public List<String> getRecipientIds() {
-        return recipientIds;
-    }
-
-    public void setRecipientIds(List<String> recipientIds) {
-        this.recipientIds = recipientIds;
-    }
+    private Set<Entry<String, String>> groupIds;
+    private String groupName;
+    private String existingGroupId;
+    private GroupType groupType;
 
     public String getId() {
         return id;
@@ -131,6 +122,54 @@ public class AppForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<RecipientForm> getRecipients() {
+        return recipients;
+    }
+
+    public void setRecipients(List<RecipientForm> recipients) {
+        this.recipients = recipients;
+    }
+
+    public List<String> getRecipientIds() {
+        return recipientIds;
+    }
+
+    public void setRecipientIds(List<String> recipientIds) {
+        this.recipientIds = recipientIds;
+    }
+
+    public Set<Entry<String, String>> getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(Set<Entry<String, String>> groupIds) {
+        this.groupIds = groupIds;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getExistingGroupId() {
+        return existingGroupId;
+    }
+
+    public void setExistingGroupId(String existingGroupId) {
+        this.existingGroupId = existingGroupId;
+    }
+
+    public GroupType getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(GroupType groupType) {
+        this.groupType = groupType;
     }
 
 }

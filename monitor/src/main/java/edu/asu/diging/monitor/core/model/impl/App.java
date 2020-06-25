@@ -5,7 +5,9 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import edu.asu.diging.monitor.core.model.IApp;
@@ -34,15 +36,9 @@ public class App implements IApp {
     private String username;
     private String password;
 
-    @Override
-    public List<NotificationRecipient> getRecipients() {
-        return recipients;
-    }
-
-    @Override
-    public void setRecipients(List<NotificationRecipient> recipients) {
-        this.recipients = recipients;
-    }
+    @ManyToOne
+    @JoinColumn(name = "groupId", nullable = true)
+    private Group group;
 
     @Override
     public String toString() {
@@ -256,6 +252,16 @@ public class App implements IApp {
     }
 
     @Override
+    public List<NotificationRecipient> getRecipients() {
+        return recipients;
+    }
+
+    @Override
+    public void setRecipients(List<NotificationRecipient> recipients) {
+        this.recipients = recipients;
+    }
+
+    @Override
     public String getUsername() {
         return username;
     }
@@ -275,4 +281,13 @@ public class App implements IApp {
         this.password = password;
     }
 
+    @Override
+    public Group getGroup() {
+        return group;
+    }
+
+    @Override
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 }
