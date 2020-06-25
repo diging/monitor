@@ -12,6 +12,7 @@
   <div class="form-group">
  	 <form:label path="name">App Name:</form:label>
     	 <form:input type="text" class="form-control" path="name" />
+    	 <form:errors path="name" cssClass="error" />
   </div>
   
   <div class="form-group">
@@ -58,7 +59,27 @@
     	 <form:input type="number" class="form-control" path="pingInterval" value="900" />
     	 <small>Minimum interval is 1 minute (60 seconds).</small>
   </div>
+  
   <div class="form-group">
+	  <form:label path="groupType">Group:</form:label>
+	  <br>
+	  <form:radiobutton id="groupCreate" name="group" value="NEW" path ="groupType" onclick="javascript:showHideGroups();"/>
+	 	 <form:label path="groupName"><i>Create a new Group:</i></form:label>
+	 	 <form:radiobutton id="groupSelect" name="group" value="EXISTING" path="groupType" onclick="javascript:showHideGroups();" />
+	 	 <form:label path="existingGroupId"><i>Select from an Existing Group:</i></form:label>
+	 	 <form:radiobutton id="groupNone" name="group" value="NONE" path ="groupType" onclick="javascript:showHideGroups();"/>
+	 	 <label><i>None</i></label>
+  </div>
+	<div class="form-group">
+		<form:input type="text" class="form-control" path="groupName" style="display:none" id ="groupNew"/>
+			<form:errors path="groupName" cssClass="error" />
+			<form:select class="form-control" path="existingGroupId" style="display:none" id = "groupExisting">
+			<form:options items="${appForm.groupIds}" var="groups" itemValue="key" itemLabel="value" />
+		</form:select>
+		<form:errors path="existingGroupId" cssClass="error" />
+	</div>
+
+	<div class="form-group">
 		<form:label path="recipientIds">Recipients:</form:label>
 		<p>
 		<i>
@@ -95,4 +116,26 @@
 			});
 		}
 	});
+	function showHideGroups() {
+		if (document.getElementById('groupCreate').checked) {
+			$('#groupNew').css('display', 'block');
+			$('#groupExisting').css('display', 'none');
+
+		} else if (document.getElementById('groupSelect').checked) {
+			$('#groupNew').css('display', 'none');
+			$('#groupExisting').css('display', 'block');
+		} else {
+			$('#groupNew').css('display', 'none');
+			$('#groupExisting').css('display', 'none');
+		}
+	}
+	
+	window.onload = function() {
+		showHideGroups();
+	};
 </script>
+<style>
+input[type="radio"] {
+	margin: 0 10px 0 10px;
+}
+</style>

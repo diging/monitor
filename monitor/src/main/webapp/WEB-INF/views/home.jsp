@@ -65,34 +65,38 @@
 		<div class="pull-right">
 			<c:url value="/admin/apps/${app.id}/delete" var="deleteUrl" />
 			<form action="${deleteUrl}" method="POST">
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}" />
 				<button title="Delete App" type="submit" class="btn-link">
-					<i style="padding:10px;padding-left:0px;" class="fa fa-trash" aria-hidden="true"></i>
+					<i style="padding: 10px; padding-left: 0px;" class="fa fa-trash"
+						aria-hidden="true"></i>
 				</button>
 			</form>
 		</div>
 		<div class="pull-right">
 			<c:url value="/admin/apps/${app.id}/modify" var="modifyUrl" />
-			<form action="${modifyUrl}" method="GET">
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				<button title="Modify App" type="submit" class="btn-link">
-					<i style="padding:11px;padding-right:0px;padding-left:0px;" class="fa fa-edit" aria-hidden="true"></i>
-				</button>
-			</form>
+			<a href="${modifyUrl}"> 
+				<i style="padding-top:15px;padding-right:8px;padding-left:0px;" title ="Modify App" class="fa fa-edit" aria-hidden="true"></i>
+			</a>
 		</div>
 		<div class="pull-right">
-			<c:url value="/admin/apps/${app.id}/ping" var="pingUrl"/>
+			<c:url value="/admin/apps/${app.id}/ping" var="pingUrl" />
 			<form action="${pingUrl}" method="POST">
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}" />
 				<button title="Ping App" type="submit" class="btn-link">
-					<i style="padding:10px;padding-right:0px;padding-left:0px;" class="fa fa-bullseye" aria-hidden="true"></i>
+					<i style="padding: 10px; padding-right: 10px; padding-left: 0px;"
+						class="fa fa-bullseye" aria-hidden="true"></i>
 				</button>
 			</form>
 		</div>
 		<div class="pull-right">
-				<button title="Details" type="submit" class="btn-link" data-toggle="modal" data-target="#modal_${app.id }" data-backdrop="false">
-					<i style="padding:10px;padding-right:0px;padding-left:0px;" class="fa fa-info-circle" aria-hidden="true"></i>
-				</button>
+			<button title="Details" type="submit" class="btn-link"
+				data-toggle="modal" data-target="#modal_${app.id }"
+				data-backdrop="false">
+				<i style="padding: 10px; padding-right: 0px; padding-left: 0px;"
+					class="fa fa-info-circle" aria-hidden="true"></i>
+			</button>
 		</div>
 	</sec:authorize>
 	<c:choose>
@@ -117,57 +121,194 @@
 				<i class="fa fa-clock-o" aria-hidden="true"></i>
 		</c:otherwise>
 	</c:choose>
-	<strong id="name_${app.id}">${app.name}</strong> (<span id="url_${app.id}">${app.healthUrl}</span>)
-		<p>
+	<strong id="name_${app.id}">${app.name}</strong> (<span
+		id="url_${app.id}">${app.healthUrl}</span>)
+			<p>
 		<i id="desc_${app.id}">${app.description}</i>
 	</p>
 	<p>
-		Last check was run on:
-		<span id="time_${app.id }"><time:format value="${app.lastAppTest.pingTime}" pattern ="MMM d, yyyy h:mm a" /></span>
-		<br> <span id="status_${app.id}">App status is: ${app.lastAppTest.status}</span>
+		Last check was run on: <span id="time_${app.id }"><time:format
+				value="${app.lastAppTest.pingTime}" pattern="MMM d, yyyy h:mm a" /></span>
+		<br> <span id="status_${app.id}">App status is:
+			${app.lastAppTest.status}</span>
 	</p>
 	<sec:authorize access="hasAnyRole('ADMIN')">
 		<p>
 			Recipients:
 			<c:choose>
 				<c:when test="${empty app.recipients}">
-					None
-				</c:when>
+						None
+					</c:when>
 				<c:when test="${app.recipients.size() == recipientCount}">
-					All
-				</c:when>
+						All
+					</c:when>
 				<c:otherwise>
-					<c:forEach items="${app.recipients}" var="recipient" varStatus="loop">
-    					${recipient}<c:if test="${!loop.last}">,</c:if>
+					<c:forEach items="${app.recipients}" var="recipient"
+						varStatus="loop">
+	    					${recipient}<c:if test="${!loop.last}">,</c:if>
 					</c:forEach>
 				</c:otherwise>
 			</c:choose>
 		</p>
 	</sec:authorize>
 	</div>
-	<div id="modal_${app.id}" class="modal fade;overflow:hidden" role="dialog" aria-hidden="false">
+	<div id="modal_${app.id}" class="modal fade;overflow:hidden"
+		role="dialog" aria-hidden="false">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
-					<p>App Name: <b>${app.name}</b></p>
-					<p>Health Url: <b>${app.healthUrl}</b></p>
-					<p>Description: <b>${app.description}</b></p>
-					<p>App Status is: <b id="status_mod_${app.id}">${app.lastAppTest.status}</b></p>
 					<p>
-						Last check was run on:
-						<b id="time_mod_${app.id}"><time:format value="${app.lastAppTest.pingTime}" style="MS" /></b>
+						App Name: <b>${app.name}</b>
 					</p>
-					<p>Expected Return codes: <b>${app.expectedReturnCodes }</b></p>
-					<p>Warning Return codes: <b>${app.warningReturnCodes }</b></p>
-					<p>Timeout: <b>${app.timeout }</b></p>
-					<p>Retries: <b>${app.retries}</b></p>
-					<p>Ping Interval is: <b>${app.pingInterval}</b></p>
-					<p>Request Method is: <b>${app.method }</b></p>
+					<p>
+						Health Url: <b>${app.healthUrl}</b>
+					</p>
+					<p>
+						Description: <b>${app.description}</b>
+					</p>
+					<p>
+						App Status is: <b id="status_mod_${app.id}">${app.lastAppTest.status}</b>
+					</p>
+					<p>
+						Last check was run on: <b id="time_mod_${app.id}"><time:format
+								value="${app.lastAppTest.pingTime}" style="MS" /></b>
+					</p>
+					<p>
+						Expected Return codes: <b>${app.expectedReturnCodes }</b>
+					</p>
+					<p>
+						Warning Return codes: <b>${app.warningReturnCodes }</b>
+					</p>
+					<p>
+						Timeout: <b>${app.timeout }</b>
+					</p>
+					<p>
+						Retries: <b>${app.retries}</b>
+					</p>
+					<p>
+						Ping Interval is: <b>${app.pingInterval}</b>
+					</p>
+					<p>
+						Request Method is: <b>${app.method }</b>
+					</p>
 				</div>
 				<div class="modal-footer">
-        			<button type="button" class="btn btn-alert" data-dismiss="modal">Close</button>
-      			</div>
+					<button type="button" class="btn btn-alert" data-dismiss="modal">Close</button>
+				</div>
 			</div>
 		</div>
 	</div>
+</c:forEach>
+<c:forEach items="${appGroups}" var= "group">
+	<c:if test="${not empty group.apps}">
+	<h5><b>${group.name}</b></h5>
+	<c:forEach items="${group.apps}" var="app">
+		<sec:authorize access="hasAnyRole('ADMIN')">
+			<div class="pull-right">
+				<c:url value="/admin/apps/${app.id}/delete" var="deleteUrl" />
+				<form action="${deleteUrl}" method="POST">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<button title="Delete App" type="submit" class="btn-link">
+						<i style="padding:10px;padding-left:0px;" class="fa fa-trash" aria-hidden="true"></i>
+					</button>
+				</form>
+			</div>
+			<div class="pull-right">
+				<c:url value="/admin/apps/${app.id}/modify" var="modifyUrl" />
+				<a href="${modifyUrl}">
+					<i style="padding-top:15px;padding-right:8px;padding-left:0px;" title ="Modify App" class="fa fa-edit" aria-hidden="true"></i>
+				</a>
+			</div>
+			<div class="pull-right">
+				<c:url value="/admin/apps/${app.id}/ping" var="pingUrl"/>
+				<form action="${pingUrl}" method="POST">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<button title="Ping App" type="submit" class="btn-link">
+						<i style="padding:10px;padding-right:10px;padding-left:0px;" class="fa fa-bullseye" aria-hidden="true"></i>
+					</button>
+				</form>
+			</div>
+			<div class="pull-right">
+					<button title="Details" type="submit" class="btn-link" data-toggle="modal" data-target="#modal_${app.id }" data-backdrop="false">
+						<i style="padding:10px;padding-right:0px;padding-left:0px;" class="fa fa-info-circle" aria-hidden="true"></i>
+					</button>
+			</div>
+		</sec:authorize>
+		<c:choose>
+			<c:when test="${app.lastAppTest.status == 'OK'}">
+				<div class="alert alert-success" role="alert">
+					<i class="fa fa-check-circle" aria-hidden="true"></i>
+			</c:when>
+			<c:when test="${app.lastAppTest.status == 'ERROR'}">
+				<div class="alert alert-danger" role="alert">
+					<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+			</c:when>
+			<c:when test="${app.lastAppTest.status == 'IN_PROGRESS'}">
+				<div class="alert alert-warning" role="alert">
+					<i class="fa fa-clock-o" aria-hidden="true"></i>
+			</c:when>
+			<c:when test="${app.lastAppTest.status == 'WARNING'}">
+				<div class="alert alert-warning" role="alert">
+					<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+			</c:when>
+			<c:otherwise>
+				<div class="alert alert-info" role="alert">
+					<i class="fa fa-clock-o" aria-hidden="true"></i>
+			</c:otherwise>
+		</c:choose>
+		<strong id="name_${app.id}">${app.name}</strong> (<span id="url_${app.id}">${app.healthUrl}</span>)
+			<p>
+			<i id="desc_${app.id}">${app.description}</i>
+		</p>
+		<p>
+			Last check was run on:
+			<span id="time_${app.id }"><time:format value="${app.lastAppTest.pingTime}" pattern ="MMM d, yyyy h:mm a" /></span>
+			<br> <span id="status_${app.id}">App status is: ${app.lastAppTest.status}</span>
+		</p>
+		<sec:authorize access="hasAnyRole('ADMIN')">
+			<p>
+				Recipients:
+				<c:choose>
+					<c:when test="${empty app.recipients}">
+						None
+					</c:when>
+					<c:when test="${app.recipients.size() == recipientCount}">
+						All
+					</c:when>
+					<c:otherwise>
+						<c:forEach items="${app.recipients}" var="recipient" varStatus="loop">
+	    					${recipient}<c:if test="${!loop.last}">,</c:if>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+			</p>
+		</sec:authorize>
+		</div>
+		<div id="modal_${app.id}" class="modal fade;overflow:hidden" role="dialog" aria-hidden="false">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p>App Name: <b>${app.name}</b></p>
+						<p>Health Url: <b>${app.healthUrl}</b></p>
+						<p>Description: <b>${app.description}</b></p>
+						<p>App Status is: <b id="status_mod_${app.id}">${app.lastAppTest.status}</b></p>
+						<p>
+							Last check was run on:
+							<b id="time_mod_${app.id}"><time:format value="${app.lastAppTest.pingTime}" style="MS" /></b>
+						</p>
+						<p>Expected Return codes: <b>${app.expectedReturnCodes }</b></p>
+						<p>Warning Return codes: <b>${app.warningReturnCodes }</b></p>
+						<p>Timeout: <b>${app.timeout }</b></p>
+						<p>Retries: <b>${app.retries}</b></p>
+						<p>Ping Interval is: <b>${app.pingInterval}</b></p>
+						<p>Request Method is: <b>${app.method }</b></p>
+					</div>
+					<div class="modal-footer">
+	        			<button type="button" class="btn btn-alert" data-dismiss="modal">Close</button>
+	      			</div>
+				</div>
+			</div>
+		</div>
+	</c:forEach>
+	</c:if>
 </c:forEach>

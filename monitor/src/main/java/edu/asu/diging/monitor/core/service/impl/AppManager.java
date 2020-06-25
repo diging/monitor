@@ -13,10 +13,14 @@ import org.springframework.stereotype.Service;
 
 import edu.asu.diging.monitor.core.db.IAppDbConnection;
 import edu.asu.diging.monitor.core.db.IAppTestDbConnection;
+import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
+import edu.asu.diging.monitor.core.model.impl.App;
+import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
+import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
 @Service
 @Transactional
@@ -30,6 +34,9 @@ public class AppManager implements IAppManager {
     @Autowired
     private IAppTestDbConnection appTestDbConnection;
 
+    @Autowired
+    private IAppHelper appHelper;
+
     /*
      * (non-Javadoc)
      * 
@@ -38,18 +45,23 @@ public class AppManager implements IAppManager {
      * monitor.core.model.IApp)
      */
     @Override
-    public void addApp(IApp app) {
+    public IApp addApp(AppForm appForm) throws UnstorableObjectException, GroupNotFoundException {
+        IApp app = new App();
         app.setId(dbConnection.generateId());
+        appHelper.copyAppInfo(app, appForm);
         try {
             dbConnection.store(app);
         } catch (UnstorableObjectException e) {
             // should never happen, we're setting the id
             logger.error("Could not store app.", e);
         }
+        return app;
     }
 
     @Override
-    public void updateApp(IApp app) {
+    public void updateApp(IApp app, AppForm appForm) throws UnstorableObjectException, GroupNotFoundException {
+        deleteExistingRecipients(app);
+        appHelper.copyAppInfo(app, appForm);
         dbConnection.update(app);
     }
 
@@ -105,8 +117,9 @@ public class AppManager implements IAppManager {
         }
     }
 
-    @Override
-    public void deleteExistingRecipients(IApp app) {
-        dbConnection.deleteRecipientsForApp(app);
+    protected void deleteExistingRecipients(IApp app) {
+        if (app.getRecipients() != null && !app.getRecipients().isEmpty()) {
+            dbConnection.deleteRecipientsForApp(app);
+        }
     }
 }

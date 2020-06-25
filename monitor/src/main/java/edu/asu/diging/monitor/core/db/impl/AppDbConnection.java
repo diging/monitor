@@ -93,6 +93,7 @@ public class AppDbConnection implements IAppDbConnection {
             recipient.getApps().remove(element);
         }
         em.remove(element);
+        em.flush();
     }
 
     @Override
@@ -159,4 +160,5 @@ public class AppDbConnection implements IAppDbConnection {
 
         return builder.toString();
     }
+
 }

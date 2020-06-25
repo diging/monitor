@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import edu.asu.diging.monitor.core.db.INotificationRecipientDbConnection;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
-import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
 import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
 

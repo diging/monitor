@@ -5,7 +5,9 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import edu.asu.diging.monitor.core.model.IApp;
@@ -31,16 +33,9 @@ public class App implements IApp {
     private RequestMethod method;
     @ManyToMany(mappedBy = "apps", fetch = FetchType.EAGER)
     private List<NotificationRecipient> recipients;
-
-    @Override
-    public List<NotificationRecipient> getRecipients() {
-        return recipients;
-    }
-
-    @Override
-    public void setRecipients(List<NotificationRecipient> recipients) {
-        this.recipients = recipients;
-    }
+    @ManyToOne
+    @JoinColumn(name = "groupId", nullable = true)
+    private Group group;
 
     @Override
     public String toString() {
@@ -253,4 +248,23 @@ public class App implements IApp {
         this.method = method;
     }
 
+    @Override
+    public List<NotificationRecipient> getRecipients() {
+        return recipients;
+    }
+
+    @Override
+    public void setRecipients(List<NotificationRecipient> recipients) {
+        this.recipients = recipients;
+    }
+
+    @Override
+    public Group getGroup() {
+        return group;
+    }
+
+    @Override
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 }
