@@ -59,6 +59,8 @@ public class AppManagerTest {
         app2.setId(ID2);
         app3 = new App();
         app3.setName("name");
+        app3.setUsername("");
+        app3.setPassword("");
         storedApps = new App[] { app1, app2 };
 
         Mockito.when(dbConnection.getAllRegisteredApps()).thenReturn(storedApps);
@@ -107,7 +109,6 @@ public class AppManagerTest {
         IApp updatedApp = managerToTest.updateApp(app1, appForm);
         Mockito.verify(passwordEncryptor).encrypt("password");
         Mockito.verify(dbConnection).update(app1);
-        Mockito.verify(appHelper).copyAppInfo(app1, appForm);
         Assert.assertEquals(updatedApp.getName(), appForm.getName());
     }
 
@@ -120,8 +121,9 @@ public class AppManagerTest {
         IApp updatedApp = managerToTest.updateApp(app1, appForm);
         Mockito.verify(passwordEncryptor, never()).encrypt("password");
         Mockito.verify(dbConnection).update(app1);
-        Mockito.verify(appHelper).copyAppInfo(app1, appForm);
         Assert.assertEquals(updatedApp.getName(), appForm.getName());
+        Assert.assertEquals(updatedApp.getUsername(), appForm.getUsername());
+        Assert.assertEquals(app3.getPassword(), appForm.getPassword());
     }
 
     @Test
