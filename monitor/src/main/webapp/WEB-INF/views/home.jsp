@@ -136,12 +136,9 @@
 		<p>
 			Recipients:
 			<c:choose>
-				<c:when test="${empty app.recipients}">
-						None
-					</c:when>
-				<c:when test="${app.recipients.size() == recipientCount}">
+				<c:when test="${empty app.recipients || app.recipients.size() == recipientCount}">
 						All
-					</c:when>
+				</c:when>
 				<c:otherwise>
 					<c:forEach items="${app.recipients}" var="recipient"
 						varStatus="loop">
@@ -269,12 +266,9 @@
 			<p>
 				Recipients:
 				<c:choose>
-					<c:when test="${empty app.recipients}">
-						None
-					</c:when>
-					<c:when test="${app.recipients.size() == recipientCount}">
+					<c:when test="${empty app.recipients || app.recipients.size() == recipientCount}">
 						All
-					</c:when>
+				</c:when>
 					<c:otherwise>
 						<c:forEach items="${app.recipients}" var="recipient" varStatus="loop">
 	    					${recipient}<c:if test="${!loop.last}">,</c:if>
