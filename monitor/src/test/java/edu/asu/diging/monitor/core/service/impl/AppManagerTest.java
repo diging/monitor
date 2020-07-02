@@ -106,14 +106,14 @@ public class AppManagerTest {
         appForm.setUsername("user");
         appForm.setPassword("password");
         app3.setUsername("user");
-        app3.setPassword("password");
+        app3.setPassword("encryptedPassword");
         appForm.setName(app3.getName());
         IApp updatedApp = managerToTest.updateApp(app1, appForm);
         Mockito.verify(passwordEncryptor).encrypt("password");
         Mockito.verify(dbConnection).update(app1);
         Assert.assertEquals(appForm.getName(), updatedApp.getName());
         Assert.assertEquals(appForm.getUsername(), updatedApp.getUsername());
-        Assert.assertEquals(appForm.getPassword(), updatedApp.getPassword());
+        Assert.assertNotEquals(appForm.getPassword(), updatedApp.getPassword());
         
     }
 
@@ -128,7 +128,7 @@ public class AppManagerTest {
         Mockito.verify(dbConnection).update(app1);
         Assert.assertEquals(appForm.getName(), updatedApp.getName());
         Assert.assertEquals(appForm.getUsername(), updatedApp.getUsername());
-        Assert.assertEquals(appForm.getPassword(), app3.getPassword());
+        Assert.assertEquals(appForm.getPassword(), updatedApp.getPassword());
     }
 
     @Test
