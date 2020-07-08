@@ -23,6 +23,7 @@ public class AppForm {
     private List<String> recipientIds;
     private String username;
     private String password;
+    private boolean updateUserInfo;
     private Set<Entry<String, String>> groupIds;
     private String groupName;
     private String existingGroupId;
@@ -120,8 +121,17 @@ public class AppForm {
         return password;
     }
 
+
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public boolean isUpdateUserInfo() {
+        return updateUserInfo;
+    }
+
+    public void setUpdateUserInfo(boolean updateUserInfo) {
+        this.updateUserInfo = updateUserInfo;
     }
 
     public List<RecipientForm> getRecipients() {

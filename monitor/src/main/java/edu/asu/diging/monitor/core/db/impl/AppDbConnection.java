@@ -161,4 +161,9 @@ public class AppDbConnection implements IAppDbConnection {
         return builder.toString();
     }
 
+    @Override
+    public void updateAppAuth(IApp app) {
+        em.merge(app);
+    }
+
 }

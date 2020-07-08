@@ -59,6 +59,9 @@
     	 <form:input type="number" class="form-control" path="pingInterval" value="900" />
     	 <small>Minimum interval is 1 minute (60 seconds).</small>
   </div>
+  
+  <c:choose>
+	<c:when test="${empty appForm.id}">
 
 	<div class="form-group">
 		<form:label path="username">Username:</form:label>
@@ -68,6 +71,14 @@
 		<form:label path="password">Password:</form:label>
 		<form:input type="password" class="form-control" path="password" />
 	</div>
+	</c:when>
+	<c:otherwise>
+		<c:url value="/admin/apps/${appForm.id}/modifyAuth" var="modifyAuth" />
+			<a href="${modifyAuth}">
+			<label>Edit Authentication information</label>
+			</a>
+	</c:otherwise>
+	</c:choose>
 	<div class="form-group">
 	  <form:label path="groupType">Group:</form:label>
 	  <br>

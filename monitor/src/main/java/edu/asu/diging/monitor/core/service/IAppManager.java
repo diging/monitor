@@ -24,4 +24,6 @@ public interface IAppManager {
 
     void deleteApp(String id);
 
+    IApp updateAppAuth(AppForm appForm, IApp app);
+
 }
