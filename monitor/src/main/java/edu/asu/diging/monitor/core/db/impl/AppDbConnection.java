@@ -47,7 +47,7 @@ public class AppDbConnection implements IAppDbConnection {
         if (app.getId() == null) {
             throw new UnstorableObjectException("App does not have an id.");
         }
-        if (app.getRecipients() != null) {
+        if (app.getRecipients() != null && !app.getRecipients().isEmpty()) {
             for (INotificationRecipient recipient : app.getRecipients()) {
                 recipient.getApps().add((App) app);
                 em.merge(recipient);

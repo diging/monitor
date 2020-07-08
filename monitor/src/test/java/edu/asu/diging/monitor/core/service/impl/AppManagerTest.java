@@ -101,7 +101,7 @@ public class AppManagerTest {
     }
 
     @Test
-    public void test_updateApp_with_encryption_success() throws UnstorableObjectException, GroupNotFoundException {
+    public void test_updateAppAuth_with_encryption_success() throws UnstorableObjectException, GroupNotFoundException {
         AppForm appForm = new AppForm();
         appForm.setUsername("user");
         appForm.setPassword("password");

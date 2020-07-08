@@ -76,16 +76,22 @@
 		<div class="pull-right">
 			<c:url value="/admin/apps/${app.id}/modify" var="modifyUrl" />
 			<a href="${modifyUrl}"> 
-				<i style="padding-top:15px;padding-right:8px;padding-left:0px;" title ="Modify App" class="fa fa-edit" aria-hidden="true"></i>
+				<i style="padding-top:15px;padding-right:8px;padding-left:1px;" title ="Modify App" class="fa fa-edit" aria-hidden="true"></i>
 			</a>
 		</div>
+		<div class="pull-right">
+				<c:url value="/admin/apps/${app.id}/modifyAuth" var="modifyAuth" />
+				<a href="${modifyAuth}">
+					<i style="padding-top:13px;padding-right:15px;padding-left:0px;" title ="Modify App authentication" class="fa fa-pencil"></i>
+				</a>
+			</div>
 		<div class="pull-right">
 			<c:url value="/admin/apps/${app.id}/ping" var="pingUrl" />
 			<form action="${pingUrl}" method="POST">
 				<input type="hidden" name="${_csrf.parameterName}"
 					value="${_csrf.token}" />
 				<button title="Ping App" type="submit" class="btn-link">
-					<i style="padding: 10px; padding-right: 10px; padding-left: 0px;"
+					<i style="padding: 10px; padding-right: 10px; padding-left: 1px;"
 						class="fa fa-bullseye" aria-hidden="true"></i>
 				</button>
 			</form>
@@ -216,7 +222,13 @@
 			<div class="pull-right">
 				<c:url value="/admin/apps/${app.id}/modify" var="modifyUrl" />
 				<a href="${modifyUrl}">
-					<i style="padding-top:15px;padding-right:8px;padding-left:0px;" title ="Modify App" class="fa fa-edit" aria-hidden="true"></i>
+					<i style="padding-top:15px;padding-right:8px;padding-left:1px;" title ="Modify App" class="fa fa-edit" aria-hidden="true"></i>
+				</a>
+			</div>
+			<div class="pull-right">
+				<c:url value="/admin/apps/${app.id}/modifyAuth" var="modifyAuth" />
+				<a href="${modifyAuth}">
+					<i style="padding-top:13px;padding-right:15px;padding-left:0px;" title ="Modify App authentication" class="fa fa-pencil"></i>
 				</a>
 			</div>
 			<div class="pull-right">
@@ -224,7 +236,7 @@
 				<form action="${pingUrl}" method="POST">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					<button title="Ping App" type="submit" class="btn-link">
-						<i style="padding:10px;padding-right:10px;padding-left:0px;" class="fa fa-bullseye" aria-hidden="true"></i>
+						<i style="padding:10px;padding-right:10px;padding-left:1px;" class="fa fa-bullseye" aria-hidden="true"></i>
 					</button>
 				</form>
 			</div>
