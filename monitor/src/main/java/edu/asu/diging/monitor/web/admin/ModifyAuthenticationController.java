@@ -54,7 +54,7 @@ public class ModifyAuthenticationController {
         redirectAttrs.addFlashAttribute("show_alert", true);
         redirectAttrs.addFlashAttribute("alert_type", "success");
         redirectAttrs.addFlashAttribute("alert_msg", "Authentication info was successfully updated.");
-        return "redirect:/admin/apps/{id}/modify";
+        return "redirect:/";
     }
 
 }

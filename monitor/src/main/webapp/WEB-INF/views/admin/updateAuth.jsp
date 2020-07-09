@@ -14,8 +14,10 @@
 		<form:label path="password">Password:</form:label>
 		<form:input type="password" class="form-control" path="password" />
 		<form:errors path="password" cssClass="error" />
-		<form:input type="hidden" class="form-control" path="updateUserInfo" value="true"/>
+		<form:input type="hidden" class="form-control" path="updateUserInfo"
+			value="true" />
 	</div>
-
 	<input class="btn btn-primary" type="submit" value="Update Credentials" />
 </form:form>
+<br>
+<a href="<c:url value="/" />" ><input class="btn btn-primary" type="submit" value="Cancel" /></a>
