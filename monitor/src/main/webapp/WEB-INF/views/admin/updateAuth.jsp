@@ -18,6 +18,6 @@
 			value="true" />
 	</div>
 	<input class="btn btn-primary" type="submit" value="Update Credentials" />
+	<a href="<c:url value="/" />" ><input class="btn btn-default" type="button" value="Cancel" /></a>
 </form:form>
 <br>
-<a href="<c:url value="/" />" ><input class="btn btn-primary" type="submit" value="Cancel" /></a>
