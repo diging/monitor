@@ -1,3 +1,4 @@
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
@@ -18,6 +19,6 @@
 			value="true" />
 	</div>
 	<input class="btn btn-primary" type="submit" value="Update Credentials" />
-	<a href="<c:url value="/" />" ><input class="btn btn-default" type="button" value="Cancel" /></a>
+	<a href="<c:url value="/" />" class="btn btn-default" type="button">Cancel</a>
 </form:form>
 <br>
