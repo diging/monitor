@@ -60,7 +60,26 @@
     	 <small>Minimum interval is 1 minute (60 seconds).</small>
   </div>
   
-  <div class="form-group">
+  <c:choose>
+	<c:when test="${empty appForm.id}">
+
+	<div class="form-group">
+		<form:label path="username">Username:</form:label>
+		<form:input type="text" class="form-control" path="username" />
+	</div>
+	<div class="form-group">
+		<form:label path="password">Password:</form:label>
+		<form:input type="password" class="form-control" path="password" />
+	</div>
+	</c:when>
+	<c:otherwise>
+		<c:url value="/admin/apps/${appForm.id}/modifyAuth" var="modifyAuth" />
+			<a href="${modifyAuth}">
+			<label>Edit Authentication information</label>
+			</a>
+	</c:otherwise>
+	</c:choose>
+	<div class="form-group">
 	  <form:label path="groupType">Group:</form:label>
 	  <br>
 	  <form:radiobutton id="groupCreate" name="group" value="NEW" path ="groupType" onclick="javascript:showHideGroups();"/>
@@ -69,7 +88,7 @@
 	 	 <form:label path="existingGroupId"><i>Select from an Existing Group:</i></form:label>
 	 	 <form:radiobutton id="groupNone" name="group" value="NONE" path ="groupType" onclick="javascript:showHideGroups();"/>
 	 	 <label><i>None</i></label>
-  </div>
+  	</div>
 	<div class="form-group">
 		<form:input type="text" class="form-control" path="groupName" style="display:none" id ="groupNew"/>
 			<form:errors path="groupName" cssClass="error" />
@@ -78,7 +97,6 @@
 		</form:select>
 		<form:errors path="existingGroupId" cssClass="error" />
 	</div>
-
 	<div class="form-group">
 		<form:label path="recipientIds">Recipients:</form:label>
 		<p>

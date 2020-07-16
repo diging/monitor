@@ -33,6 +33,9 @@ public class App implements IApp {
     private RequestMethod method;
     @ManyToMany(mappedBy = "apps", fetch = FetchType.EAGER)
     private List<NotificationRecipient> recipients;
+    private String username;
+    private String password;
+
     @ManyToOne
     @JoinColumn(name = "groupId", nullable = true)
     private Group group;
@@ -256,6 +259,26 @@ public class App implements IApp {
     @Override
     public void setRecipients(List<NotificationRecipient> recipients) {
         this.recipients = recipients;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

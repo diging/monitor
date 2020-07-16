@@ -20,6 +20,7 @@ import edu.asu.diging.monitor.core.model.IAppTest;
 import edu.asu.diging.monitor.core.model.impl.App;
 import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IAppManager;
+import edu.asu.diging.monitor.core.service.IPasswordEncryptor;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
 @Service
@@ -33,6 +34,9 @@ public class AppManager implements IAppManager {
 
     @Autowired
     private IAppTestDbConnection appTestDbConnection;
+
+    @Autowired
+    private IPasswordEncryptor passwordEncryptor;
 
     @Autowired
     private IAppHelper appHelper;
@@ -49,6 +53,7 @@ public class AppManager implements IAppManager {
         IApp app = new App();
         app.setId(dbConnection.generateId());
         appHelper.copyAppInfo(app, appForm);
+        encryptPassword(appForm, app);
         try {
             dbConnection.store(app);
         } catch (UnstorableObjectException e) {
@@ -59,10 +64,10 @@ public class AppManager implements IAppManager {
     }
 
     @Override
-    public void updateApp(IApp app, AppForm appForm) throws UnstorableObjectException, GroupNotFoundException {
+    public IApp updateApp(IApp app, AppForm appForm) throws UnstorableObjectException, GroupNotFoundException {
         deleteExistingRecipients(app);
         appHelper.copyAppInfo(app, appForm);
-        dbConnection.update(app);
+        return dbConnection.update(app);
     }
 
     @Override
@@ -121,5 +126,22 @@ public class AppManager implements IAppManager {
         if (app.getRecipients() != null && !app.getRecipients().isEmpty()) {
             dbConnection.deleteRecipientsForApp(app);
         }
+    }
+    protected void encryptPassword(AppForm appForm, IApp app) {
+        if (!appForm.getUsername().isEmpty() && !appForm.getPassword().isEmpty()) {
+            app.setUsername(appForm.getUsername());
+            app.setPassword(passwordEncryptor.encrypt(appForm.getPassword()));
+        } else {
+            app.setUsername(null);
+            app.setPassword(null);
+        }
+
+    }
+
+    @Override
+    public IApp updateAppAuth(AppForm appForm, IApp app) {
+        encryptPassword(appForm, app);
+        dbConnection.updateAppAuth(app);
+        return app;
     }
 }

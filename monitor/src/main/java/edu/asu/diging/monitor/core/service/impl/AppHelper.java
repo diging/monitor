@@ -72,6 +72,7 @@ public class AppHelper implements IAppHelper {
         } else {
             appForm.setGroupType(GroupType.NONE);
         }
+        appForm.setUsername(app.getUsername());
         appForm.setRetries(app.getRetries());
         appForm.setTimeout(app.getTimeout());
         appForm.setWarningReturnCodes(app.getWarningReturnCodes());

@@ -22,6 +22,10 @@
 		<put-attribute name="content" value="/WEB-INF/views/admin/addApp.jsp" />	
 	</definition>
 	
+	<definition name="admin/apps/auth" extends="base.definition">
+		<put-attribute name="content" value="/WEB-INF/views/admin/updateAuth.jsp" />	
+	</definition>
+	
 	<definition name="admin/groups/show" extends="base.definition">
 		<put-attribute name="content" value="/WEB-INF/views/admin/showGroup.jsp" />	
 	</definition>

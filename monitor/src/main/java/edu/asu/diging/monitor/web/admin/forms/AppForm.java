@@ -21,6 +21,9 @@ public class AppForm {
     private RequestMethod method;
     private List<RecipientForm> recipients;
     private List<String> recipientIds;
+    private String username;
+    private String password;
+    private boolean updateUserInfo;
     private Set<Entry<String, String>> groupIds;
     private String groupName;
     private String existingGroupId;
@@ -104,6 +107,31 @@ public class AppForm {
 
     public void setMethod(RequestMethod method) {
         this.method = method;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    public boolean isUpdateUserInfo() {
+        return updateUserInfo;
+    }
+
+    public void setUpdateUserInfo(boolean updateUserInfo) {
+        this.updateUserInfo = updateUserInfo;
     }
 
     public List<RecipientForm> getRecipients() {

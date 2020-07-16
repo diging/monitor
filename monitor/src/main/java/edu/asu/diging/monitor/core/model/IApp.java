@@ -59,6 +59,14 @@ public interface IApp {
 
     void setRecipients(List<NotificationRecipient> recipients);
 
+    String getPassword();
+
+    void setPassword(String password);
+
+    String getUsername();
+
+    void setUsername(String username);
+
     void setGroup(Group group);
 
     Group getGroup();

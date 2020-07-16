@@ -34,18 +34,18 @@ public class AddAppController {
     private IAppManager appManager;
 
     @Autowired
+    private INotificationManager manager;
+
+    @Autowired
+    private IGroupManager groupManager;
+
+    @Autowired
     private AppValidator appValidator;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.addValidators(appValidator);
     }
-
-    @Autowired
-    private INotificationManager manager;
-
-    @Autowired
-    private IGroupManager groupManager;
 
     @RequestMapping(value = "/admin/apps/add")
     public String show(Model model) {

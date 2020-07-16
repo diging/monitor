@@ -13,6 +13,7 @@
 		<spring-security-version>5.3.3.RELEASE</spring-security-version>
 		<encoding.type>{bcrypt}</encoding.type>
 		<admin.password>$2y$12$AJZLdMlxFVueyEUwjPNjo.df2235U0BTudUjY915T4on73our8x0C</admin.password>
+		<encryption.password>password</encryption.password>
 		<log.level>debug</log.level>
 
 		<!-- DB config -->
@@ -288,6 +289,14 @@
 		    <artifactId>jackson-core</artifactId>
 		    <version>2.10.3</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.jasypt/jasypt -->
+		<dependency>
+		    <groupId>org.jasypt</groupId>
+		    <artifactId>jasypt</artifactId>
+		    <version>1.9.3</version>
+		</dependency>
+		
 		
 	</dependencies>
 

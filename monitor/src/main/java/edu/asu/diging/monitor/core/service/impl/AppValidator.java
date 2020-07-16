@@ -19,12 +19,20 @@ public class AppValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         AppForm appForm = (AppForm) target;
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "app.name.empty");
+        if (appForm.getName() != null) {
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "app.name.empty");
+        }
         if (appForm.getGroupType() == GroupType.NEW) {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "groupName", "group.name.empty");
         }
         if (appForm.getGroupType() == GroupType.EXISTING) {
             ValidationUtils.rejectIfEmpty(errors, "existingGroupId", "group.dropdown.empty");
+        }
+        if (appForm.isUpdateUserInfo()) {
+            if (!appForm.getUsername().isEmpty() || !appForm.getPassword().isEmpty()) {
+                ValidationUtils.rejectIfEmpty(errors, "username", "user.name.empty");
+                ValidationUtils.rejectIfEmpty(errors, "password", "user.password.empty");
+            }
         }
     }
 }

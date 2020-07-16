@@ -12,7 +12,7 @@ public interface IAppManager {
 
     IApp addApp(AppForm appForm) throws UnstorableObjectException, GroupNotFoundException;
 
-    void updateApp(IApp app, AppForm appForm) throws UnstorableObjectException, GroupNotFoundException;
+    IApp updateApp(IApp app, AppForm appForm) throws UnstorableObjectException, GroupNotFoundException;
 
     List<IApp> getApps();
 
@@ -23,5 +23,7 @@ public interface IAppManager {
     void addAppTest(IAppTest test, boolean updateAppLastTest);
 
     void deleteApp(String id);
-    
+
+    IApp updateAppAuth(AppForm appForm, IApp app);
+
 }
