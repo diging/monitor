@@ -1,20 +1,29 @@
 package edu.asu.diging.monitor.core.db;
 
+
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 
 public interface IAppDbConnection {
 
-	IApp getById(String id);
+    IApp getById(String id);
 
-	IApp store(IApp app) throws UnstorableObjectException;
+    IApp store(IApp app) throws UnstorableObjectException;
 
-	void delete(IApp element);
+    IApp update(IApp app);
 
-	IApp[] getAllRegisteredApps();
+    void delete(IApp element);
 
-	String generateId();
+    IApp[] getAllRegisteredApps();
 
-	void updateLastAppTest(String appId, String appTestId);
+    String generateId();
+
+    void updateLastAppTest(String appId, String appTestId);
+
+    void deleteRecipientsForApp(IApp app);
+
+    void updateAppAuth(IApp app);
+
+    
 
 }

@@ -31,7 +31,7 @@
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="<c:url value="/resources/bootstrap/assets/js/ie8-responsive-file-warning.js" />"></script><![endif]-->
     <script src="<c:url value="/resources/bootstrap/assets/js/ie-emulation-modes-warning.js" />"></script>
-
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js" type="text/javascript"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -58,7 +58,10 @@
           		<a href="<c:url value="/admin/apps/add" />" >Add App</a>
           	</li>
           	<li role="presentation">
-          		<a href="<c:url value="/admin/recipients/add" />" >Add Recipient</a>
+          		<a href="<c:url value="/admin/groups/show" />" >Groups</a>
+          	</li>
+          	<li role="presentation">
+          		<a href="<c:url value="/admin/recipient/list" />" >Recipients</a>
           	</li>
           	</sec:authorize>
           	<sec:authorize access="isAuthenticated()">
@@ -73,7 +76,7 @@
          
         </nav>
         
-        <h1><a class="appName" href="<c:url value="/" />">Monitor</a> <span style="margin-left: 15px;" class="small">How are your sites are doing?</span></h1>
+        <h1><a class="appName" href="<c:url value="/" />">Monitor</a> <span style="margin-left: 15px;" class="small">How are your sites doing?</span></h1>
  
       </div>
       
@@ -111,7 +114,5 @@
         </div>
       </div>
     </footer>
-    
-
      </body>
 </html>

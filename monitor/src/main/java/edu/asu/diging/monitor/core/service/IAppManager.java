@@ -2,19 +2,28 @@ package edu.asu.diging.monitor.core.service;
 
 import java.util.List;
 
+import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
+import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
+import edu.asu.diging.monitor.web.admin.forms.AppForm;
 
 public interface IAppManager {
 
-	void addApp(IApp app);
+    IApp addApp(AppForm appForm) throws UnstorableObjectException, GroupNotFoundException;
 
-	List<IApp> getApps();
+    IApp updateApp(IApp app, AppForm appForm) throws UnstorableObjectException, GroupNotFoundException;
 
-	IAppTest getLatestAppTest(IApp app);
+    List<IApp> getApps();
 
-	void addAppTest(IAppTest test, boolean updateAppLastTest);
+    IApp getApp(String id);
 
-	void deleteApp(String id);
+    IAppTest getLatestAppTest(IApp app);
+
+    void addAppTest(IAppTest test, boolean updateAppLastTest);
+
+    void deleteApp(String id);
+
+    IApp updateAppAuth(AppForm appForm, IApp app);
 
 }

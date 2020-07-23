@@ -21,7 +21,24 @@
 	<definition name="admin/apps/show" extends="base.definition">
 		<put-attribute name="content" value="/WEB-INF/views/admin/addApp.jsp" />	
 	</definition>
+	
+	<definition name="admin/apps/auth" extends="base.definition">
+		<put-attribute name="content" value="/WEB-INF/views/admin/updateAuth.jsp" />	
+	</definition>
+	
+	<definition name="admin/groups/show" extends="base.definition">
+		<put-attribute name="content" value="/WEB-INF/views/admin/showGroup.jsp" />	
+	</definition>
+	
+	<definition name="admin/groups/add" extends="base.definition">
+		<put-attribute name="content" value="/WEB-INF/views/admin/addGroup.jsp" />	
+	</definition>
+	
 	<definition name="admin/recipients/show" extends="base.definition">
+		<put-attribute name="content" value="/WEB-INF/views/admin/showRecipient.jsp" />
+	</definition>
+	
+	<definition name="admin/recipients/add" extends="base.definition">
 		<put-attribute name="content" value="/WEB-INF/views/admin/addRecipient.jsp" />	
 	</definition>
 	
