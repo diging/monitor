@@ -10,6 +10,8 @@ import edu.asu.diging.monitor.core.model.INotificationRecipient;
 public interface INotificationManager {
 
 	boolean addRecipient(String name, String email, List<String> apps) throws EmailAlreadyRegisteredException;
+	
+	boolean modifyRecipient(String email);
 
 	void sendNotificationEmails(IApp app, AppStatus previousStatus);
 	

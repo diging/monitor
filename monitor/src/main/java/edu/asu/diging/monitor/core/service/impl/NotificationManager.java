@@ -65,6 +65,12 @@ public class NotificationManager implements INotificationManager {
         }
         return true;
     }
+    
+    @Override
+    public boolean modifyRecipient(String email) {
+        //Code here
+        return true;
+    }
 
     @Override
     public void deleteRecipient(String email) {
