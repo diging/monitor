@@ -67,8 +67,27 @@ public class NotificationManager implements INotificationManager {
     }
     
     @Override
-    public boolean modifyRecipient(String email) {
+    public boolean modifyRecipient(String email, String name, List<String> apps ) {
         //Code here
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+        if (dbConnection.getById(email) == null) {
+            logger.error("No such email recipient exists");
+        }
+        INotificationRecipient recipient = this.getRecipient(email);
+        recipient.setName(name);
+        recipient.setEmail(email);
+        recipient.setApps(new ArrayList<>());
+        for (String id : apps) {
+            recipient.getApps().add((App) appManager.getApp(id));
+        }
+        try {
+            dbConnection.store(recipient);
+        } catch (UnstorableObjectException e) {
+            // should not happen
+            logger.error("Could not store recipient.", e);
+        }
         return true;
     }
 

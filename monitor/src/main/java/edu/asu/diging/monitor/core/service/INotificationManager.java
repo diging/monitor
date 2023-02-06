@@ -11,7 +11,7 @@ public interface INotificationManager {
 
 	boolean addRecipient(String name, String email, List<String> apps) throws EmailAlreadyRegisteredException;
 	
-	boolean modifyRecipient(String email);
+	boolean modifyRecipient(String email, String name, List<String> apps);
 
 	void sendNotificationEmails(IApp app, AppStatus previousStatus);
 	
