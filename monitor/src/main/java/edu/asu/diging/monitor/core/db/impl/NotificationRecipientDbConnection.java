@@ -43,6 +43,16 @@ public class NotificationRecipientDbConnection implements INotificationRecipient
     }
 	
 	@Override
+	public INotificationRecipient update(INotificationRecipient recipient) throws UnstorableObjectException {
+	    if (recipient.getEmail() == null) {
+            throw new UnstorableObjectException("Recipient doesn't have an email address.");
+        }
+	    em.merge(recipient);
+	    em.flush();
+	    return recipient;
+	}
+	
+	@Override
 	public INotificationRecipient[] getAllRecipients() {
         TypedQuery<INotificationRecipient> query = em.createQuery("SELECT n FROM NotificationRecipient n", INotificationRecipient.class);
         List<INotificationRecipient> results = query.getResultList();

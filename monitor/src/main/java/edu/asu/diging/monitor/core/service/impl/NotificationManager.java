@@ -83,7 +83,7 @@ public class NotificationManager implements INotificationManager {
             recipient.getApps().add((App) appManager.getApp(id));
         }
         try {
-            dbConnection.store(recipient);
+            dbConnection.update(recipient);
         } catch (UnstorableObjectException e) {
             // should not happen
             logger.error("Could not store recipient.", e);

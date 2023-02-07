@@ -8,6 +8,8 @@ public interface INotificationRecipientDbConnection {
 	INotificationRecipient getById(String id);
 
 	INotificationRecipient store(INotificationRecipient recipient) throws UnstorableObjectException;
+	
+	INotificationRecipient update(INotificationRecipient recipient) throws UnstorableObjectException;
 
 	void delete(String email);
 

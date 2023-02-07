@@ -35,6 +35,15 @@
 			<td align="right">
 				<sec:authorize access="hasAnyRole('ADMIN')">
 					<div class="pull-right">
+						<c:url value="/admin/recipients/${recipient.email}/modify" var="modifyUrl" />
+						<form action="${modifyUrl}" method="GET">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<button title="Modify Recipient" type="submit" class="btn-link">
+								<i class="fa fa-pencil" aria-hidden="true"></i>
+							</button>
+						</form>
+					</div>
+					<div class="pull-right">
 						<c:url value="/admin/recipients/${recipient.email}/delete" var="deleteUrl" />
 						<form action="${deleteUrl}" method="POST">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
