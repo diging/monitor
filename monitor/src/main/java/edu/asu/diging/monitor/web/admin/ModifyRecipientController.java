@@ -46,22 +46,13 @@ public class ModifyRecipientController {
             app.setName(a.getName());
             return app;
         }).collect(Collectors.toList()));
-        
+
         List<String> appsList = recipientDetails.getApps().stream().map(a -> {
             return a.getId();
         }).collect(Collectors.toList());
-        
-        Map<String, Boolean> appMap = new HashMap<String, Boolean>();
-        for (String appId : recipientForm.getAppIds()) {
-            if (appsList.contains(appId)) {
-                appMap.put(appId, true);
-            } else {
-                appMap.put(appId, false);
-            }
-        }
-        
+
         model.addAttribute("recipientForm", recipientForm);
-        model.addAttribute("recipientApps", appMap);
+        model.addAttribute("recipientApps", appsList);
         return "admin/recipients/modify";
     }
 
@@ -77,22 +68,10 @@ public class ModifyRecipientController {
         if (recipientForm.getAppIds() == null) {
             recipientForm.setAppIds(new ArrayList<>());
         }
-        try {
-            manager.modifyRecipient(recipientForm.getEmail(), recipientForm.getName(), recipientForm.getAppIds());
-            redirectAttrs.addFlashAttribute("show_alert", true);
-            redirectAttrs.addFlashAttribute("alert_type", "success");
-            redirectAttrs.addFlashAttribute("alert_msg", "Recipient was successfully registered.");
-            return "redirect:/admin/recipient/list";
-        } catch (Exception e) {
-            logger.error("There was an Error!");
-            return "redirect:/admin/recipient/list";
-        }
-//        } catch (EmailAlreadyRegisteredException e) {
-//            redirectAttrs.addFlashAttribute("show_alert", true);
-//            redirectAttrs.addFlashAttribute("alert_type", "danger");
-//            redirectAttrs.addFlashAttribute("alert_msg", "Recipient could not be stored. Email address already registered.");
-//            logger.error("Could not store recipient.", e);
-//            return "redirect:/admin/recipients/add";
-//        }
+        manager.modifyRecipient(recipientForm.getEmail(), recipientForm.getName(), recipientForm.getAppIds());
+        redirectAttrs.addFlashAttribute("show_alert", true);
+        redirectAttrs.addFlashAttribute("alert_type", "success");
+        redirectAttrs.addFlashAttribute("alert_msg", "Recipient was successfully registered.");
+        return "redirect:/admin/recipient/list";
     }
 }
