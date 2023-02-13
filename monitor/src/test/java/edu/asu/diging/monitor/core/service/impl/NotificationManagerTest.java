@@ -45,9 +45,9 @@ public class NotificationManagerTest {
 	private String appId1 = "App1";
 	private String appId2 = "App2";
 	private App app1 = new App();
-	private App app2 = new App();List<String> appIds = new ArrayList<>();
+	private App app2 = new App();
+	List<String> appIds = new ArrayList<>();
     
-	
 	
 	@Before
 	public void setUp() {
@@ -97,7 +97,6 @@ public class NotificationManagerTest {
 	    try {
             Mockito.verify(dbConn).update(Mockito.any());
         } catch (UnstorableObjectException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 	}
