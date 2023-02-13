@@ -1,7 +1,6 @@
 package edu.asu.diging.monitor.core.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -13,6 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import edu.asu.diging.monitor.core.db.INotificationRecipientDbConnection;
+import edu.asu.diging.monitor.core.exceptions.NoEmailRecipientException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
 import edu.asu.diging.monitor.core.model.impl.App;
@@ -45,7 +45,8 @@ public class NotificationManagerTest {
 	private String appId1 = "App1";
 	private String appId2 = "App2";
 	private App app1 = new App();
-	private App app2 = new App();
+	private App app2 = new App();List<String> appIds = new ArrayList<>();
+    
 	
 	
 	@Before
@@ -64,6 +65,9 @@ public class NotificationManagerTest {
 		app1.setName(appId1);
 		app2.setId(appId2);
 		app2.setName(appId2);
+		
+		appIds.add(appId1);
+	    appIds.add(appId2);
 		
 		Mockito.when(dbConn.getAllRecipients()).thenReturn(storedRecipients);
 		Mockito.when(dbConn.getById(ID1)).thenReturn(recipient1);
@@ -88,10 +92,7 @@ public class NotificationManagerTest {
     }
 	
 	@Test
-	public void test_modifyRecipient_success() {
-	    List<String> appIds = new ArrayList<>();
-	    appIds.add(appId1);
-	    appIds.add(appId2);
+	public void test_modifyRecipient_success() throws NoEmailRecipientException {
 	    managerToTest.modifyRecipient(ID1, id1Name, appIds);
 	    try {
             Mockito.verify(dbConn).update(Mockito.any());
@@ -100,6 +101,21 @@ public class NotificationManagerTest {
             e.printStackTrace();
         }
 	}
+	
+	@Test
+	public void test_modifyRecipient_failure_emailNull() throws NoEmailRecipientException {
+	    String email = null;
+	    Assert.assertFalse(managerToTest.modifyRecipient(email, id1Name, appIds));
+	}
+	
+	@Test(expected = NoEmailRecipientException.class)
+	public void test_modifyRecipient_failure_NoEmailRecipient() throws NoEmailRecipientException {
+	    Mockito.when(dbConn.getById(Mockito.anyString())).thenReturn(null);
+	    managerToTest.modifyRecipient(ID1, id1Name, appIds);
+	}
+	
+	
+	
 	
 
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.asu.diging.monitor.core.exceptions.NoEmailRecipientException;
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
@@ -68,10 +69,17 @@ public class ModifyRecipientController {
         if (recipientForm.getAppIds() == null) {
             recipientForm.setAppIds(new ArrayList<>());
         }
-        manager.modifyRecipient(recipientForm.getEmail(), recipientForm.getName(), recipientForm.getAppIds());
-        redirectAttrs.addFlashAttribute("show_alert", true);
-        redirectAttrs.addFlashAttribute("alert_type", "success");
-        redirectAttrs.addFlashAttribute("alert_msg", "Recipient was successfully registered.");
-        return "redirect:/admin/recipient/list";
+        try {
+            manager.modifyRecipient(recipientForm.getEmail(), recipientForm.getName(), recipientForm.getAppIds());
+            redirectAttrs.addFlashAttribute("show_alert", true);
+            redirectAttrs.addFlashAttribute("alert_type", "success");
+            redirectAttrs.addFlashAttribute("alert_msg", "Recipient was successfully registered.");
+            return "redirect:/admin/recipient/list";
+        } catch (NoEmailRecipientException e) {
+            redirectAttrs.addFlashAttribute("show_alert", true);
+            redirectAttrs.addFlashAttribute("alert_type", "danger");
+            redirectAttrs.addFlashAttribute("alert_msg", "No such email recipient exists.");
+            return "redirect:/";
+        }
     }
 }

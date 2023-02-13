@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import edu.asu.diging.monitor.core.db.INotificationRecipientDbConnection;
 import edu.asu.diging.monitor.core.exceptions.EmailAlreadyRegisteredException;
+import edu.asu.diging.monitor.core.exceptions.NoEmailRecipientException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.AppStatus;
 import edu.asu.diging.monitor.core.model.IApp;
@@ -67,13 +68,13 @@ public class NotificationManager implements INotificationManager {
     }
     
     @Override
-    public boolean modifyRecipient(String email, String name, List<String> apps ) {
+    public boolean modifyRecipient(String email, String name, List<String> apps ) throws NoEmailRecipientException {
         //Code here
         if (email == null || email.trim().isEmpty()) {
             return false;
         }
         if (dbConnection.getById(email) == null) {
-            logger.error("No such email recipient exists");
+            throw new NoEmailRecipientException(); //Throw a exception instead
         }
         INotificationRecipient recipient = this.getRecipient(email);
         recipient.setName(name);
