@@ -1,6 +1,7 @@
 package edu.asu.diging.monitor.core.model;
 
 import java.util.List;
+import java.util.Set;
 
 import edu.asu.diging.monitor.core.model.impl.Group;
 import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
@@ -70,5 +71,10 @@ public interface IApp {
     void setGroup(Group group);
 
     Group getGroup();
+    
+    Set<String> getTags();
+    
+    void setTags(Set<String> tags);
+    
 
 }

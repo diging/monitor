@@ -1,9 +1,14 @@
 package edu.asu.diging.monitor.core.model.impl;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -18,6 +23,7 @@ import edu.asu.diging.monitor.core.model.RequestMethod;
 public class App implements IApp {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private String id;
     private String name;
     private String healthUrl;
@@ -28,6 +34,8 @@ public class App implements IApp {
     private int retries;
     private int pingInterval;
     private String lastTestId;
+    @ElementCollection
+    private Set<String> tags = new HashSet<>();
     @Transient
     private IAppTest lastAppTest;
     private RequestMethod method;
@@ -289,5 +297,15 @@ public class App implements IApp {
     @Override
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    @Override
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    @Override
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
     }
 }

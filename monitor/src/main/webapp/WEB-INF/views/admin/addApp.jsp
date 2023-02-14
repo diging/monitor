@@ -24,13 +24,16 @@
  	 <form:label path="description">Description:</form:label>
     	 <form:input type="text" class="form-control" path="description" />
   </div>
-  
-  <div class="form-group">
- 	 <form:label path="expectedReturnCodes">Expected return codes (comma-separated):</form:label>
-    	 <form:input type="text" class="form-control" path="expectedReturnCodes" />
-  </div>
-  
-  <div class="form-group">
+
+	<div class="form-group">
+		<form:label path="tags">Tags</form:label>
+		<form:input type="text" class="form-control" id="tag-input" path="tags" />
+		<ul id="tag-list">
+			
+		</ul>
+	</div>
+	
+	<div class="form-group">
  	 <form:label path="warningReturnCodes">Warning return codes (comma-separated):</form:label>
     	 <form:input type="text" class="form-control" path="warningReturnCodes" />
   </div>
@@ -123,6 +126,44 @@
   </c:choose>
 </form:form>
 <script>
+
+	
+	const existingTags = ["tag1", "tag2", "tag3"];
+	
+	$('#tag-input').autocomplete({
+	    source: existingTags,
+	    select: function(event, ui) {
+	      // Add the selected tag to the list
+	      addTag(ui.item.value);
+	      // Prevent the default behavior of auto-complete
+	      return false;
+	    }
+	  });
+	
+	// Add new tag to the list
+	  function addTag(newTag) {
+	    if (existingTags.includes(newTag)) {
+	      alert('This tag already exists. Please select it from the list.');
+	      return;
+	    }
+	    existingTags.push(newTag);
+	    $('#tag-list').append(`<li>${newTag} <button class="remove-tag">X</button></li>`);
+	    $('#tag-input').val('');
+	  }
+
+	  // Remove tag from the list
+	  $('#tag-list').on('click', '.remove-tag', function() {
+	    $(this).parent().remove();
+	  });
+
+	  // Add new tag when the user presses enter in the input field
+	  $('#tag-input').keypress(function(e) {
+	    if (e.which == 13) {
+	      e.preventDefault();
+	      addTag($(this).val());
+	    }
+	  });
+	
 	$('#select-all').click(function(event) {
 		if (this.checked) {
 			$(':checkbox').each(function() {

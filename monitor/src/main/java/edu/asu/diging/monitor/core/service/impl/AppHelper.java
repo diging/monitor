@@ -31,6 +31,7 @@ public class AppHelper implements IAppHelper {
     @Override
     public IApp copyAppInfo(IApp app, AppForm appForm) throws GroupNotFoundException, UnstorableObjectException {
         app.setDescription(appForm.getDescription());
+        app.setTags(appForm.getTags());
         app.setExpectedReturnCodes(appForm.getExpectedReturnCodes());
         app.setHealthUrl(appForm.getHealthUrl());
         app.setName(appForm.getName());
@@ -59,6 +60,7 @@ public class AppHelper implements IAppHelper {
     @Override
     public void copyAppInfoToForm(IApp app, AppForm appForm) {
         appForm.setDescription(app.getDescription());
+        appForm.setTags(app.getTags());
         appForm.setExpectedReturnCodes(app.getExpectedReturnCodes());
         appForm.setHealthUrl(app.getHealthUrl());
         appForm.setId(app.getId());

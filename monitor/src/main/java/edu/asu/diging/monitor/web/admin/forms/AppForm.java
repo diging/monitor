@@ -13,6 +13,7 @@ public class AppForm {
     private String name;
     private String healthUrl;
     private String description;
+    private Set<String> tags;
     private String expectedReturnCodes;
     private String warningReturnCodes;
     private int timeout;
@@ -180,6 +181,14 @@ public class AppForm {
 
     public void setGroupType(GroupType groupType) {
         this.groupType = groupType;
+    }
+
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
     }
 
 }
