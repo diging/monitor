@@ -23,7 +23,6 @@ import edu.asu.diging.monitor.core.model.RequestMethod;
 public class App implements IApp {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
     private String id;
     private String name;
     private String healthUrl;
@@ -34,7 +33,7 @@ public class App implements IApp {
     private int retries;
     private int pingInterval;
     private String lastTestId;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> tags = new HashSet<>();
     @Transient
     private IAppTest lastAppTest;

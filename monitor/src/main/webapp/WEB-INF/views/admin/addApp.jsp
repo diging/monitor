@@ -28,9 +28,7 @@
 	<div class="form-group">
 		<form:label path="tags">Tags</form:label>
 		<form:input type="text" class="form-control" id="tag-input" path="tags" />
-		<ul id="tag-list">
-			
-		</ul>
+		<ul id="tag-list"></ul>
 	</div>
 	
 	<div class="form-group">
@@ -126,18 +124,12 @@
   </c:choose>
 </form:form>
 <script>
-
 	
 	const existingTags = ["tag1", "tag2", "tag3"];
 	
 	$('#tag-input').autocomplete({
-	    source: existingTags,
-	    select: function(event, ui) {
-	      // Add the selected tag to the list
-	      addTag(ui.item.value);
-	      // Prevent the default behavior of auto-complete
-	      return false;
-	    }
+	    source: existingTags
+	    
 	  });
 	
 	// Add new tag to the list
