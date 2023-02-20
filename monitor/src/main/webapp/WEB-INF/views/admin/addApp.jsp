@@ -27,8 +27,8 @@
 
 	<div class="form-group">
 		<form:label path="tags">Tags</form:label>
-		<form:input type="text" class="form-control" id="tag-input" path="tags" />
-		<ul id="tag-list"></ul>
+		<form:input type="text" class="form-control" name="tagQuery" id="tagInput" path="tags" />
+		<ul class="list-inline" id="tagList"></ul>
 	</div>
 	
 	<div class="form-group">
@@ -124,10 +124,10 @@
   </c:choose>
 </form:form>
 <script>
+$(document).ready(function() {
+	var existingTags = ["tag1", "tag2", "tag3"];
 	
-	const existingTags = ["tag1", "tag2", "tag3"];
-	
-	$('#tag-input').autocomplete({
+	$('#tagInput').autocomplete({
 	    source: existingTags
 	    
 	  });
@@ -139,22 +139,23 @@
 	      return;
 	    }
 	    existingTags.push(newTag);
-	    $('#tag-list').append(`<li>${newTag} <button class="remove-tag">X</button></li>`);
-	    $('#tag-input').val('');
+	    $('#tagList').append(`<li>${newTag} <button class="remove-tag">X</button></li>`);
+	    $('#tagInput').val('');
 	  }
 
 	  // Remove tag from the list
-	  $('#tag-list').on('click', '.remove-tag', function() {
+	  $('#tagList').on('click', '.remove-tag', function() {
 	    $(this).parent().remove();
 	  });
 
 	  // Add new tag when the user presses enter in the input field
-	  $('#tag-input').keypress(function(e) {
+	  $('#tagInput').keypress(function(e) {
 	    if (e.which == 13) {
 	      e.preventDefault();
 	      addTag($(this).val());
 	    }
 	  });
+	
 	
 	$('#select-all').click(function(event) {
 		if (this.checked) {
@@ -184,6 +185,7 @@
 	window.onload = function() {
 		showHideGroups();
 	};
+});
 </script>
 <style>
 input[type="radio"] {
