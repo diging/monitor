@@ -6,6 +6,7 @@ import java.util.Set;
 
 import edu.asu.diging.monitor.core.model.GroupType;
 import edu.asu.diging.monitor.core.model.RequestMethod;
+import edu.asu.diging.monitor.core.model.impl.Tag;
 
 public class AppForm {
 
@@ -13,7 +14,7 @@ public class AppForm {
     private String name;
     private String healthUrl;
     private String description;
-    private Set<String> tags;
+    private Set<Tag> tags;
     private String expectedReturnCodes;
     private String warningReturnCodes;
     private int timeout;
@@ -183,11 +184,11 @@ public class AppForm {
         this.groupType = groupType;
     }
 
-    public Set<String> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Set<String> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 

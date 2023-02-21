@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -33,8 +35,9 @@ public class App implements IApp {
     private int retries;
     private int pingInterval;
     private String lastTestId;
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> tags = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "app_tags", joinColumns = @JoinColumn(name = "app_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<Tag> tags = new HashSet<>();
     @Transient
     private IAppTest lastAppTest;
     private RequestMethod method;
@@ -299,12 +302,12 @@ public class App implements IApp {
     }
 
     @Override
-    public Set<String> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
     @Override
-    public void setTags(Set<String> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 }

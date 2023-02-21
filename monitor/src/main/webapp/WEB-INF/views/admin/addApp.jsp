@@ -27,8 +27,11 @@
 
 	<div class="form-group">
 		<form:label path="tags">Tags</form:label>
-		<form:input type="text" class="form-control" name="tagQuery" id="tagInput" path="tags" />
-		<ul class="list-inline" id="tagList"></ul>
+		<form:input type="text" class="form-control" name="tagInput" id="tagInput" path="tags" />
+		<ul class="dropdown-menu" id="tagList" ></ul>
+		<c:forEach var="tag" items="${tags}">
+      		<li class="dropdown-item">${tag} <button class="remove-tag">X</button></li>
+    	</c:forEach>
 	</div>
 	
 	<div class="form-group">
@@ -125,12 +128,49 @@
 </form:form>
 <script>
 $(document).ready(function() {
-	var existingTags = ["tag1", "tag2", "tag3"];
+	//var existingTags = ["tag1", "tag2", "tag3"];
+	$("#tagInput").autocomplete({
+        minLength: 1,
+        delay: 500,
+        source: function (request, response) {
+            $.getJSON("/tags/getTagList", request, function(result) {
+                response($.map(result, function(item) {
+                    return {
+                        label: item.name,
+                        value: item.name,
+                        // following property is added for our own use
+                        //tag_url: "https://" + window.location.host + "/tags/" + item.tagId + "/" + item.name
+                    }
+                }));
+            });
+        },
+
+        //define select handler
+        select : function(event, ui) {
+            if (ui.item) {
+                event.preventDefault();
+                //Modify this line to add this tag to a variable that can be submitted with the form
+                $("#selected_tags span").append('<a href=" + ui.item.tag_url + " target="_blank">'+ ui.item.label +'</a>');
+                //$("#tagQuery").value = $("#tagQuery").defaultValue
+                var defValue = $("#tagInput").prop('defaultValue');
+                $("#tagInput").val(defValue);
+                $("#tagInput").blur();
+                return false;
+            }
+        }
+    });
 	
-	$('#tagInput').autocomplete({
-	    source: existingTags
-	    
-	  });
+	//$('#tagInput').autocomplete({
+		//minLength: 1,
+        //delay: 500,
+	    //source: ,
+	    //select: function(event, ui) {
+	        // Add the selected tag to the list
+	        //addTag(ui.item.value);
+	        // Prevent the default behavior of auto-complete
+	        //return false;
+	      //}
+	  //});
 	
 	// Add new tag to the list
 	  function addTag(newTag) {
