@@ -26,12 +26,12 @@ public class TagManager implements ITagManager {
     private ITagDbConnection dbConnection;
 
     @Override
-    public List getTagList(String query) {
-        List<ITag> tags = dbConnection.getAllTags();
+    public List<Tag> getTagList(String query) {
+        List<Tag> tags = dbConnection.getAllTags();
         if (tags != null) {
             return tags;
         }
-        return new ArrayList<>();
+        return new ArrayList<Tag>();
     }
 
     @Override

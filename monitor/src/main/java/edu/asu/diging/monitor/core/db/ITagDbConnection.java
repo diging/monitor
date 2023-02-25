@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.ITag;
+import edu.asu.diging.monitor.core.model.impl.Tag;
 
 public interface ITagDbConnection {
 
@@ -13,6 +14,6 @@ public interface ITagDbConnection {
 
     void delete(ITag tag);
 
-    List<ITag> getAllTags();
+    List<Tag> getAllTags();
 
 }

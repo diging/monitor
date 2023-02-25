@@ -27,11 +27,8 @@
 
 	<div class="form-group">
 		<form:label path="tags">Tags</form:label>
-		<form:input type="text" class="form-control" name="tagInput" id="tagInput" path="tags" />
-		<ul class="dropdown-menu" id="tagList" ></ul>
-		<c:forEach var="tag" items="${tags}">
-      		<li class="dropdown-item">${tag} <button class="remove-tag">X</button></li>
-    	</c:forEach>
+		<form:input type="text" class="form-control" name="tags" id="tags" path="tags" />
+		<ul class="dropdown-list" id="tags-list" ></ul>
 	</div>
 	
 	<div class="form-group">
@@ -128,37 +125,68 @@
 </form:form>
 <script>
 $(document).ready(function() {
+	var tags = ["tag1", "tag2", "tag34"];
 	//var existingTags = ["tag1", "tag2", "tag3"];
-	$("#tagInput").autocomplete({
+	$("#tags").autocomplete({
+		//source:tags,
+		source: function (request, response) {
+        	$.ajax({
+        		url: "${pageContext.request.contextPath}/tags/getTagList",
+        		dataType: "json",
+				data: {
+					term: request.term
+				},
+				success: function(data) {
+					var names = data.map(function(item){
+						return item.name;
+					});
+					response(names);
+				}
+        	});
+        },
         minLength: 1,
         delay: 500,
-        source: function (request, response) {
-            $.getJSON("/tags/getTagList", request, function(result) {
-                response($.map(result, function(item) {
-                    return {
-                        label: item.name,
-                        value: item.name,
-                        // following property is added for our own use
-                        //tag_url: "https://" + window.location.host + "/tags/" + item.tagId + "/" + item.name
-                    }
-                }));
-            });
-        },
-
+        
         //define select handler
         select : function(event, ui) {
-            if (ui.item) {
-                event.preventDefault();
-                //Modify this line to add this tag to a variable that can be submitted with the form
-                $("#selected_tags span").append('<a href=" + ui.item.tag_url + " target="_blank">'+ ui.item.label +'</a>');
-                //$("#tagQuery").value = $("#tagQuery").defaultValue
-                var defValue = $("#tagInput").prop('defaultValue');
-                $("#tagInput").val(defValue);
-                $("#tagInput").blur();
-                return false;
-            }
+        	// Add the selected tag to the tags array
+			tags.push(ui.item.value);
+			
+			// Update the tags list in the input field
+			updateTagsField();
+			
+			// Clear the input field
+			$(this).val("");
+			
+			// Prevent the default autocomplete behavior
+			return false;
         }
     });
+	$("#tags").on("keydown", function(event){
+    	if (event.keyCode === $.ui.keyCode.ENTER) {
+			// Add the new tag to the tags array
+			var newTag = $(this).val();
+			if (newTag !== "") {
+				tags.push(newTag);
+				
+				// Update the tags list in the input field
+				updateTagsField();
+				
+				// Clear the input field
+				$(this).val("");
+			}
+			return false;
+		}
+    });
+	
+	function updateTagsField() {
+		// Update the tags list in the input field
+		$("#tags-list").empty();
+		for (var i = 0; i < tags.length; i++) {
+			var li = $("<li>").text(tags[i]);
+			$("#tags-list").append(li);
+		}
+	}
 	
 	//$('#tagInput').autocomplete({
 		//minLength: 1,
@@ -172,29 +200,12 @@ $(document).ready(function() {
 	      //}
 	  //});
 	
-	// Add new tag to the list
-	  function addTag(newTag) {
-	    if (existingTags.includes(newTag)) {
-	      alert('This tag already exists. Please select it from the list.');
-	      return;
-	    }
-	    existingTags.push(newTag);
-	    $('#tagList').append(`<li>${newTag} <button class="remove-tag">X</button></li>`);
-	    $('#tagInput').val('');
-	  }
 
 	  // Remove tag from the list
-	  $('#tagList').on('click', '.remove-tag', function() {
-	    $(this).parent().remove();
-	  });
+	  
 
 	  // Add new tag when the user presses enter in the input field
-	  $('#tagInput').keypress(function(e) {
-	    if (e.which == 13) {
-	      e.preventDefault();
-	      addTag($(this).val());
-	    }
-	  });
+	  
 	
 	
 	$('#select-all').click(function(event) {
