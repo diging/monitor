@@ -29,6 +29,7 @@
 		<form:label path="tags">Tags</form:label>
 		<form:input type="text" class="form-control" name="tags" id="tags" path="tags" />
 		<ul class="dropdown-list" id="tags-list" ></ul>
+		<input type="hidden" id="existing-tags" name="existing-tags" value="${tags}">
 	</div>
 	
 	<div class="form-group">
@@ -125,118 +126,127 @@
 </form:form>
 <script>
 $(document).ready(function() {
-	var tags = ["tag1", "tag2", "tag34"];
-	//var existingTags = ["tag1", "tag2", "tag3"];
+	//var tags = ["tag1", "tag2", "tag34"];
+	var tags = [];
+	
 	$("#tags").autocomplete({
-		//source:tags,
-		source: function (request, response) {
-        	$.ajax({
-        		url: "${pageContext.request.contextPath}/tags/getTagList",
-        		dataType: "json",
-				data: {
-					term: request.term
-				},
-				success: function(data) {
-					var names = data.map(function(item){
-						return item.name;
-					});
-					response(names);
-				}
-        	});
-        },
-        minLength: 1,
-        delay: 500,
-        
-        //define select handler
-        select : function(event, ui) {
-        	// Add the selected tag to the tags array
-			tags.push(ui.item.value);
-			
-			// Update the tags list in the input field
-			updateTagsField();
-			
-			// Clear the input field
-			$(this).val("");
-			
-			// Prevent the default autocomplete behavior
-			return false;
-        }
-    });
-	$("#tags").on("keydown", function(event){
-    	if (event.keyCode === $.ui.keyCode.ENTER) {
-			// Add the new tag to the tags array
-			var newTag = $(this).val();
-			if (newTag !== "") {
-				tags.push(newTag);
-				
+			//source:tags,
+			source : function(request, response) {
+				$.ajax({
+					url : "${pageContext.request.contextPath}/admin/apps/tags/getTagList",
+					dataType : "json",
+					data : {
+						term : request.term
+					},
+					success : function(data) {
+						response($.map(data, function(item){
+							return {
+			                  id: item.id,
+			                  label: item.name, // Set the label property to the tag name for display in the dropdown list
+			                  value: item // Set the value property to the entire tag object for storage when a tag is selected
+			                };
+						}));
+					}
+				});
+			},
+			minLength : 1,
+			delay : 500,
+
+			//define select handler
+			select : function(event, ui) {
+				// Add the selected tag to the tags array
+				tags.push(ui.item.value);
+
 				// Update the tags list in the input field
 				updateTagsField();
-				
+
 				// Clear the input field
 				$(this).val("");
+
+				// Prevent the default autocomplete behavior
+				return false;
+			},
+			focus: function(event, ui) {
+		        $(this).val(ui.item.name);
+		        return false;
+	        },
+	        create: function() {
+	            // Initialize the tags list with any pre-existing tags
+	            var existingTags = $("#existing-tags").val();
+	            if (existingTags) {
+	              tags = JSON.parse(existingTags);
+	              updateTagsField();
+	            }
+          	}   
+		});
+		
+		$("#tags").on("keydown", function(event) {
+			if (event.keyCode === $.ui.keyCode.ENTER) {
+				// Add the new tag to the tags array
+				
+				var newTagName = $(this).val();
+				if (newTagName !== "") {
+					var newTag = {id: null, name:newTagName};
+					tags.push(newTag);
+
+					// Update the tags list in the input field
+					updateTagsField();
+
+					// Clear the input field
+					$(this).val("");
+				}
+				return false;
 			}
-			return false;
-		}
-    });
-	
-	function updateTagsField() {
-		// Update the tags list in the input field
-		$("#tags-list").empty();
-		for (var i = 0; i < tags.length; i++) {
-			var li = $("<li>").text(tags[i]);
-			$("#tags-list").append(li);
-		}
-	}
-	
-	//$('#tagInput').autocomplete({
-		//minLength: 1,
-        //delay: 500,
-	    //source: ,
-	    //select: function(event, ui) {
-	        // Add the selected tag to the list
-	        //addTag(ui.item.value);
-	        // Prevent the default behavior of auto-complete
-	        //return false;
-	      //}
-	  //});
-	
+		});
 
-	  // Remove tag from the list
-	  
-
-	  // Add new tag when the user presses enter in the input field
-	  
-	
-	
-	$('#select-all').click(function(event) {
-		if (this.checked) {
-			$(':checkbox').each(function() {
-				this.checked = true;
-			});
-		} else {
-			$(':checkbox').each(function() {
-				this.checked = false;
-			});
+		function updateTagsField() {
+			// Update the tags list in the input field
+			  $("#tags-list").empty();
+		      for (var i = 0; i < tags.length; i++) {
+	          var tag = tags[i];
+	          var li = $("<li>").text(tag.name);
+	          $("#tags-list").append(li);
+	          // Add the tag as a hidden input field with 'id' and 'name' fields
+	          var hiddenInput = $("<input>").attr("type", "hidden").attr("name", "tags[" + i + "].id").val(tag.id);
+	          $("#tags-form").append(hiddenInput);
+	          hiddenInput = $("<input>").attr("type", "hidden").attr("name", "tags[" + i + "].name").val(tag.name);
+	          $("#tags-form").append(hiddenInput);
+			}
 		}
+
+		// Remove tag from the list
+
+		// Add new tag when the user presses enter in the input field
+
+		$('#select-all').click(function(event) {
+			if (this.checked) {
+				$(':checkbox').each(function() {
+					this.checked = true;
+				});
+			} else {
+				$(':checkbox').each(function() {
+					this.checked = false;
+				});
+			}
+		});
+		function showHideGroups() {
+			if (document.getElementById('groupCreate').checked) {
+				$('#groupNew').css('display', 'block');
+				$('#groupExisting').css('display', 'none');
+
+			} else if (document.getElementById('groupSelect').checked) {
+				$('#groupNew').css('display', 'none');
+				$('#groupExisting').css('display', 'block');
+			} else {
+				$('#groupNew').css('display', 'none');
+				$('#groupExisting').css('display', 'none');
+			}
+		}
+
+		window.onload = function() {
+			showHideGroups();
+		};
 	});
-	function showHideGroups() {
-		if (document.getElementById('groupCreate').checked) {
-			$('#groupNew').css('display', 'block');
-			$('#groupExisting').css('display', 'none');
-
-		} else if (document.getElementById('groupSelect').checked) {
-			$('#groupNew').css('display', 'none');
-			$('#groupExisting').css('display', 'block');
-		} else {
-			$('#groupNew').css('display', 'none');
-			$('#groupExisting').css('display', 'none');
-		}
-	}
-	
-	window.onload = function() {
-		showHideGroups();
-	};
-});
 </script>
 <style>
 input[type="radio"] {

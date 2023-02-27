@@ -17,28 +17,26 @@ import edu.asu.diging.monitor.core.model.impl.Tag;
 import edu.asu.diging.monitor.core.service.ITagManager;
 
 @Controller
-@RequestMapping("/tags")
+@RequestMapping("/admin/apps/tags")
 public class TagController {
     
     @Autowired
     private ITagManager tagManager;
     
-    @RequestMapping(value = "/getTagList",  method = RequestMethod.POST)
+    @RequestMapping(value = "/getTagList",  method = RequestMethod.GET)
     public @ResponseBody List<Tag> getTagList(@RequestParam("term") String query) {
-        List<String> tagNames = Arrays.asList("tag1", "tag2", "tag3", "tag4", "tag5");
-        List<Tag> tags = Collections.emptyList();
-        
-        for (String tagName: tagNames) {
-            Tag temp = new Tag();
-            temp.setName(tagName);
-            tags.add(temp);
-        }
-        
-        List<Tag> matchingTags = tags.stream().filter(tag ->tag.getName().contains(query)).collect(Collectors.toList());
-        
-        return matchingTags;
-//        List<Tag> tagList = tagManager.getTagList(query);
-//        return tagList;
+//        List<String> tagNames = Arrays.asList("tag1", "tag2", "tag3", "tag4", "tag5");
+//        List<Tag> tags = 
+//        
+//        Tag temp = new Tag();
+//        temp.setName("tag1");
+//        tags.add(temp);
+//        
+//        List<Tag> matchingTags = tags.stream().filter(tag ->tag.getName().contains(query)).collect(Collectors.toList());
+//        
+//        return matchingTags;
+        List<Tag> tagList = tagManager.getTagList(query);
+        return tagList;
     }
     
     @RequestMapping(value = "/addTag", method = RequestMethod.POST)
