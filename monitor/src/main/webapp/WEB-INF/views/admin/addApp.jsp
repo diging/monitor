@@ -27,9 +27,9 @@
 
 	<div class="form-group">
 		<form:label path="tags">Tags</form:label>
-		<form:input type="text" class="form-control" name="tags" id="tags" path="tags" />
+		<input type="text" class="form-control" name="tags" id="tags" />
 		<ul class="dropdown-list" id="tags-list" ></ul>
-		<input type="hidden" id="existing-tags" name="existing-tags" value="${tags}">
+		<form:input type="hidden" id="current-tags" path="tags" />
 	</div>
 	
 	<div class="form-group">
@@ -127,7 +127,7 @@
 <script>
 $(document).ready(function() {
 	//var tags = ["tag1", "tag2", "tag34"];
-	var tags = [];
+	var currentTags = [];
 	
 	$("#tags").autocomplete({
 			//source:tags,
@@ -155,7 +155,7 @@ $(document).ready(function() {
 			//define select handler
 			select : function(event, ui) {
 				// Add the selected tag to the tags array
-				tags.push(ui.item.value);
+				currentTags.push(ui.item);
 
 				// Update the tags list in the input field
 				updateTagsField();
@@ -169,15 +169,7 @@ $(document).ready(function() {
 			focus: function(event, ui) {
 		        $(this).val(ui.item.name);
 		        return false;
-	        },
-	        create: function() {
-	            // Initialize the tags list with any pre-existing tags
-	            var existingTags = $("#existing-tags").val();
-	            if (existingTags) {
-	              tags = JSON.parse(existingTags);
-	              updateTagsField();
-	            }
-          	}   
+	        }   
 		});
 		
 		$("#tags").on("keydown", function(event) {
@@ -186,9 +178,8 @@ $(document).ready(function() {
 				
 				var newTagName = $(this).val();
 				if (newTagName !== "") {
-					var newTag = {id: null, name:newTagName};
-					tags.push(newTag);
-
+					var newTag = {id: 1 + Math.floor(Math.random() * 1000000), name:newTagName};
+					currentTags.push(newTag);
 					// Update the tags list in the input field
 					updateTagsField();
 
@@ -202,16 +193,17 @@ $(document).ready(function() {
 		function updateTagsField() {
 			// Update the tags list in the input field
 			  $("#tags-list").empty();
-		      for (var i = 0; i < tags.length; i++) {
-	          var tag = tags[i];
-	          var li = $("<li>").text(tag.name);
-	          $("#tags-list").append(li);
-	          // Add the tag as a hidden input field with 'id' and 'name' fields
-	          var hiddenInput = $("<input>").attr("type", "hidden").attr("name", "tags[" + i + "].id").val(tag.id);
-	          $("#tags-form").append(hiddenInput);
-	          hiddenInput = $("<input>").attr("type", "hidden").attr("name", "tags[" + i + "].name").val(tag.name);
-	          $("#tags-form").append(hiddenInput);
-			}
+		      for (var i = 0; i < currentTags.length; i++) {
+		          var tag = currentTags[i];
+		          var li = $("<li>").text(tag.name);
+		          $("#tags-list").append(li);
+		          // Add the tag as a hidden input field with 'id' and 'name' fields
+		          //var hiddenInput = $("<input>").attr("type", "hidden").attr("name", "tags[" + i + "].id").val(tag.id);
+		          //${appForm}.append(hiddenInput);
+		          //hiddenInput = $("<input>").attr("type", "hidden").attr("name", "tags[" + i + "].name").val(tag.name);
+		          //$(appForm).append(hiddenInput);
+			  }
+		      $("current-tags").val(currentTags);
 		}
 
 		// Remove tag from the list

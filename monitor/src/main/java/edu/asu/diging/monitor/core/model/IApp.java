@@ -73,9 +73,9 @@ public interface IApp {
 
     Group getGroup();
     
-    Set<Tag> getTags();
+    List<Tag> getTags();
     
-    void setTags(Set<Tag> tags);
+    void setTags(List<Tag> tags);
     
 
 }

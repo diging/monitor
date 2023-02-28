@@ -25,23 +25,7 @@ public class TagController {
     
     @RequestMapping(value = "/getTagList",  method = RequestMethod.GET)
     public @ResponseBody List<Tag> getTagList(@RequestParam("term") String query) {
-//        List<String> tagNames = Arrays.asList("tag1", "tag2", "tag3", "tag4", "tag5");
-//        List<Tag> tags = 
-//        
-//        Tag temp = new Tag();
-//        temp.setName("tag1");
-//        tags.add(temp);
-//        
-//        List<Tag> matchingTags = tags.stream().filter(tag ->tag.getName().contains(query)).collect(Collectors.toList());
-//        
-//        return matchingTags;
         List<Tag> tagList = tagManager.getTagList(query);
         return tagList;
-    }
-    
-    @RequestMapping(value = "/addTag", method = RequestMethod.POST)
-    public void add(@RequestParam String tagName, RedirectAttributes redirectAttributes) {
-        // What to add here?
-        
     }
 }

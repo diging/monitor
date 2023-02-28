@@ -17,6 +17,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.IAppTest;
 import edu.asu.diging.monitor.core.model.RequestMethod;
@@ -35,9 +38,11 @@ public class App implements IApp {
     private int retries;
     private int pingInterval;
     private String lastTestId;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "app_tags", joinColumns = @JoinColumn(name = "app_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private Set<Tag> tags = new HashSet<>();
+    private List<Tag> tags;
+//    = new HashSet<>();
     @Transient
     private IAppTest lastAppTest;
     private RequestMethod method;
@@ -302,12 +307,12 @@ public class App implements IApp {
     }
 
     @Override
-    public Set<Tag> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
     @Override
-    public void setTags(Set<Tag> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 }

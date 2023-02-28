@@ -14,7 +14,7 @@ public class AppForm {
     private String name;
     private String healthUrl;
     private String description;
-    private Set<Tag> tags;
+    private List<String> tags;
     private String expectedReturnCodes;
     private String warningReturnCodes;
     private int timeout;
@@ -184,11 +184,11 @@ public class AppForm {
         this.groupType = groupType;
     }
 
-    public Set<Tag> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
