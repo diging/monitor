@@ -21,6 +21,7 @@ import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.IGroupManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
+import edu.asu.diging.monitor.core.service.ITagManager;
 import edu.asu.diging.monitor.core.service.impl.AppValidator;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
@@ -41,6 +42,9 @@ public class AddAppController {
 
     @Autowired
     private AppValidator appValidator;
+    
+    @Autowired
+    private ITagManager tagManager;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -71,6 +75,8 @@ public class AddAppController {
             if (appForm.getTags() == null) {
                 logger.debug("Nulled");
             }else {
+                
+                //TagManager.add(tags)
                 logger.debug("Not Null");
                 logger.debug("",appForm.getTags().get(0));
             }
@@ -86,7 +92,6 @@ public class AddAppController {
         }
         try {
             logger.debug("Well, no errors in binding result");
-            
             appManager.addApp(appForm);
         } catch (GroupNotFoundException e) {
             logger.error("Could not find Group", e);

@@ -10,7 +10,7 @@ public interface ITagDbConnection {
 
     ITag getById(String id);
 
-    ITag store(ITag tag) throws UnstorableObjectException;
+    boolean store(List<Tag> tags) throws UnstorableObjectException;
 
     void delete(ITag tag);
 

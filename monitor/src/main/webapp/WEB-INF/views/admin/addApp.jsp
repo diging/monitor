@@ -27,7 +27,7 @@
 
 	<div class="form-group">
 		<form:label path="tags">Tags</form:label>
-		<input type="text" class="form-control" name="tags" id="tags" />
+		<input type="text" class="form-control" name="tags" id="tags"/>
 		<ul class="dropdown-list" id="tags-list" ></ul>
 		<form:input type="hidden" id="current-tags" path="tags" />
 	</div>
@@ -140,11 +140,7 @@ $(document).ready(function() {
 					},
 					success : function(data) {
 						response($.map(data, function(item){
-							return {
-			                  id: item.id,
-			                  label: item.name, // Set the label property to the tag name for display in the dropdown list
-			                  value: item // Set the value property to the entire tag object for storage when a tag is selected
-			                };
+							return item.name;
 						}));
 					}
 				});
@@ -155,7 +151,7 @@ $(document).ready(function() {
 			//define select handler
 			select : function(event, ui) {
 				// Add the selected tag to the tags array
-				currentTags.push(ui.item);
+				currentTags.push(ui.item.val);
 
 				// Update the tags list in the input field
 				updateTagsField();
@@ -178,8 +174,8 @@ $(document).ready(function() {
 				
 				var newTagName = $(this).val();
 				if (newTagName !== "") {
-					var newTag = {id: 1 + Math.floor(Math.random() * 1000000), name:newTagName};
-					currentTags.push(newTag);
+					//var newTag = {id: 1 + Math.floor(Math.random() * 1000000), name:newTagName};
+					currentTags.push(newTagName);
 					// Update the tags list in the input field
 					updateTagsField();
 
@@ -195,7 +191,7 @@ $(document).ready(function() {
 			  $("#tags-list").empty();
 		      for (var i = 0; i < currentTags.length; i++) {
 		          var tag = currentTags[i];
-		          var li = $("<li>").text(tag.name);
+		          var li = $("<li>").text(tag);
 		          $("#tags-list").append(li);
 		          // Add the tag as a hidden input field with 'id' and 'name' fields
 		          //var hiddenInput = $("<input>").attr("type", "hidden").attr("name", "tags[" + i + "].id").val(tag.id);
@@ -203,7 +199,7 @@ $(document).ready(function() {
 		          //hiddenInput = $("<input>").attr("type", "hidden").attr("name", "tags[" + i + "].name").val(tag.name);
 		          //$(appForm).append(hiddenInput);
 			  }
-		      $("current-tags").val(currentTags);
+		      $("#current-tags").val(JSON.stringify(currentTags));
 		}
 
 		// Remove tag from the list

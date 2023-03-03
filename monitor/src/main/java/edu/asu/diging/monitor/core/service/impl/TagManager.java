@@ -40,13 +40,14 @@ public class TagManager implements ITagManager {
     }
 
     @Override
-    public ITag addTag(Tag tag) {
+    public boolean addTags(List<Tag> tags) {
         try {
-            dbConnection.store(tag);
+            dbConnection.store(tags);
         } catch (UnstorableObjectException e) {
             logger.error("Could not store app", e);
+            return false;
         }
-        return tag;
+        return true;
     }
-
+    
 }

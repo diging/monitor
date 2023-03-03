@@ -22,6 +22,10 @@ public class Tag implements ITag {
         
     }
     
+    public Tag(String name) {
+        this.name = name;
+    }
+    
     public Tag(Long id, String name) {
         this.id = id;
         this.name = name;

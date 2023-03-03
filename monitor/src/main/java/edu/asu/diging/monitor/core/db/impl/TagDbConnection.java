@@ -28,17 +28,28 @@ public class TagDbConnection implements ITagDbConnection {
     }
 
     @Override
-    public ITag store(ITag tag) throws UnstorableObjectException {
-        if (tag.getId() == null) {
-            throw new UnstorableObjectException("Tag does not have an id.");
-        }
-        if (tag.getName() != null) {
-            em.persist(tag);
+    public boolean store(List<Tag> tags) throws UnstorableObjectException {
+        if (tags != null) {
+            for (Tag tag: tags) {
+                if (tag.getId() == null) {
+                    throw new UnstorableObjectException("The tag " + tag.getName() + " does not have an id");
+                }
+                em.merge(tags);
+            }
         }
         em.flush();
-        return tag;
+        return true;
+        
+//        if (tag.getId() == null) {
+//            throw new UnstorableObjectException("Tag does not have an id.");
+//        }
+//        if (tag.getName() != null) {
+//            em.persist(tag);
+//        }
+//        em.flush();
+//        return true;
     }
-
+    
     @Override
     public void delete(ITag tag) {
         em.remove(tag);

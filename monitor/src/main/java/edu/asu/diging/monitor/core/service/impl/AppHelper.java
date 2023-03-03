@@ -12,6 +12,7 @@ import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.GroupType;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.impl.NotificationRecipient;
+import edu.asu.diging.monitor.core.model.impl.Tag;
 import edu.asu.diging.monitor.core.service.IAppHelper;
 import edu.asu.diging.monitor.core.service.IGroupManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
@@ -31,7 +32,10 @@ public class AppHelper implements IAppHelper {
     @Override
     public IApp copyAppInfo(IApp app, AppForm appForm) throws GroupNotFoundException, UnstorableObjectException {
         app.setDescription(appForm.getDescription());
-        app.setTags(appForm.getTags());
+        app.setTags(appForm.getTags().stream().map(t -> {
+          return new Tag(t);
+        }).collect(Collectors.toList()));
+//        app.setTags(appForm.getTags());
         app.setExpectedReturnCodes(appForm.getExpectedReturnCodes());
         app.setHealthUrl(appForm.getHealthUrl());
         app.setName(appForm.getName());
@@ -60,7 +64,9 @@ public class AppHelper implements IAppHelper {
     @Override
     public void copyAppInfoToForm(IApp app, AppForm appForm) {
         appForm.setDescription(app.getDescription());
-        appForm.setTags(app.getTags());
+        appForm.setTags(app.getTags().stream().map(t ->{
+            return t.getName();
+        }).collect(Collectors.toList()));
         appForm.setExpectedReturnCodes(app.getExpectedReturnCodes());
         appForm.setHealthUrl(app.getHealthUrl());
         appForm.setId(app.getId());
