@@ -8,6 +8,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import edu.asu.diging.monitor.core.db.ITagDbConnection;
@@ -18,6 +20,8 @@ import edu.asu.diging.monitor.core.model.impl.Tag;
 @Component
 @Transactional
 public class TagDbConnection implements ITagDbConnection {
+    
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @PersistenceContext
     private EntityManager em;
@@ -29,12 +33,14 @@ public class TagDbConnection implements ITagDbConnection {
 
     @Override
     public boolean store(List<Tag> tags) throws UnstorableObjectException {
-        if (tags != null) {
+        if (!tags.isEmpty()) {
             for (Tag tag: tags) {
+                logger.debug("Tag name: ");
+                logger.debug(tag.getName());
                 if (tag.getId() == null) {
                     throw new UnstorableObjectException("The tag " + tag.getName() + " does not have an id");
                 }
-                em.merge(tags);
+                em.persist(tag);
             }
         }
         em.flush();

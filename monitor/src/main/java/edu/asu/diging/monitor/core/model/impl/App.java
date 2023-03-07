@@ -1,18 +1,11 @@
 package edu.asu.diging.monitor.core.model.impl;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -38,11 +31,10 @@ public class App implements IApp {
     private int retries;
     private int pingInterval;
     private String lastTestId;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "apps")
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name = "app_tags", joinColumns = @JoinColumn(name = "app_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+//    @JoinTable(name = "app_tags", joinColumns = @JoinColumn(name = "app_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags;
-//    = new HashSet<>();
     @Transient
     private IAppTest lastAppTest;
     private RequestMethod method;

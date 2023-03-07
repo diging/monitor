@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
+import edu.asu.diging.monitor.core.model.impl.Tag;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.IGroupManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
@@ -75,8 +76,9 @@ public class AddAppController {
             if (appForm.getTags() == null) {
                 logger.debug("Nulled");
             }else {
-                
-                //TagManager.add(tags)
+                tagManager.addTags(appForm.getTags().stream().map(t ->{
+                    return new Tag(t);
+                }).collect(Collectors.toList()));
                 logger.debug("Not Null");
                 logger.debug("",appForm.getTags().get(0));
             }
