@@ -27,9 +27,8 @@
 
 	<div class="form-group">
 		<form:label path="tags">Tags</form:label>
-		<input type="text" class="form-control" name="tags" id="tags"/>
-		<ul class="dropdown-list" id="tags-list" ></ul>
-		<form:input type="hidden" id="current-tags" path="tags" />
+		<form:input type="text" class="form-control" name="tags" id="tags" path="tags" />
+		<ul class="dropdown-list" id="tags-list" path="tags"></ul>
 	</div>
 	
 	<div class="form-group">
@@ -170,37 +169,34 @@ $(document).ready(function() {
 		
 		$("#tags").on("keydown", function(event) {
 			if (event.keyCode === $.ui.keyCode.ENTER) {
+				console.log("ENTER event triggered!");
 				// Add the new tag to the tags array
-				
 				var newTagName = $(this).val();
 				if (newTagName !== "") {
-					//var newTag = {id: 1 + Math.floor(Math.random() * 1000000), name:newTagName};
 					currentTags.push(newTagName);
 					// Update the tags list in the input field
 					updateTagsField();
-
 					// Clear the input field
 					$(this).val("");
 				}
 				return false;
 			}
 		});
-
+		
 		function updateTagsField() {
 			// Update the tags list in the input field
 			  $("#tags-list").empty();
 		      for (var i = 0; i < currentTags.length; i++) {
 		          var tag = currentTags[i];
-		          var li = $("<li>").text(tag);
+		          var li = $("<li>").text(tag.name);
 		          $("#tags-list").append(li);
 		          // Add the tag as a hidden input field with 'id' and 'name' fields
-		          //var hiddenInput = $("<input>").attr("type", "hidden").attr("name", "tags[" + i + "].id").val(tag.id);
-		          //${appForm}.append(hiddenInput);
-		          //hiddenInput = $("<input>").attr("type", "hidden").attr("name", "tags[" + i + "].name").val(tag.name);
-		          //$(appForm).append(hiddenInput);
 			  }
-		      $("#current-tags").val(JSON.stringify(currentTags));	// This is not sending the tags correctly
-		}
+		      console.log("Current TAgs are: ");
+		      console.log(currentTags);
+		      $("#tags").val((currentTags));
+		      console.log($("#tags"))
+		}	
 
 		// Remove tag from the list
 

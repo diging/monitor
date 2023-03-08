@@ -33,7 +33,6 @@ public class App implements IApp {
     private String lastTestId;
     @ManyToMany(mappedBy = "apps")
     @LazyCollection(LazyCollectionOption.FALSE)
-//    @JoinTable(name = "app_tags", joinColumns = @JoinColumn(name = "app_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags;
     @Transient
     private IAppTest lastAppTest;
