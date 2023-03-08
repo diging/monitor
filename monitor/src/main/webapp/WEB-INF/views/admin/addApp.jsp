@@ -199,7 +199,7 @@ $(document).ready(function() {
 		          //hiddenInput = $("<input>").attr("type", "hidden").attr("name", "tags[" + i + "].name").val(tag.name);
 		          //$(appForm).append(hiddenInput);
 			  }
-		      $("#current-tags").val(JSON.stringify(currentTags));
+		      $("#current-tags").val(JSON.stringify(currentTags));	// This is not sending the tags correctly
 		}
 
 		// Remove tag from the list

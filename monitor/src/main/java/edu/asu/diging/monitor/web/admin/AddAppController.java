@@ -76,9 +76,10 @@ public class AddAppController {
             if (appForm.getTags() == null) {
                 logger.debug("Nulled");
             }else {
-                tagManager.addTags(appForm.getTags().stream().map(t ->{
-                    return new Tag(t);
-                }).collect(Collectors.toList()));
+                //Code to handle binding result errors
+//                tagManager.addTags(appForm.getTags().stream().map(t ->{
+//                    return new Tag(t);
+//                }).collect(Collectors.toList()));
                 logger.debug("Not Null");
                 logger.debug("",appForm.getTags().get(0));
             }
@@ -93,7 +94,10 @@ public class AddAppController {
             return "admin/apps/show";
         }
         try {
-            logger.debug("Well, no errors in binding result");
+            logger.debug("No binding errors. List of tags in App Form: ... ");
+            for (String tag: appForm.getTags()) {
+                logger.debug(tag);
+            }
             appManager.addApp(appForm);
         } catch (GroupNotFoundException e) {
             logger.error("Could not find Group", e);
