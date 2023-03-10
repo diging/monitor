@@ -27,8 +27,8 @@
 
 	<div class="form-group">
 		<form:label path="tags">Tags</form:label>
-		<form:input type="text" class="form-control" name="tags" id="tags" path="tags" />
-		<ul class="dropdown-list" id="tags-list" path="tags"></ul>
+		<form:input type="text" class="form-control" name="tags[]" id="tags" path="tags" />
+		<ul class="dropdown-list" id="tags-list"></ul>
 	</div>
 	
 	<div class="form-group">
@@ -125,7 +125,6 @@
 </form:form>
 <script>
 $(document).ready(function() {
-	//var tags = ["tag1", "tag2", "tag34"];
 	var currentTags = [];
 	
 	$("#tags").autocomplete({
@@ -139,7 +138,7 @@ $(document).ready(function() {
 					},
 					success : function(data) {
 						response($.map(data, function(item){
-							return item.name;
+							return item.name;		//Change the controller to only return tag names
 						}));
 					}
 				});
@@ -184,18 +183,21 @@ $(document).ready(function() {
 		});
 		
 		function updateTagsField() {
+			
+			
 			// Update the tags list in the input field
 			  $("#tags-list").empty();
 		      for (var i = 0; i < currentTags.length; i++) {
 		          var tag = currentTags[i];
-		          var li = $("<li>").text(tag.name);
+		          var li = $("<li>").text(tag);
 		          $("#tags-list").append(li);
 		          // Add the tag as a hidden input field with 'id' and 'name' fields
+		          
+		          var input = $("<input>").attr("type", "hidden").attr("name", "tags[]").val(tag);
+		          $("#tags-list").append(input);
 			  }
 		      console.log("Current TAgs are: ");
 		      console.log(currentTags);
-		      $("#tags").val((currentTags));
-		      console.log($("#tags"))
 		}	
 
 		// Remove tag from the list
