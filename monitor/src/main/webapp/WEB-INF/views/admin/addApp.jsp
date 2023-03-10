@@ -27,8 +27,9 @@
 
 	<div class="form-group">
 		<form:label path="tags">Tags</form:label>
-		<form:input type="text" class="form-control" name="tags[]" id="tags" path="tags" />
+		<input type="text" class="form-control" name="tags" id="tags" />
 		<ul class="dropdown-list" id="tags-list"></ul>
+		<form:hidden path="tags" id="hidden-tags"/>
 	</div>
 	
 	<div class="form-group">
@@ -149,10 +150,12 @@ $(document).ready(function() {
 			//define select handler
 			select : function(event, ui) {
 				// Add the selected tag to the tags array
+				console.log("Ui Item Value");
+				console.log(ui.item.val);
 				currentTags.push(ui.item.val);
 
 				// Update the tags list in the input field
-				updateTagsField();
+				updateTagsField(ui.item.val);
 
 				// Clear the input field
 				$(this).val("");
@@ -172,9 +175,11 @@ $(document).ready(function() {
 				// Add the new tag to the tags array
 				var newTagName = $(this).val();
 				if (newTagName !== "") {
+					console.log("New Tag Name");
+					console.log(newTagName);
 					currentTags.push(newTagName);
 					// Update the tags list in the input field
-					updateTagsField();
+					updateTagsField(newTagName);
 					// Clear the input field
 					$(this).val("");
 				}
@@ -182,22 +187,18 @@ $(document).ready(function() {
 			}
 		});
 		
-		function updateTagsField() {
+		function updateTagsField(tag) {
 			
+			var li = $("<li>").text(tag);
+	          $("#tags-list").append(li);
 			
 			// Update the tags list in the input field
-			  $("#tags-list").empty();
-		      for (var i = 0; i < currentTags.length; i++) {
-		          var tag = currentTags[i];
-		          var li = $("<li>").text(tag);
-		          $("#tags-list").append(li);
-		          // Add the tag as a hidden input field with 'id' and 'name' fields
-		          
-		          var input = $("<input>").attr("type", "hidden").attr("name", "tags[]").val(tag);
-		          $("#tags-list").append(input);
-			  }
-		      console.log("Current TAgs are: ");
-		      console.log(currentTags);
+			console.log("Current Tags are: ");
+		    console.log(currentTags);
+			$("#hidden-tags").val(currentTags.join(","));
+			console.log($("#hidden-tags").val());
+			console.log("Type is ");
+			console.log(typeof $("#hidden-tags").val());
 		}	
 
 		// Remove tag from the list

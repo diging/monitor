@@ -95,7 +95,10 @@ public class AddAppController {
         }
         try {
             logger.debug("No binding errors. List of tags in App Form: ... ");
+            int counter = 0;
             for (String tag: appForm.getTags()) {
+                logger.debug(String.valueOf(counter));
+                counter++;
                 logger.debug(tag);
             }
             appManager.addApp(appForm);
