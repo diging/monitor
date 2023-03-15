@@ -25,7 +25,8 @@ public class Tag implements ITag {
 
     private String name;
     
-    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "app_tags", joinColumns = @JoinColumn(name = "app_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<App> apps;
     
     

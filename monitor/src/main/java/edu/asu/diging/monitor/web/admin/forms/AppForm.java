@@ -14,6 +14,7 @@ public class AppForm {
     private String name;
     private String healthUrl;
     private String description;
+    private String tagString;
     private List<String> tags;
     private String expectedReturnCodes;
     private String warningReturnCodes;
@@ -190,6 +191,14 @@ public class AppForm {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public String getTagString() {
+        return tagString;
+    }
+
+    public void setTagString(String tagString) {
+        this.tagString = tagString;
     }
 
 }

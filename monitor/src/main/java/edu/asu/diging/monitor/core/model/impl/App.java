@@ -33,8 +33,7 @@ public class App implements IApp {
     private int retries;
     private int pingInterval;
     private String lastTestId;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "app_tags", joinColumns = @JoinColumn(name = "app_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @ManyToMany(mappedBy = "apps")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Tag> tags;
     @Transient

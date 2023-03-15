@@ -26,10 +26,10 @@
   </div>
 
 	<div class="form-group">
-		<form:label path="tags">Tags</form:label>
-		<input type="text" class="form-control" name="tags" id="tags" />
+		<form:label path="tagString">Tags</form:label>
+		<input type="text" class="form-control" id="tagString" />
 		<ul class="dropdown-list" id="tags-list"></ul>
-		<form:hidden path="tags" id="hidden-tags"/>
+		<form:hidden path="tagString" id="hidden-tags"/>
 	</div>
 	
 	<div class="form-group">
@@ -127,8 +127,9 @@
 <script>
 $(document).ready(function() {
 	var currentTags = [];
+	var tagsArray;
 	
-	$("#tags").autocomplete({
+	$("#tagString").autocomplete({
 			//source:tags,
 			source : function(request, response) {
 				$.ajax({
@@ -169,7 +170,7 @@ $(document).ready(function() {
 	        }   
 		});
 		
-		$("#tags").on("keydown", function(event) {
+		$("#tagString").on("keydown", function(event) {
 			if (event.keyCode === $.ui.keyCode.ENTER) {
 				console.log("ENTER event triggered!");
 				// Add the new tag to the tags array
@@ -189,16 +190,18 @@ $(document).ready(function() {
 		
 		function updateTagsField(tag) {
 			
-			var li = $("<li>").text(tag);
-	          $("#tags-list").append(li);
+			if (tag.trim() != ""){
 			
-			// Update the tags list in the input field
-			console.log("Current Tags are: ");
-		    console.log(currentTags);
-			$("#hidden-tags").val(currentTags.join(","));
-			console.log($("#hidden-tags").val());
-			console.log("Type is ");
-			console.log(typeof $("#hidden-tags").val());
+				var li = $("<li>").text(tag);
+		          $("#tags-list").append(li);
+				
+				// Update the tags list in the input field
+				console.log("Current Tags are: ");
+			    console.log(currentTags);
+				tagsArray = currentTags.join(",");
+				console.log(tagsArray);
+				$("#hidden-tags").val(tagsArray);
+			}
 		}	
 
 		// Remove tag from the list
