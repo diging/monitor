@@ -72,18 +72,6 @@ public class AddAppController {
     public String add(@ModelAttribute @Validated AppForm appForm, BindingResult result,
             RedirectAttributes redirectAttrs) {
         if (result.hasErrors()) {
-            logger.debug("The Binding Result has errors bruh!");
-            logger.debug("the input from jsp : ");
-            if (appForm.getTags() == null) {
-                logger.debug("Nulled");
-            }else {
-                //Code to handle binding result errors
-//                tagManager.addTags(appForm.getTags().stream().map(t ->{
-//                    return new Tag(t);
-//                }).collect(Collectors.toList()));
-                logger.debug("Not Null");
-                logger.debug("",appForm.getTags().get(0));
-            }
             appForm.setRecipients(manager.getAllRecipients().stream().map(r -> {
                 RecipientForm recipient = new RecipientForm();
                 recipient.setName(r.getName());
@@ -95,8 +83,10 @@ public class AddAppController {
             return "admin/apps/show";
         }
         try {
-            String[] tagStrings = appForm.getTagString().split(",");
-            appForm.setTags(Arrays.stream(tagStrings).map(tag -> tag.trim()).collect(Collectors.toList()));
+            if (!appForm.getTagString().isBlank()) {
+                String[] tagStrings = appForm.getTagString().split(",");
+                appForm.setTags(Arrays.stream(tagStrings).map(tag -> tag.trim()).collect(Collectors.toList()));
+            }
             appManager.addApp(appForm);
         } catch (GroupNotFoundException e) {
             logger.error("Could not find Group", e);

@@ -15,6 +15,7 @@ import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
 import edu.asu.diging.monitor.core.model.impl.App;
+import edu.asu.diging.monitor.core.model.impl.Tag;
 
 @Component
 @Transactional
@@ -46,6 +47,13 @@ public class AppDbConnection implements IAppDbConnection {
     public IApp store(IApp app) throws UnstorableObjectException {
         if (app.getId() == null) {
             throw new UnstorableObjectException("App does not have an id.");
+        }
+        //Store tags here
+        if (app.getTags() != null && !app.getTags().isEmpty()) {
+            for (Tag tag: app.getTags()) {
+                tag.getApps().add((App) app);
+                em.merge(tag);
+            }
         }
         if (app.getRecipients() != null && !app.getRecipients().isEmpty()) {
             for (INotificationRecipient recipient : app.getRecipients()) {

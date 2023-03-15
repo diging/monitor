@@ -32,14 +32,11 @@ public class AppHelper implements IAppHelper {
     @Override
     public IApp copyAppInfo(IApp app, AppForm appForm) throws GroupNotFoundException, UnstorableObjectException {
         app.setDescription(appForm.getDescription());
-        if (app.getTags() != null) {
-            app.setTags(appForm.getTags().stream().map(t -> {
-              return new Tag(t);
-            }).collect(Collectors.toList()));
+        if (appForm.getTags() != null) {                // This is always NULL!!    //TODO
+            app.setTags(appForm.getTags().stream().map(t -> new Tag(t)).collect(Collectors.toList()));       //Change this. App is null here!! Get tags from AppForm and set them in App. Might work!
         }else {
             app.setTags(new ArrayList<>());
         }
-//        app.setTags(appForm.getTags());
         app.setExpectedReturnCodes(appForm.getExpectedReturnCodes());
         app.setHealthUrl(appForm.getHealthUrl());
         app.setName(appForm.getName());
