@@ -38,6 +38,11 @@ public class TagManager implements ITagManager {
     public ITag getTag(String id) {
         return dbConnection.getById(id);
     }
+    
+    @Override
+    public Tag getTagByName(String name) {
+        return dbConnection.getTagByName(name);
+    }
 
     @Override
     public boolean addTags(List<Tag> tags) {

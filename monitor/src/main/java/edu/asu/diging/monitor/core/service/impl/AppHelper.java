@@ -28,12 +28,16 @@ public class AppHelper implements IAppHelper {
 
     @Autowired
     private IGroupManager groupManager;
+    
+    @Autowired
+    private TagManager tagManager;
 
     @Override
     public IApp copyAppInfo(IApp app, AppForm appForm) throws GroupNotFoundException, UnstorableObjectException {
         app.setDescription(appForm.getDescription());
-        if (appForm.getTags() != null) {                // This is always NULL!!    //TODO
-            app.setTags(appForm.getTags().stream().map(t -> new Tag(t)).collect(Collectors.toList()));       //Change this. App is null here!! Get tags from AppForm and set them in App. Might work!
+        if (appForm.getTags() != null) {
+            app.setTags(getTagsByName(appForm.getTags()));
+//            app.setTags(appForm.getTags().stream().map(t -> new Tag(t)).collect(Collectors.toList()));      //getTagByName?
         }else {
             app.setTags(new ArrayList<>());
         }
@@ -102,6 +106,17 @@ public class AppHelper implements IAppHelper {
     private List<NotificationRecipient> getRecipientsById(List<String> recipientIds) {
         return recipientIds.stream().map(id -> {
             return (NotificationRecipient) manager.getRecipient(id);
+        }).collect(Collectors.toList());
+    }
+    
+    private List<Tag> getTagsByName(List<String> tagNames){
+        return tagNames.stream().map(t -> {
+            Tag temp = tagManager.getTagByName(t);
+            if (temp != null) {
+                return temp;
+            }else {
+                return new Tag(t);
+            }
         }).collect(Collectors.toList());
     }
 

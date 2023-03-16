@@ -1,8 +1,10 @@
 package edu.asu.diging.monitor.core.model.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,9 +24,10 @@ import edu.asu.diging.monitor.core.model.ITag;
 public class Tag implements ITag {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true)
     private String name;
     
     @JsonIgnore
@@ -47,6 +50,7 @@ public class Tag implements ITag {
     
     public Tag(String name) {
         this.name = name;
+        this.apps = new ArrayList<App>();
     }
     
     public Long getId() {

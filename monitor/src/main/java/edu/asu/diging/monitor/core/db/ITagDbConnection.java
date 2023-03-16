@@ -16,4 +16,6 @@ public interface ITagDbConnection {
 
     List<Tag> getAllTags();
 
+    Tag getTagByName(String name);
+
 }

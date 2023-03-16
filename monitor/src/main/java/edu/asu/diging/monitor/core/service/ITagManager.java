@@ -12,4 +12,6 @@ public interface ITagManager {
 
     boolean addTags(List<Tag> tags);
 
+    Tag getTagByName(String name);
+
 }

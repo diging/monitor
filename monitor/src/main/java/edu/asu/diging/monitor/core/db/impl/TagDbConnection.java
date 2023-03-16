@@ -30,13 +30,23 @@ public class TagDbConnection implements ITagDbConnection {
     public ITag getById(String id) {
         return em.find(Tag.class, id);
     }
+    
+    @Override
+    public Tag getTagByName(String name) {
+        TypedQuery<Tag> query = em.createQuery("SELECT t FROM Tag t WHERE t.name = :name", Tag.class);
+        query.setParameter("name", name);
+        List<Tag> results = query.getResultList();
+        if (results == null || results.isEmpty()) {
+            return null;
+        }
+        return results.get(0);
+    }
+
 
     @Override
     public boolean store(List<Tag> tags) throws UnstorableObjectException {
         if (!tags.isEmpty()) {
             for (Tag tag: tags) {
-                logger.debug("Tag name: ");
-                logger.debug(tag.getName());
                 if (tag.getId() == null) {
                     throw new UnstorableObjectException("The tag " + tag.getName() + " does not have an id");
                 }
@@ -45,15 +55,6 @@ public class TagDbConnection implements ITagDbConnection {
         }
         em.flush();
         return true;
-        
-//        if (tag.getId() == null) {
-//            throw new UnstorableObjectException("Tag does not have an id.");
-//        }
-//        if (tag.getName() != null) {
-//            em.persist(tag);
-//        }
-//        em.flush();
-//        return true;
     }
     
     @Override
