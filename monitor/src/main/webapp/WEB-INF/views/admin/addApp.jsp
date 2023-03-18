@@ -28,7 +28,7 @@
 	<div class="form-group">
 		<form:label path="tagString">Tags</form:label>
 		<input type="text" class="form-control" id="tagString" />
-		<ul class="dropdown-list" id="tags-list"></ul>
+		<ul class="list-group" id="tags-list"></ul>
 		<form:hidden path="tagString" id="hidden-tags"/>
 	</div>
 	
@@ -140,7 +140,7 @@ $(document).ready(function() {
 					},
 					success : function(data) {
 						response($.map(data, function(item){
-							return item.name;		//Change the controller to only return tag names
+							return item.name;
 						}));
 					}
 				});
@@ -151,12 +151,10 @@ $(document).ready(function() {
 			//define select handler
 			select : function(event, ui) {
 				// Add the selected tag to the tags array
-				console.log("Ui Item Value");
-				console.log(ui.item.val);
-				currentTags.push(ui.item.val);
+				currentTags.push(ui.item.value);
 
 				// Update the tags list in the input field
-				updateTagsField(ui.item.val);
+				updateTagsField(ui.item.value);
 
 				// Clear the input field
 				$(this).val("");
@@ -165,7 +163,7 @@ $(document).ready(function() {
 				return false;
 			},
 			focus: function(event, ui) {
-		        $(this).val(ui.item.name);
+		        $(this).val(ui.item.label);
 		        return false;
 	        }   
 		});
@@ -176,8 +174,6 @@ $(document).ready(function() {
 				// Add the new tag to the tags array
 				var newTagName = $(this).val();
 				if (newTagName !== "") {
-					console.log("New Tag Name");
-					console.log(newTagName);
 					currentTags.push(newTagName);
 					// Update the tags list in the input field
 					updateTagsField(newTagName);
@@ -196,17 +192,12 @@ $(document).ready(function() {
 		          $("#tags-list").append(li);
 				
 				// Update the tags list in the input field
-				console.log("Current Tags are: ");
-			    console.log(currentTags);
 				tagsArray = currentTags.join(",");
-				console.log(tagsArray);
 				$("#hidden-tags").val(tagsArray);
 			}
 		}	
 
 		// Remove tag from the list
-
-		// Add new tag when the user presses enter in the input field
 
 		$('#select-all').click(function(event) {
 			if (this.checked) {

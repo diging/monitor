@@ -48,19 +48,20 @@ public class AppDbConnection implements IAppDbConnection {
         if (app.getId() == null) {
             throw new UnstorableObjectException("App does not have an id.");
         }
-        //Store tags here
-        if (app.getTags() != null && !app.getTags().isEmpty()) {
-            for (Tag tag: app.getTags()) {
-                tag.getApps().add((App) app);
-                em.merge(tag);
+        if ((app.getTags() != null && !app.getTags().isEmpty()) || (app.getRecipients() != null && !app.getRecipients().isEmpty())) {
+            if (app.getTags() != null && !app.getTags().isEmpty()) {
+                for (Tag tag: app.getTags()) {
+                    tag.getApps().add((App) app);
+                    em.merge(tag);
+                }
             }
-        }
-        if (app.getRecipients() != null && !app.getRecipients().isEmpty()) {
-            for (INotificationRecipient recipient : app.getRecipients()) {
-                recipient.getApps().add((App) app);
-                em.merge(recipient);
-            }
-        } else {
+            if (app.getRecipients() != null && !app.getRecipients().isEmpty()) {
+                for (INotificationRecipient recipient : app.getRecipients()) {
+                    recipient.getApps().add((App) app);
+                    em.merge(recipient);
+                }
+            } 
+        }else {
             em.persist(app);
         }
         em.flush();
