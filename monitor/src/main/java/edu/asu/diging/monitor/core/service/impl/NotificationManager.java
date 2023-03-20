@@ -68,13 +68,13 @@ public class NotificationManager implements INotificationManager {
     }
     
     @Override
-    public boolean modifyRecipient(String email, String name, List<String> apps ) throws NoEmailRecipientException {
-        //Code here
+    public boolean modifyRecipient(String email, String name, List<String> apps) throws NoEmailRecipientException {
+        // Code here
         if (email == null || email.trim().isEmpty()) {
             return false;
         }
         if (dbConnection.getById(email) == null) {
-            throw new NoEmailRecipientException(); //Throw a exception instead
+            throw new NoEmailRecipientException(); // Throw a exception instead
         }
         INotificationRecipient recipient = this.getRecipient(email);
         recipient.setName(name);

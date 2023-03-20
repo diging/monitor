@@ -29,7 +29,7 @@ public class NotificationManagerTest {
 	private EmailNotificationManager emailManager;
 	
 	@Mock
-	private IAppManager appmanager;
+    private IAppManager appmanager;
 	
 	@InjectMocks
 	private NotificationManager managerToTest;
@@ -40,39 +40,39 @@ public class NotificationManagerTest {
 	private NotificationRecipient recipient2;
 	private String ID1 = "email@ID1";
 	private String ID2 = "email@ID2";
-	private String id1Name = "ID1";
-	private String id2Name = "ID2";
-	private String appId1 = "App1";
-	private String appId2 = "App2";
-	private App app1 = new App();
-	private App app2 = new App();
-	List<String> appIds = new ArrayList<>();
-    
+    private String id1Name = "ID1";
+    private String id2Name = "ID2";
+    private String appId1 = "App1";
+    private String appId2 = "App2";
+    private App app1 = new App();
+    private App app2 = new App();
+    List<String> appIds = new ArrayList<>();
+	
 	
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		recipient1 = new NotificationRecipient();
-		recipient1.setEmail(ID1);
-		recipient1.setName(id1Name);
-		
-		recipient2 = new NotificationRecipient();
-		recipient2.setEmail(ID2);
-		recipient2.setName(id2Name);
-		storedRecipients = new NotificationRecipient[] {recipient1, recipient2};
-		
-		app1.setId(appId1);
-		app1.setName(appId1);
-		app2.setId(appId2);
-		app2.setName(appId2);
-		
-		appIds.add(appId1);
-	    appIds.add(appId2);
-		
-		Mockito.when(dbConn.getAllRecipients()).thenReturn(storedRecipients);
-		Mockito.when(dbConn.getById(ID1)).thenReturn(recipient1);
-		Mockito.when(dbConn.getById(ID2)).thenReturn(recipient2);
-		Mockito.when(appmanager.getApp(appId1)).thenReturn(app1);
+        recipient1 = new NotificationRecipient();
+        recipient1.setEmail(ID1);
+        recipient1.setName(id1Name);
+
+        recipient2 = new NotificationRecipient();
+        recipient2.setEmail(ID2);
+        recipient2.setName(id2Name);
+        storedRecipients = new NotificationRecipient[] { recipient1, recipient2 };
+
+        app1.setId(appId1);
+        app1.setName(appId1);
+        app2.setId(appId2);
+        app2.setName(appId2);
+
+        appIds.add(appId1);
+        appIds.add(appId2);
+
+        Mockito.when(dbConn.getAllRecipients()).thenReturn(storedRecipients);
+        Mockito.when(dbConn.getById(ID1)).thenReturn(recipient1);
+        Mockito.when(dbConn.getById(ID2)).thenReturn(recipient2);
+        Mockito.when(appmanager.getApp(appId1)).thenReturn(app1);
         Mockito.when(appmanager.getApp(appId2)).thenReturn(app2);
 	}
 	
@@ -91,30 +91,27 @@ public class NotificationManagerTest {
         Mockito.verify(dbConn).delete(ID1);
     }
 	
-	@Test
-	public void test_modifyRecipient_success() throws NoEmailRecipientException {
-	    managerToTest.modifyRecipient(ID1, id1Name, appIds);
-	    try {
+    @Test
+    public void test_modifyRecipient_success() throws NoEmailRecipientException {
+        managerToTest.modifyRecipient(ID1, id1Name, appIds);
+        try {
             Mockito.verify(dbConn).update(Mockito.any());
         } catch (UnstorableObjectException e) {
             e.printStackTrace();
         }
-	}
-	
-	@Test
-	public void test_modifyRecipient_failure_emailNull() throws NoEmailRecipientException {
-	    String email = null;
-	    Assert.assertFalse(managerToTest.modifyRecipient(email, id1Name, appIds));
-	}
-	
-	@Test(expected = NoEmailRecipientException.class)
-	public void test_modifyRecipient_failure_NoEmailRecipient() throws NoEmailRecipientException {
-	    Mockito.when(dbConn.getById(Mockito.anyString())).thenReturn(null);
-	    managerToTest.modifyRecipient(ID1, id1Name, appIds);
-	}
-	
-	
-	
+    }
+
+    @Test
+    public void test_modifyRecipient_failure_emailNull() throws NoEmailRecipientException {
+        String email = null;
+        Assert.assertFalse(managerToTest.modifyRecipient(email, id1Name, appIds));
+    }
+
+    @Test(expected = NoEmailRecipientException.class)
+    public void test_modifyRecipient_failure_NoEmailRecipient() throws NoEmailRecipientException {
+        Mockito.when(dbConn.getById(Mockito.anyString())).thenReturn(null);
+        managerToTest.modifyRecipient(ID1, id1Name, appIds);
+    }
 	
 
 }

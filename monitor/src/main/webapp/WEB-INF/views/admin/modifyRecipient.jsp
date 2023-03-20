@@ -11,7 +11,8 @@
 
 	<div class="form-group">
 		<form:label path="email">Email:</form:label>
-		<form:input type="email" class="form-control" path="email" readonly="true"/>
+		<form:input type="email" class="form-control" path="email"
+			readonly="true" />
 	</div>
 	<div class="form-group">
 		<form:label path="appIds">Apps to be notified about:</form:label>
@@ -22,13 +23,13 @@
 		</p>
 		<c:forEach items="${recipientForm.apps}" var="app">
 			<p>
-				<input type="checkbox" name="appIds" value="${app.id}" <c:if test="${recipientApps.contains(app.id)}">checked</c:if> /> <label>${app.name}</label>
+				<input type="checkbox" name="appIds" value="${app.id}"
+					<c:if test="${recipientApps.contains(app.id)}">checked</c:if> /> <label>${app.name}</label>
 			</p>
 		</c:forEach>
 	</div>
 
-	<input class="btn btn-primary" type="submit"
-		value="Submit" />
+	<input class="btn btn-primary" type="submit" value="Submit" />
 </form:form>
 <script>
 	$('#select-all').click(function(event) {
