@@ -29,7 +29,7 @@ public class NotificationManagerTest {
 	private EmailNotificationManager emailManager;
 	
 	@Mock
-    private IAppManager appmanager;
+	private IAppManager appmanager;
 	
 	@InjectMocks
 	private NotificationManager managerToTest;
@@ -52,15 +52,14 @@ public class NotificationManagerTest {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-        recipient1 = new NotificationRecipient();
-        recipient1.setEmail(ID1);
+		recipient1 = new NotificationRecipient();
+		recipient1.setEmail(ID1);
         recipient1.setName(id1Name);
-
-        recipient2 = new NotificationRecipient();
-        recipient2.setEmail(ID2);
+		recipient2 = new NotificationRecipient();
+		recipient2.setEmail(ID2);
         recipient2.setName(id2Name);
-        storedRecipients = new NotificationRecipient[] { recipient1, recipient2 };
-
+		storedRecipients = new NotificationRecipient[] {recipient1, recipient2};
+		
         app1.setId(appId1);
         app1.setName(appId1);
         app2.setId(appId2);
@@ -68,10 +67,10 @@ public class NotificationManagerTest {
 
         appIds.add(appId1);
         appIds.add(appId2);
-
-        Mockito.when(dbConn.getAllRecipients()).thenReturn(storedRecipients);
-        Mockito.when(dbConn.getById(ID1)).thenReturn(recipient1);
-        Mockito.when(dbConn.getById(ID2)).thenReturn(recipient2);
+		
+		Mockito.when(dbConn.getAllRecipients()).thenReturn(storedRecipients);
+		Mockito.when(dbConn.getById(ID1)).thenReturn(recipient1);
+		Mockito.when(dbConn.getById(ID2)).thenReturn(recipient2);
         Mockito.when(appmanager.getApp(appId1)).thenReturn(app1);
         Mockito.when(appmanager.getApp(appId2)).thenReturn(app2);
 	}
