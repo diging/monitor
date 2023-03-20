@@ -43,8 +43,8 @@
 	</definition>
     
     <definition name="admin/recipients/modify" extends="base.definition">
-		<put-attribute name="content" value="/WEB-INF/views/admin/modifyRecipient.jsp" />	
-	</definition>
+        <put-attribute name="content" value="/WEB-INF/views/admin/modifyRecipient.jsp" />   
+    </definition>
 	
 	
 </tiles-definitions>

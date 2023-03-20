@@ -28,8 +28,8 @@ public class NotificationManagerTest {
 	@Mock
 	private EmailNotificationManager emailManager;
 	
-	@Mock
-	private IAppManager appmanager;
+    @Mock
+    private IAppManager appmanager;
 	
 	@InjectMocks
 	private NotificationManager managerToTest;
@@ -64,7 +64,6 @@ public class NotificationManagerTest {
         app1.setName(appId1);
         app2.setId(appId2);
         app2.setName(appId2);
-
         appIds.add(appId1);
         appIds.add(appId2);
 		
