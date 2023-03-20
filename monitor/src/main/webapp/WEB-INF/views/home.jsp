@@ -45,7 +45,7 @@
 	
 	function parseDate(jsonDate) {
 		return moment.parseZone(
-				[ jsonDate.year, (jsonDate.monthValue - 1),
+				[ jsonDate.year, (jsonDate.monthValue),
 						jsonDate.dayOfMonth, jsonDate.hour, jsonDate.minute,
 						jsonDate.offset.id ], 'YYYY MM DD HH mm ZZ').local()
 				.format('MMMM D, YYYY h:mm A')
