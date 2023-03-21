@@ -2,7 +2,7 @@ package edu.asu.diging.monitor.core.exceptions;
 
 public class NoEmailRecipientException extends Exception {
 
-    private static final long serialVersionUID = -3658335972369001233L;
+    private static final long serialVersionUID = 1L;
 
     public NoEmailRecipientException() {
         super();
