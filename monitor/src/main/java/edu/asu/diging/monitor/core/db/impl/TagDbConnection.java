@@ -64,8 +64,9 @@ public class TagDbConnection implements ITagDbConnection {
     }
 
     @Override
-    public List<Tag> getAllTags() {
-        TypedQuery<Tag> query = em.createQuery("SELECT t FROM Tag t", Tag.class);
+    public List<Tag> getAllTags(String userQuery) {
+        TypedQuery<Tag> query = em.createQuery("SELECT t FROM Tag t WHERE t.name LIKE :userQuery", Tag.class);
+        query.setParameter("userQuery","%" + userQuery + "%");
         List<Tag> results = query.getResultList();
         if (results == null) {
             return Collections.emptyList();

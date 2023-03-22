@@ -14,7 +14,7 @@ public interface ITagDbConnection {
 
     void delete(ITag tag);
 
-    List<Tag> getAllTags();
+    List<Tag> getAllTags(String userQuery);
 
     Tag getTagByName(String name);
 

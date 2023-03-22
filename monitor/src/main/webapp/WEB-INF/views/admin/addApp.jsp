@@ -126,6 +126,7 @@
 </form:form>
 <script>
 $(document).ready(function() {
+	
 	var currentTags = [];
 	var tagsArray;
 	
@@ -195,8 +196,8 @@ $(document).ready(function() {
 				tagsArray = currentTags.join(",");
 				$("#hidden-tags").val(tagsArray);
 			}
-		}	
-
+		}
+		
 		// Remove tag from the list
 
 		$('#select-all').click(function(event) {
@@ -223,9 +224,17 @@ $(document).ready(function() {
 				$('#groupExisting').css('display', 'none');
 			}
 		}
+		
+		function populateTags() {
+			var tags = "${appForm.tagString}".split(",");
+			for (var i = 0; i < tags.length; i++) {
+			    updateTagsField(tags[i]);
+			}
+		}
 
 		window.onload = function() {
 			showHideGroups();
+			populateTags();
 		};
 	});
 </script>

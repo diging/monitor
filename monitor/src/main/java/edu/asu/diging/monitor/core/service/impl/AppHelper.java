@@ -37,7 +37,6 @@ public class AppHelper implements IAppHelper {
         app.setDescription(appForm.getDescription());
         if (appForm.getTags() != null) {
             app.setTags(getTagsByName(appForm.getTags()));
-//            app.setTags(appForm.getTags().stream().map(t -> new Tag(t)).collect(Collectors.toList()));      //getTagByName?
         }else {
             app.setTags(new ArrayList<>());
         }
@@ -72,6 +71,7 @@ public class AppHelper implements IAppHelper {
         appForm.setTags(app.getTags().stream().map(t ->{
             return t.getName();
         }).collect(Collectors.toList()));
+        appForm.setTagString(String.join(",", appForm.getTags()));
         appForm.setExpectedReturnCodes(app.getExpectedReturnCodes());
         appForm.setHealthUrl(app.getHealthUrl());
         appForm.setId(app.getId());

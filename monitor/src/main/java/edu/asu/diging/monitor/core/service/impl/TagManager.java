@@ -27,7 +27,7 @@ public class TagManager implements ITagManager {
 
     @Override
     public List<Tag> getTagList(String query) {
-        List<Tag> tags = dbConnection.getAllTags();
+        List<Tag> tags = dbConnection.getAllTags(query);
         if (tags != null) {
             return tags;
         }

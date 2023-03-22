@@ -1,5 +1,6 @@
 package edu.asu.diging.monitor.web.admin;
 
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -66,6 +67,10 @@ public class ModifyAppController {
             return "admin/apps/show";
         }
         try {
+            if (!appForm.getTagString().isBlank()) {
+                String[] tagStrings = appForm.getTagString().split(",");
+                appForm.setTags(Arrays.stream(tagStrings).map(tag -> tag.trim()).collect(Collectors.toList()));
+            }
             appManager.updateApp(app, appForm);
         } catch (GroupNotFoundException e) {
             logger.error("Could not find Group", e);
