@@ -9,7 +9,7 @@
 
 	<properties>
 		<org.slf4j-version>1.7.30</org.slf4j-version>
-		<org.springframework-version>5.3.20</org.springframework-version>
+		<org.springframework-version>5.3.26</org.springframework-version>
 		<spring-security-version>5.5.7</spring-security-version>
 		<encoding.type>{bcrypt}</encoding.type>
 		<admin.password>$2y$12$AJZLdMlxFVueyEUwjPNjo.df2235U0BTudUjY915T4on73our8x0C</admin.password>
