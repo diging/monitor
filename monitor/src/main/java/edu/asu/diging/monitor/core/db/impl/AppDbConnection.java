@@ -70,11 +70,19 @@ public class AppDbConnection implements IAppDbConnection {
 
     @Override
     public IApp update(IApp app) {
-        if (app.getRecipients() != null && app.getRecipients().size() != 0) {
-            for (INotificationRecipient recipient : app.getRecipients()) {
-                recipient.getApps().add((App) app);
-                em.merge(recipient);
+        if ((app.getTags() != null && !app.getTags().isEmpty()) || (app.getRecipients() != null && !app.getRecipients().isEmpty())) {
+            if (app.getTags() != null && !app.getTags().isEmpty()) {
+                for (Tag tag: app.getTags()) {
+                    tag.getApps().add((App) app);
+                    em.merge(tag);
+                }
             }
+            if (app.getRecipients() != null && !app.getRecipients().isEmpty()) {
+                for (INotificationRecipient recipient : app.getRecipients()) {
+                    recipient.getApps().add((App) app);
+                    em.merge(recipient);
+                }
+            } 
         } else {
             em.merge(app);
         }
@@ -110,6 +118,15 @@ public class AppDbConnection implements IAppDbConnection {
         for (INotificationRecipient recipient : element.getRecipients()) {
             recipient.getApps().remove(element);
             em.merge(recipient);
+        }
+        em.flush();
+    }
+    
+    @Override
+    public void deleteTagsForApp(IApp element) {
+        for (Tag tag: element.getTags()) {
+            tag.getApps().remove(element);
+            em.merge(tag);
         }
         em.flush();
     }

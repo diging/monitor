@@ -28,7 +28,9 @@
 	<div class="form-group">
 		<form:label path="tagString">Tags</form:label>
 		<input type="text" class="form-control" id="tagString" />
-		<ul class="list-group" id="tags-list"></ul>
+		<div class="tags-container" id="tags-container" style="display: flex; flex-wrap: wrap;">
+			<ul class="list-group" id="tags-list"></ul>
+		</div>
 		<form:hidden path="tagString" id="hidden-tags"/>
 	</div>
 	
@@ -167,30 +169,35 @@ $(document).ready(function() {
 		        $(this).val(ui.item.label);
 		        return false;
 	        }   
-		});
-		
-		$("#tagString").on("keydown", function(event) {
+		}).keydown(function(event){
 			if (event.keyCode === $.ui.keyCode.ENTER) {
-				console.log("ENTER event triggered!");
-				// Add the new tag to the tags array
-				var newTagName = $(this).val();
-				if (newTagName !== "") {
-					currentTags.push(newTagName);
-					// Update the tags list in the input field
-					updateTagsField(newTagName);
-					// Clear the input field
-					$(this).val("");
-				}
-				return false;
+				event.preventDefault();
+				var newTag = $(this).val();
+				currentTags.push(newTag);
+				updateTagsField(newTag);
+				$(this).val("");
 			}
 		});
 		
 		function updateTagsField(tag) {
-			
 			if (tag.trim() != ""){
-			
-				var li = $("<li>").text(tag);
-		          $("#tags-list").append(li);
+				var li = $("<li>");
+				li.addClass("tag");
+				li.text(tag);
+				
+				var deleteButton = $("<button>");
+				deleteButton.addClass("btn btn-xs btn-danger");
+			    deleteButton.html("<i class='glyphicon glyphicon-remove'></i>");
+			    deleteButton.click(function() {
+			      var index = currentTags.indexOf(tag);
+			      if (index > -1) {
+			        currentTags.splice(index, 1);
+			        li.remove();
+			      }
+			    });
+			    
+			    li.append(deleteButton);
+		        $("#tags-list").append(li);
 				
 				// Update the tags list in the input field
 				tagsArray = currentTags.join(",");

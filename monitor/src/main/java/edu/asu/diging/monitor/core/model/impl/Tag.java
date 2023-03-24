@@ -31,7 +31,7 @@ public class Tag implements ITag {
     private String name;
     
     @JsonIgnore
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch=FetchType.EAGER)
     @JoinTable(name = "app_tags", joinColumns = @JoinColumn(name = "tag_id"), inverseJoinColumns = @JoinColumn(name = "app_id"))
     private List<App> apps;
     

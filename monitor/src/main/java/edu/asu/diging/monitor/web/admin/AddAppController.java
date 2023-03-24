@@ -45,9 +45,6 @@ public class AddAppController {
     @Autowired
     private AppValidator appValidator;
     
-    @Autowired
-    private ITagManager tagManager;
-
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.addValidators(appValidator);

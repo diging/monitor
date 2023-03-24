@@ -66,6 +66,7 @@ public class AppManager implements IAppManager {
     @Override
     public IApp updateApp(IApp app, AppForm appForm) throws UnstorableObjectException, GroupNotFoundException {
         deleteExistingRecipients(app);
+        deleteExistingTags(app);
         appHelper.copyAppInfo(app, appForm);
         return dbConnection.update(app);
     }
@@ -125,6 +126,12 @@ public class AppManager implements IAppManager {
     protected void deleteExistingRecipients(IApp app) {
         if (app.getRecipients() != null && !app.getRecipients().isEmpty()) {
             dbConnection.deleteRecipientsForApp(app);
+        }
+    }
+    
+    protected void deleteExistingTags(IApp app) {
+        if (app.getTags() != null && !app.getTags().isEmpty()) {
+            dbConnection.deleteTagsForApp(app);
         }
     }
     protected void encryptPassword(AppForm appForm, IApp app) {

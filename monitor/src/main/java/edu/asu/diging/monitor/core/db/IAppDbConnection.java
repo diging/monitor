@@ -24,6 +24,8 @@ public interface IAppDbConnection {
 
     void updateAppAuth(IApp app);
 
+    void deleteTagsForApp(IApp element);
+
     
 
 }
