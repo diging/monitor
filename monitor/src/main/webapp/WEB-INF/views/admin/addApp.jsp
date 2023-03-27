@@ -128,9 +128,7 @@
 </form:form>
 <script>
 $(document).ready(function() {
-	
 	var currentTags = [];
-	var tagsArray;
 	
 	$("#tagString").autocomplete({
 			//source:tags,
@@ -153,9 +151,6 @@ $(document).ready(function() {
 
 			//define select handler
 			select : function(event, ui) {
-				// Add the selected tag to the tags array
-				currentTags.push(ui.item.value);
-
 				// Update the tags list in the input field
 				updateTagsField(ui.item.value);
 
@@ -172,8 +167,7 @@ $(document).ready(function() {
 		}).keydown(function(event){
 			if (event.keyCode === $.ui.keyCode.ENTER) {
 				event.preventDefault();
-				var newTag = $(this).val();
-				currentTags.push(newTag);
+				var newTag = $(this).val();	
 				updateTagsField(newTag);
 				$(this).val("");
 			}
@@ -188,11 +182,13 @@ $(document).ready(function() {
 				var deleteButton = $("<button>");
 				deleteButton.addClass("btn btn-xs btn-danger");
 			    deleteButton.html("<i class='glyphicon glyphicon-remove'></i>");
+			    deleteButton.attr("type", "button");
 			    deleteButton.click(function() {
 			      var index = currentTags.indexOf(tag);
 			      if (index > -1) {
 			        currentTags.splice(index, 1);
 			        li.remove();
+			        $("#hidden-tags").val(currentTags.join(","));
 			      }
 			    });
 			    
@@ -200,13 +196,11 @@ $(document).ready(function() {
 		        $("#tags-list").append(li);
 				
 				// Update the tags list in the input field
-				tagsArray = currentTags.join(",");
-				$("#hidden-tags").val(tagsArray);
+				currentTags.push(tag);
+				$("#hidden-tags").val(currentTags.join(","));
 			}
 		}
 		
-		// Remove tag from the list
-
 		$('#select-all').click(function(event) {
 			if (this.checked) {
 				$(':checkbox').each(function() {
