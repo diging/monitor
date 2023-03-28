@@ -27,9 +27,9 @@
 
 	<div class="form-group">
 		<form:label path="tagString">Tags</form:label>
-		<input type="text" class="form-control" id="tagString" />
-		<div class="tags-container" id="tags-container" style="display: flex; flex-wrap: wrap;">
-			<ul class="list-group" id="tags-list"></ul>
+		<div class="tags-container" >
+			<input type="text" class="form-control" id="tagString" />
+			<div class="tags-container-append" id="tags-container"></div>
 		</div>
 		<form:hidden path="tagString" id="hidden-tags"/>
 	</div>
@@ -131,116 +131,164 @@ $(document).ready(function() {
 	var currentTags = [];
 	
 	$("#tagString").autocomplete({
-			//source:tags,
-			source : function(request, response) {
-				$.ajax({
-					url : "${pageContext.request.contextPath}/admin/apps/tags/getTagList",
-					dataType : "json",
-					data : {
-						term : request.term
-					},
-					success : function(data) {
-						response($.map(data, function(item){
-							return item.name;
-						}));
-					}
-				});
-			},
-			minLength : 1,
-			delay : 500,
+		source : function(request, response) {
+			$.ajax({
+				url : "${pageContext.request.contextPath}/admin/apps/tags/getTagList",
+				dataType : "json",
+				data : {
+					term : request.term
+				},
+				success : function(data) {
+					response($.map(data, function(item){
+						return item.name;
+					}));
+				}
+			});
+		},
+		minLength : 1,
+		delay : 500,
 
-			//define select handler
-			select : function(event, ui) {
-				// Update the tags list in the input field
+		//define select handler
+		select : function(event, ui) {
+			if (!currentTags.includes(ui.item.value)){
 				updateTagsField(ui.item.value);
-
-				// Clear the input field
-				$(this).val("");
-
-				// Prevent the default autocomplete behavior
-				return false;
-			},
-			focus: function(event, ui) {
-		        $(this).val(ui.item.label);
-		        return false;
-	        }   
-		}).keydown(function(event){
-			if (event.keyCode === $.ui.keyCode.ENTER) {
-				event.preventDefault();
-				var newTag = $(this).val();	
+			}
+			$(this).val("");
+			// Prevent the default autocomplete behavior
+			return false;
+		},
+		focus: function(event, ui) {
+	        $(this).val(ui.item.label);
+	        return false;
+        }
+	}).keydown(function(event){
+		if (event.keyCode === $.ui.keyCode.ENTER) {
+			event.preventDefault();
+			var newTag = $(this).val();
+			if (!currentTags.includes(newTag)){
 				updateTagsField(newTag);
-				$(this).val("");
 			}
-		});
-		
-		function updateTagsField(tag) {
-			if (tag.trim() != ""){
-				var li = $("<li>");
-				li.addClass("tag");
-				li.text(tag);
-				
-				var deleteButton = $("<button>");
-				deleteButton.addClass("btn btn-xs btn-danger");
-			    deleteButton.html("<i class='glyphicon glyphicon-remove'></i>");
-			    deleteButton.attr("type", "button");
-			    deleteButton.click(function() {
-			      var index = currentTags.indexOf(tag);
-			      if (index > -1) {
-			        currentTags.splice(index, 1);
-			        li.remove();
-			        $("#hidden-tags").val(currentTags.join(","));
-			      }
-			    });
-			    
-			    li.append(deleteButton);
-		        $("#tags-list").append(li);
-				
-				// Update the tags list in the input field
-				currentTags.push(tag);
-				$("#hidden-tags").val(currentTags.join(","));
-			}
+			$(this).val("");
 		}
-		
-		$('#select-all').click(function(event) {
-			if (this.checked) {
-				$(':checkbox').each(function() {
-					this.checked = true;
-				});
-			} else {
-				$(':checkbox').each(function() {
-					this.checked = false;
-				});
-			}
-		});
-		function showHideGroups() {
-			if (document.getElementById('groupCreate').checked) {
-				$('#groupNew').css('display', 'block');
-				$('#groupExisting').css('display', 'none');
-
-			} else if (document.getElementById('groupSelect').checked) {
-				$('#groupNew').css('display', 'none');
-				$('#groupExisting').css('display', 'block');
-			} else {
-				$('#groupNew').css('display', 'none');
-				$('#groupExisting').css('display', 'none');
-			}
-		}
-		
-		function populateTags() {
-			var tags = "${appForm.tagString}".split(",");
-			for (var i = 0; i < tags.length; i++) {
-			    updateTagsField(tags[i]);
-			}
-		}
-
-		window.onload = function() {
-			showHideGroups();
-			populateTags();
-		};
 	});
+	
+	function updateTagsField(tag) {
+		if (tag.trim() != ""){
+			var button = $('<button type="button" class="btn btn-default">' + tag + ' <span class="glyphicon glyphicon-remove"></span></button>');
+		    
+		    // Add an event listener to the button to remove the tag when clicked
+		    button.on('click', function() {
+		    	button.remove();
+			    var index = currentTags.indexOf(tag);
+			    if (index > -1) {
+			    	currentTags.splice(index, 1);
+			        $("#hidden-tags").val(currentTags.join(","));
+			    }
+		    });
+		    
+		    $("#tags-container").append(button);
+		    currentTags.push(tag);
+		    $("#hidden-tags").val(currentTags.join(","));
+		}
+	}
+	
+	$('#select-all').click(function(event) {
+		if (this.checked) {
+			$(':checkbox').each(function() {
+				this.checked = true;
+			});
+		} else {
+			$(':checkbox').each(function() {
+				this.checked = false;
+			});
+		}
+	});
+	function showHideGroups() {
+		if (document.getElementById('groupCreate').checked) {
+			$('#groupNew').css('display', 'block');
+			$('#groupExisting').css('display', 'none');
+
+		} else if (document.getElementById('groupSelect').checked) {
+			$('#groupNew').css('display', 'none');
+			$('#groupExisting').css('display', 'block');
+		} else {
+			$('#groupNew').css('display', 'none');
+			$('#groupExisting').css('display', 'none');
+		}
+	}
+	
+	function populateTags() {
+		var tags = "${appForm.tagString}".split(",");
+		for (var i = 0; i < tags.length; i++) {
+		    updateTagsField(tags[i]);
+		}
+	}
+
+	window.onload = function() {
+		showHideGroups();
+		populateTags();
+	};
+});
 </script>
 <style>
 input[type="radio"] {
 	margin: 0 10px 0 10px;
 }
+
+.ui-autocomplete {
+  position: relative;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  z-index: 1;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  margin-top: -1px;
+  padding: 0.5rem;
+}
+
+.ui-autocomplete li {
+  list-style-type: none;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  padding: 5px;
+  background-color: #eee;
+  border-radius: 5px;
+}
+
+.ui-menu-item-wrapper {
+  font-size: 14px;
+  color: #333;
+  padding: 5px;
+}
+
+.ui-state-active,
+.ui-state-hover {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+#tagString button {
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #e9ecef;
+    border: none;
+    border-radius: 0.25rem;
+}
+  
+#tagString button:hover {
+    background-color: #adb5bd;
+    color: #fff;
+    cursor: pointer;
+}
+
+#tagString .glyphicon-remove {
+    margin-left: 5px;
+    font-size: 0.8rem;
+}
+
 </style>
