@@ -8,8 +8,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import edu.asu.diging.monitor.core.db.ITagDbConnection;
@@ -20,8 +18,6 @@ import edu.asu.diging.monitor.core.model.impl.Tag;
 @Component
 @Transactional
 public class TagDbConnection implements ITagDbConnection {
-    
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @PersistenceContext
     private EntityManager em;
@@ -30,7 +26,7 @@ public class TagDbConnection implements ITagDbConnection {
     public ITag getById(String id) {
         return em.find(Tag.class, id);
     }
-    
+
     @Override
     public Tag getTagByName(String name) {
         TypedQuery<Tag> query = em.createQuery("SELECT t FROM Tag t WHERE t.name = :name", Tag.class);
@@ -42,11 +38,10 @@ public class TagDbConnection implements ITagDbConnection {
         return results.get(0);
     }
 
-
     @Override
     public boolean store(List<Tag> tags) throws UnstorableObjectException {
         if (!tags.isEmpty()) {
-            for (Tag tag: tags) {
+            for (Tag tag : tags) {
                 if (tag.getId() == null) {
                     throw new UnstorableObjectException("The tag " + tag.getName() + " does not have an id");
                 }
@@ -56,7 +51,7 @@ public class TagDbConnection implements ITagDbConnection {
         em.flush();
         return true;
     }
-    
+
     @Override
     public void delete(ITag tag) {
         em.remove(tag);
@@ -66,7 +61,7 @@ public class TagDbConnection implements ITagDbConnection {
     @Override
     public List<Tag> getAllTags(String userQuery) {
         TypedQuery<Tag> query = em.createQuery("SELECT t FROM Tag t WHERE t.name LIKE :userQuery", Tag.class);
-        query.setParameter("userQuery","%" + userQuery + "%");
+        query.setParameter("userQuery", "%" + userQuery + "%");
         List<Tag> results = query.getResultList();
         if (results == null) {
             return Collections.emptyList();

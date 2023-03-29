@@ -24,18 +24,17 @@ import edu.asu.diging.monitor.core.model.ITag;
 public class Tag implements ITag {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(unique = true)
     private String name;
-    
+
     @JsonIgnore
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch=FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
     @JoinTable(name = "app_tags", joinColumns = @JoinColumn(name = "tag_id"), inverseJoinColumns = @JoinColumn(name = "app_id"))
     private List<App> apps;
-    
-    
+
     public List<App> getApps() {
         return apps;
     }
@@ -45,21 +44,21 @@ public class Tag implements ITag {
     }
 
     public Tag() {
-        
+
     }
-    
+
     public Tag(String name) {
         this.name = name;
         this.apps = new ArrayList<App>();
     }
-    
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    } 
+    }
 
     public String getName() {
         return name;
