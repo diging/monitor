@@ -9,8 +9,8 @@
 
 	<properties>
 		<org.slf4j-version>1.7.30</org.slf4j-version>
-		<org.springframework-version>5.2.3.RELEASE</org.springframework-version>
-		<spring-security-version>5.3.3.RELEASE</spring-security-version>
+		<org.springframework-version>5.3.20</org.springframework-version>
+		<spring-security-version>5.5.7</spring-security-version>
 		<encoding.type>{bcrypt}</encoding.type>
 		<admin.password>$2y$12$AJZLdMlxFVueyEUwjPNjo.df2235U0BTudUjY915T4on73our8x0C</admin.password>
 		<encryption.password>password</encryption.password>
@@ -78,7 +78,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.13</version>
+			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
@@ -145,9 +145,9 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.19.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.mail</groupId>
@@ -167,6 +167,11 @@
 				</exclusion>
 			</exclusions>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.19.0</version>
 		</dependency>
 
 		<!-- Tiles -->
@@ -246,13 +251,13 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.19</version>
+			<version>8.0.28</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.2.10</version>
+			<version>42.4.3</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
@@ -280,14 +285,20 @@
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-databind</artifactId>
-		    <version>2.10.3</version>
+		    <version>2.12.7.1</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-core</artifactId>
-		    <version>2.10.3</version>
+		    <version>2.12.7</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.12.7</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.jasypt/jasypt -->
@@ -296,7 +307,11 @@
 		    <artifactId>jasypt</artifactId>
 		    <version>1.9.3</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
+		</dependency>
 		
 	</dependencies>
 
