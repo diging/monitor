@@ -6,7 +6,6 @@ import java.util.Set;
 
 import edu.asu.diging.monitor.core.model.GroupType;
 import edu.asu.diging.monitor.core.model.RequestMethod;
-import edu.asu.diging.monitor.core.model.impl.Tag;
 
 public class AppForm {
 
@@ -185,20 +184,20 @@ public class AppForm {
         this.groupType = groupType;
     }
 
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
     public String getTagString() {
         return tagString;
     }
 
     public void setTagString(String tagString) {
         this.tagString = tagString;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
 }

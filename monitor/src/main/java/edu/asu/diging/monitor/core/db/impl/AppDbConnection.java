@@ -109,6 +109,9 @@ public class AppDbConnection implements IAppDbConnection {
         for (INotificationRecipient recipient : element.getRecipients()) {
             recipient.getApps().remove(element);
         }
+        for (Tag tag: element.getTags()) {
+            tag.getApps().remove(element);
+        }
         em.remove(element);
         em.flush();
     }

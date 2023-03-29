@@ -73,8 +73,7 @@ public interface IApp {
     Group getGroup();
     
     List<Tag> getTags();
-    
+
     void setTags(List<Tag> tags);
-    
 
 }

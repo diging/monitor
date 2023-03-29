@@ -19,11 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.diging.monitor.core.exceptions.GroupNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
-import edu.asu.diging.monitor.core.model.impl.Tag;
 import edu.asu.diging.monitor.core.service.IAppManager;
 import edu.asu.diging.monitor.core.service.IGroupManager;
 import edu.asu.diging.monitor.core.service.INotificationManager;
-import edu.asu.diging.monitor.core.service.ITagManager;
 import edu.asu.diging.monitor.core.service.impl.AppValidator;
 import edu.asu.diging.monitor.web.admin.forms.AppForm;
 import edu.asu.diging.monitor.web.admin.forms.RecipientForm;
@@ -44,7 +42,7 @@ public class AddAppController {
 
     @Autowired
     private AppValidator appValidator;
-    
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.addValidators(appValidator);

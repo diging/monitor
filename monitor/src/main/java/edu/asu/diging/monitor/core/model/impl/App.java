@@ -297,12 +297,10 @@ public class App implements IApp {
         this.group = group;
     }
 
-    @Override
     public List<Tag> getTags() {
         return tags;
     }
 
-    @Override
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }

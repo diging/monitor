@@ -23,9 +23,8 @@ public interface IAppDbConnection {
     void deleteRecipientsForApp(IApp app);
 
     void updateAppAuth(IApp app);
-
+    
     void deleteTagsForApp(IApp element);
-
     
 
 }

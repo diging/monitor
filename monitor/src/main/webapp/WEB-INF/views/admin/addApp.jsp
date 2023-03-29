@@ -24,17 +24,22 @@
  	 <form:label path="description">Description:</form:label>
     	 <form:input type="text" class="form-control" path="description" />
   </div>
-
-	<div class="form-group">
-		<form:label path="tagString">Tags</form:label>
-		<div class="tags-container" >
-			<input type="text" class="form-control" id="tagString" />
-			<div class="tags-container-append" id="tags-container"></div>
-		</div>
-		<form:hidden path="tagString" id="hidden-tags"/>
-	</div>
-	
-	<div class="form-group">
+  
+  <div class="form-group">
+ 	 <form:label path="tagString">Tags:</form:label>
+ 	 <div class="tags-container" >
+		<input type="text" class="form-control" id="tagString" />
+		<div class="tags-container-append" id="tags-container"></div>
+ 	 </div>
+ 	 <form:hidden path="tagString" id="hidden-tags"/>
+  </div>
+  
+  <div class="form-group">
+ 	 <form:label path="expectedReturnCodes">Expected return codes (comma-separated):</form:label>
+    	 <form:input type="text" class="form-control" path="expectedReturnCodes" />
+  </div>
+  
+  <div class="form-group">
  	 <form:label path="warningReturnCodes">Warning return codes (comma-separated):</form:label>
     	 <form:input type="text" class="form-control" path="warningReturnCodes" />
   </div>
