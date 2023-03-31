@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import edu.asu.diging.monitor.core.db.INotificationRecipientDbConnection;
 import edu.asu.diging.monitor.core.exceptions.EmailAlreadyRegisteredException;
-import edu.asu.diging.monitor.core.exceptions.NoEmailRecipientException;
+import edu.asu.diging.monitor.core.exceptions.RecipientNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.AppStatus;
 import edu.asu.diging.monitor.core.model.IApp;
@@ -36,13 +36,6 @@ public class NotificationManager implements INotificationManager {
     @Autowired
     private IAppManager appManager;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * edu.asu.diging.monitor.core.service.impl.INotificationManager#addRecipient(
-     * java.lang.String, java.lang.String)
-     */
     @Override
     public boolean addRecipient(String name, String email, List<String> appIds) throws EmailAlreadyRegisteredException {
         if (email == null || email.trim().isEmpty()) {
@@ -68,15 +61,14 @@ public class NotificationManager implements INotificationManager {
     }
     
     @Override
-    public boolean modifyRecipient(String email, String name, List<String> apps) throws NoEmailRecipientException {
-        // Code here
+    public boolean modifyRecipient(String email, String name, List<String> apps) throws RecipientNotFoundException {
         if (email == null || email.trim().isEmpty()) {
             return false;
         }
-        if (dbConnection.getById(email) == null) {
-            throw new NoEmailRecipientException(); // Throw a exception instead
-        }
         INotificationRecipient recipient = this.getRecipient(email);
+        if (recipient == null) {
+            throw new RecipientNotFoundException();
+        }
         recipient.setName(name);
         recipient.setEmail(email);
         recipient.setApps(new ArrayList<>());
@@ -86,8 +78,7 @@ public class NotificationManager implements INotificationManager {
         try {
             dbConnection.update(recipient);
         } catch (UnstorableObjectException e) {
-            // should not happen
-            logger.error("Could not store recipient.", e);
+            return false;
         }
         return true;
     }

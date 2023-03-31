@@ -12,7 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import edu.asu.diging.monitor.core.db.INotificationRecipientDbConnection;
-import edu.asu.diging.monitor.core.exceptions.NoEmailRecipientException;
+import edu.asu.diging.monitor.core.exceptions.RecipientNotFoundException;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
 import edu.asu.diging.monitor.core.model.impl.App;
@@ -85,7 +85,7 @@ public class NotificationManagerTest {
     }
 
     @Test
-    public void test_modifyRecipient_success() throws NoEmailRecipientException {
+    public void test_modifyRecipient_success() throws RecipientNotFoundException {
         managerToTest.modifyRecipient(ID1, id1Name, appIds);
         try {
             Mockito.verify(dbConn).update(Mockito.any());
@@ -95,13 +95,13 @@ public class NotificationManagerTest {
     }
 
     @Test
-    public void test_modifyRecipient_failure_emailNull() throws NoEmailRecipientException {
+    public void test_modifyRecipient_failure_emailNull() throws RecipientNotFoundException {
         String email = null;
         Assert.assertFalse(managerToTest.modifyRecipient(email, id1Name, appIds));
     }
 
-    @Test(expected = NoEmailRecipientException.class)
-    public void test_modifyRecipient_failure_NoEmailRecipient() throws NoEmailRecipientException {
+    @Test(expected = RecipientNotFoundException.class)
+    public void test_modifyRecipient_failure_NoEmailRecipient() throws RecipientNotFoundException {
         Mockito.when(dbConn.getById(Mockito.anyString())).thenReturn(null);
         managerToTest.modifyRecipient(ID1, id1Name, appIds);
     }
