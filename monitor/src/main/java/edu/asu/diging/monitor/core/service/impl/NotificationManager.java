@@ -36,6 +36,13 @@ public class NotificationManager implements INotificationManager {
     @Autowired
     private IAppManager appManager;
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.asu.diging.monitor.core.service.impl.INotificationManager#addRecipient(
+     * java.lang.String, java.lang.String)
+     */
     @Override
     public boolean addRecipient(String name, String email, List<String> appIds) throws EmailAlreadyRegisteredException {
         if (email == null || email.trim().isEmpty()) {

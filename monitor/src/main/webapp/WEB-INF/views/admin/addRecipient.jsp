@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 <c:choose>
 	<c:when test="${empty recipientForm.email }">
 		<h3>Add a new notification recipient</h3>
@@ -42,15 +43,15 @@
 			</p>
 		</c:forEach>
 	</div>
-	
+
 	<c:choose>
-  		<c:when test="${empty recipientForm.email}">
-  			<input class="btn btn-primary" type="submit" value="Add Notification Recipient"/>
-  		</c:when>
-  		<c:otherwise>
-  			<input class="btn btn-primary" type="submit" value="Modify Notification Recipient"/>
-  		</c:otherwise>
-  </c:choose>
+		<c:when test="${empty recipientForm.email}">
+			<input class="btn btn-primary" type="submit" value="Add Notification Recipient" />
+		</c:when>
+		<c:otherwise>
+			<input class="btn btn-primary" type="submit" value="Modify Notification Recipient" />
+		</c:otherwise>
+	</c:choose>
 </form:form>
 <script>
 	$('#select-all').click(function(event) {
