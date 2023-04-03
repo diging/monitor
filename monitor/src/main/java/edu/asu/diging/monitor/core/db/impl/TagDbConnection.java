@@ -11,9 +11,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import edu.asu.diging.monitor.core.db.ITagDbConnection;
-import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.ITag;
-import edu.asu.diging.monitor.core.model.impl.Tag;
 
 @Component
 @Transactional
@@ -24,14 +22,14 @@ public class TagDbConnection implements ITagDbConnection {
 
     @Override
     public ITag getById(String id) {
-        return em.find(Tag.class, id);
+        return em.find(ITag.class, id);
     }
 
     @Override
-    public Tag getTagByName(String name) {
-        TypedQuery<Tag> query = em.createQuery("SELECT t FROM Tag t WHERE t.name = :name", Tag.class);
+    public ITag getTagByName(String name) {
+        TypedQuery<ITag> query = em.createQuery("SELECT t FROM Tag t WHERE t.name = :name", ITag.class);
         query.setParameter("name", name);
-        List<Tag> results = query.getResultList();
+        List<ITag> results = query.getResultList();
         if (results == null || results.isEmpty()) {
             return null;
         }
@@ -39,30 +37,10 @@ public class TagDbConnection implements ITagDbConnection {
     }
 
     @Override
-    public boolean store(List<Tag> tags) throws UnstorableObjectException {
-        if (!tags.isEmpty()) {
-            for (Tag tag : tags) {
-                if (tag.getId() == null) {
-                    throw new UnstorableObjectException("The tag " + tag.getName() + " does not have an id");
-                }
-                em.persist(tag);
-            }
-        }
-        em.flush();
-        return true;
-    }
-
-    @Override
-    public void delete(ITag tag) {
-        em.remove(tag);
-        em.flush();
-    }
-
-    @Override
-    public List<Tag> getAllTags(String userQuery) {
-        TypedQuery<Tag> query = em.createQuery("SELECT t FROM Tag t WHERE t.name LIKE :userQuery", Tag.class);
+    public List<ITag> getAllTags(String userQuery) {
+        TypedQuery<ITag> query = em.createQuery("SELECT t FROM Tag t WHERE t.name LIKE :userQuery", ITag.class);
         query.setParameter("userQuery", "%" + userQuery + "%");
-        List<Tag> results = query.getResultList();
+        List<ITag> results = query.getResultList();
         if (results == null) {
             return Collections.emptyList();
         }

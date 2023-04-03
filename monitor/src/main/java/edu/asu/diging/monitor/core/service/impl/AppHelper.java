@@ -111,7 +111,7 @@ public class AppHelper implements IAppHelper {
     
     private List<Tag> getTagsByName(List<String> tagNames){
         return tagNames.stream().map(t -> {
-            Tag temp = tagManager.getTagByName(t);
+            Tag temp = (Tag) tagManager.getTagByName(t);
             if (temp != null) {
                 return temp;
             }else {

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import edu.asu.diging.monitor.core.model.impl.Tag;
+import edu.asu.diging.monitor.core.model.ITag;
 import edu.asu.diging.monitor.core.service.ITagManager;
 
 @Controller
@@ -20,8 +20,8 @@ public class TagController {
     private ITagManager tagManager;
 
     @RequestMapping(value = "/getTagList", method = RequestMethod.GET)
-    public @ResponseBody List<Tag> getTagList(@RequestParam("term") String query) {
-        List<Tag> tagList = tagManager.getTagList(query);
+    public @ResponseBody List<ITag> getTagList(@RequestParam("term") String query) {
+        List<ITag> tagList = tagManager.getTagList(query);
         return tagList;
     }
 }

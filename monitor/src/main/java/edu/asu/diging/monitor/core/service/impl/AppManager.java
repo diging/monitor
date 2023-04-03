@@ -131,7 +131,7 @@ public class AppManager implements IAppManager {
     
     protected void deleteExistingTags(IApp app) {
         if (app.getTags() != null && !app.getTags().isEmpty()) {
-            dbConnection.deleteTagsForApp(app);
+            dbConnection.deleteTagsFromApp(app);
         }
     }
     protected void encryptPassword(AppForm appForm, IApp app) {

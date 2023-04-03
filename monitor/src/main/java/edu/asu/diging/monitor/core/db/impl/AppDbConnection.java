@@ -14,8 +14,8 @@ import edu.asu.diging.monitor.core.db.IAppDbConnection;
 import edu.asu.diging.monitor.core.exceptions.UnstorableObjectException;
 import edu.asu.diging.monitor.core.model.IApp;
 import edu.asu.diging.monitor.core.model.INotificationRecipient;
+import edu.asu.diging.monitor.core.model.ITag;
 import edu.asu.diging.monitor.core.model.impl.App;
-import edu.asu.diging.monitor.core.model.impl.Tag;
 
 @Component
 @Transactional
@@ -50,7 +50,7 @@ public class AppDbConnection implements IAppDbConnection {
         }
         if ((app.getTags() != null && !app.getTags().isEmpty()) || (app.getRecipients() != null && !app.getRecipients().isEmpty())) {
             if (app.getTags() != null && !app.getTags().isEmpty()) {
-                for (Tag tag: app.getTags()) {
+                for (ITag tag: app.getTags()) {
                     tag.getApps().add((App) app);
                     em.merge(tag);
                 }
@@ -72,7 +72,7 @@ public class AppDbConnection implements IAppDbConnection {
     public IApp update(IApp app) {
         if ((app.getTags() != null && !app.getTags().isEmpty()) || (app.getRecipients() != null && !app.getRecipients().isEmpty())) {
             if (app.getTags() != null && !app.getTags().isEmpty()) {
-                for (Tag tag: app.getTags()) {
+                for (ITag tag: app.getTags()) {
                     tag.getApps().add((App) app);
                     em.merge(tag);
                 }
@@ -109,7 +109,7 @@ public class AppDbConnection implements IAppDbConnection {
         for (INotificationRecipient recipient : element.getRecipients()) {
             recipient.getApps().remove(element);
         }
-        for (Tag tag: element.getTags()) {
+        for (ITag tag: element.getTags()) {
             tag.getApps().remove(element);
         }
         em.remove(element);
@@ -126,8 +126,8 @@ public class AppDbConnection implements IAppDbConnection {
     }
     
     @Override
-    public void deleteTagsForApp(IApp element) {
-        for (Tag tag: element.getTags()) {
+    public void deleteTagsFromApp(IApp element) {
+        for (ITag tag: element.getTags()) {
             tag.getApps().remove(element);
             em.merge(tag);
         }
