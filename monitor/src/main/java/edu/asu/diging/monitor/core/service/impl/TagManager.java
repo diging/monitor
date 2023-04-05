@@ -20,7 +20,7 @@ public class TagManager implements ITagManager {
     private ITagDbConnection dbConnection;
 
     @Override
-    public List<ITag> getTagList(String query) {
+    public List<ITag> findTags(String query) {
         List<ITag> tags = dbConnection.getAllTags(query);
         if (tags != null) {
             return tags;

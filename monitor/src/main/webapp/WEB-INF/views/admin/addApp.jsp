@@ -138,7 +138,7 @@ $(document).ready(function() {
 	$("#tagString").autocomplete({
 		source : function(request, response) {
 			$.ajax({
-				url : "${pageContext.request.contextPath}/admin/apps/tags/getTagList",
+				url : "${pageContext.request.contextPath}/admin/apps/tags/list",
 				dataType : "json",
 				data : {
 					term : request.term

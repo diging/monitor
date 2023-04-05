@@ -118,18 +118,18 @@ public class AppDbConnection implements IAppDbConnection {
 
     @Override
     public void deleteRecipientsForApp(IApp element) {
+        element = em.merge(element);
         for (INotificationRecipient recipient : element.getRecipients()) {
             recipient.getApps().remove(element);
-            em.merge(recipient);
         }
         em.flush();
     }
     
     @Override
     public void deleteTagsFromApp(IApp element) {
+        element = em.merge(element);
         for (ITag tag: element.getTags()) {
             tag.getApps().remove(element);
-            em.merge(tag);
         }
         em.flush();
     }

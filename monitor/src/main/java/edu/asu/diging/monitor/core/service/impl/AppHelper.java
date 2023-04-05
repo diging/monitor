@@ -35,11 +35,7 @@ public class AppHelper implements IAppHelper {
     @Override
     public IApp copyAppInfo(IApp app, AppForm appForm) throws GroupNotFoundException, UnstorableObjectException {
         app.setDescription(appForm.getDescription());
-        if (appForm.getTags() != null) {
-            app.setTags(getTagsByName(appForm.getTags()));
-        }else {
-            app.setTags(new ArrayList<>());
-        }
+        app.setTags((appForm.getTags() != null) ? getTagsByName(appForm.getTags()) : new ArrayList<>());
         app.setExpectedReturnCodes(appForm.getExpectedReturnCodes());
         app.setHealthUrl(appForm.getHealthUrl());
         app.setName(appForm.getName());
@@ -112,11 +108,7 @@ public class AppHelper implements IAppHelper {
     private List<Tag> getTagsByName(List<String> tagNames){
         return tagNames.stream().map(t -> {
             Tag temp = (Tag) tagManager.getTagByName(t);
-            if (temp != null) {
-                return temp;
-            }else {
-                return new Tag(t);
-            }
+            return (temp != null) ? temp : new Tag(t);
         }).collect(Collectors.toList());
     }
 

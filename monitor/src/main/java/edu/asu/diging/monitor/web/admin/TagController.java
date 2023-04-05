@@ -19,9 +19,8 @@ public class TagController {
     @Autowired
     private ITagManager tagManager;
 
-    @RequestMapping(value = "/getTagList", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public @ResponseBody List<ITag> getTagList(@RequestParam("term") String query) {
-        List<ITag> tagList = tagManager.getTagList(query);
-        return tagList;
+        return tagManager.findTags(query);
     }
 }

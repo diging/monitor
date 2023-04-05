@@ -5,7 +5,7 @@ import java.util.List;
 import edu.asu.diging.monitor.core.model.ITag;
 
 public interface ITagManager {
-    List<ITag> getTagList(String query);
+    List<ITag> findTags(String query);
 
     ITag getTag(String id);
 
