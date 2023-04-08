@@ -26,12 +26,11 @@
   </div>
   
   <div class="form-group">
- 	 <form:label path="tagString">Tags:</form:label>
+ 	 <form:label path="tags">Tags:</form:label>
  	 <div class="tags-container" >
 		<input type="text" class="form-control" id="tagString" />
 		<div class="tags-container-append" id="tags-container"></div>
  	 </div>
- 	 <form:hidden path="tagString" id="hidden-tags"/>
   </div>
   
   <div class="form-group">
@@ -181,19 +180,20 @@ $(document).ready(function() {
 		if (tag.trim() != ""){
 			var button = $('<button type="button" class="btn btn-default">' + tag + ' <span class="glyphicon glyphicon-remove"></span></button>');
 		    
+			var hiddenInput = $('<input type="hidden" name="tags[]" value="' + tag + '">');
 		    // Add an event listener to the button to remove the tag when clicked
 		    button.on('click', function() {
 		    	button.remove();
 			    var index = currentTags.indexOf(tag);
 			    if (index > -1) {
 			    	currentTags.splice(index, 1);
-			        $("#hidden-tags").val(currentTags.join(","));
+			    	hiddenInput.remove();
 			    }
 		    });
 		    
 		    $("#tags-container").append(button);
 		    currentTags.push(tag);
-		    $("#hidden-tags").val(currentTags.join(","));
+		    $("#tags-container").append(hiddenInput);
 		}
 	}
 	
@@ -223,10 +223,10 @@ $(document).ready(function() {
 	}
 	
 	function populateTags() {
-		var tags = "${appForm.tagString}".split(",");
-		for (var i = 0; i < tags.length; i++) {
-		    updateTagsField(tags[i]);
-		}
+		${appForm.tags}.forEach(function(tag){
+			console.log(tag);
+			updateTagsField(tag);
+		});
 	}
 
 	window.onload = function() {

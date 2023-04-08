@@ -1,6 +1,5 @@
 package edu.asu.diging.monitor.web.admin;
 
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -51,6 +50,9 @@ public class ModifyAppController {
         AppForm appForm = new AppForm();
         model.addAttribute("appForm", appForm);
         appHelper.copyAppInfoToForm(app, appForm);
+        for (String tag: appForm.getTags()) {
+            System.out.println(tag.getClass());
+        }
         model.addAttribute("appRecipients",
                 app.getRecipients().stream().map(x -> x.getEmail()).collect(Collectors.toList()));
         return "admin/apps/show";
@@ -67,10 +69,6 @@ public class ModifyAppController {
             return "admin/apps/show";
         }
         try {
-            if (!appForm.getTagString().isBlank()) {
-                String[] tagStrings = appForm.getTagString().split(",");
-                appForm.setTags(Arrays.stream(tagStrings).map(tag -> tag.trim()).collect(Collectors.toList()));
-            }
             appManager.updateApp(app, appForm);
         } catch (GroupNotFoundException e) {
             logger.error("Could not find Group", e);

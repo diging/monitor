@@ -67,7 +67,6 @@ public class AppHelper implements IAppHelper {
         appForm.setTags(app.getTags().stream().map(t ->{
             return t.getName();
         }).collect(Collectors.toList()));
-        appForm.setTagString(String.join(",", appForm.getTags()));
         appForm.setExpectedReturnCodes(app.getExpectedReturnCodes());
         appForm.setHealthUrl(app.getHealthUrl());
         appForm.setId(app.getId());

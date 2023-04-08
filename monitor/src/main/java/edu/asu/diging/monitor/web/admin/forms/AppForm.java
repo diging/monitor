@@ -13,7 +13,6 @@ public class AppForm {
     private String name;
     private String healthUrl;
     private String description;
-    private String tagString;
     private List<String> tags;
     private String expectedReturnCodes;
     private String warningReturnCodes;
@@ -182,14 +181,6 @@ public class AppForm {
 
     public void setGroupType(GroupType groupType) {
         this.groupType = groupType;
-    }
-
-    public String getTagString() {
-        return tagString;
-    }
-
-    public void setTagString(String tagString) {
-        this.tagString = tagString;
     }
 
     public List<String> getTags() {
