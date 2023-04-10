@@ -50,9 +50,6 @@ public class ModifyAppController {
         AppForm appForm = new AppForm();
         model.addAttribute("appForm", appForm);
         appHelper.copyAppInfoToForm(app, appForm);
-        for (String tag: appForm.getTags()) {
-            System.out.println(tag.getClass());
-        }
         model.addAttribute("appRecipients",
                 app.getRecipients().stream().map(x -> x.getEmail()).collect(Collectors.toList()));
         return "admin/apps/show";

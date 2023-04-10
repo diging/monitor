@@ -223,10 +223,9 @@ $(document).ready(function() {
 	}
 	
 	function populateTags() {
-		${appForm.tags}.forEach(function(tag){
-			console.log(tag);
-			updateTagsField(tag);
-		});
+		<c:forEach var="tag" items="${appForm.tags}">
+			updateTagsField('${tag}');
+		</c:forEach>
 	}
 
 	window.onload = function() {
