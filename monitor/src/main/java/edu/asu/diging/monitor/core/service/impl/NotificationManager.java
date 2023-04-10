@@ -52,12 +52,7 @@ public class NotificationManager implements INotificationManager {
             throw new EmailAlreadyRegisteredException();
         }
         INotificationRecipient recipient = new NotificationRecipient();
-        recipient.setName(name);
-        recipient.setEmail(email);
-        recipient.setApps(new ArrayList<>());
-        for (String id : appIds) {
-            recipient.getApps().add((App) appManager.getApp(id));
-        }
+        recipient = setRecipientValues(recipient, name, email, appIds);
         try {
             dbConnection.store(recipient);
         } catch (UnstorableObjectException e) {
@@ -76,12 +71,7 @@ public class NotificationManager implements INotificationManager {
         if (recipient == null) {
             throw new RecipientNotFoundException();
         }
-        recipient.setName(name);
-        recipient.setEmail(email);
-        recipient.setApps(new ArrayList<>());
-        for (String id : apps) {
-            recipient.getApps().add((App) appManager.getApp(id));
-        }
+        recipient = setRecipientValues(recipient, name, email, apps);
         try {
             dbConnection.update(recipient);
         } catch (UnstorableObjectException e) {
@@ -117,5 +107,15 @@ public class NotificationManager implements INotificationManager {
             emailManager.sendAppStatusNotificationEmail(recipient.getEmail(), app, previousStatus.toString(),
                     app.getLastAppTest().getStatus().toString());
         }
+    }
+    
+    private INotificationRecipient setRecipientValues(INotificationRecipient recipient, String name, String email, List<String> appIds) {
+        recipient.setName(name);
+        recipient.setEmail(email);
+        recipient.setApps(new ArrayList<>());
+        for (String id : appIds) {
+            recipient.getApps().add((App) appManager.getApp(id));
+        }
+        return recipient;
     }
 }
