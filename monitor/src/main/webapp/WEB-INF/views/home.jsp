@@ -55,6 +55,8 @@
 <sec:authorize access="isAuthenticated()">
 	<p>You are logged in.</p>
 </sec:authorize>
+<p>Deployed Version: <c:set var="version" value="<%= this.getClass().getPackage().getImplementationVersion() %>" />
+<c:out value="${version}" /></p>
 <div class="alert alert-warning alert-dismissible" role="alert" id="ajax_reload_alert" style="display:none">
   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
   </button>
