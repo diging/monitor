@@ -104,6 +104,18 @@
 					class="fa fa-info-circle" aria-hidden="true"></i>
 			</button>
 		</div>
+		<c:choose>
+			<c:when test="${app.lastAppTest.status == 'ERROR'}">
+				<div class="pull-right">
+					<button title="Error Logs" type="submit" class="btn-link"
+						data-toggle="modal" data-target="#modal_error_${app.id}"
+						data-backdrop="false">
+						<i style="padding: 10px; padding-right: 0px; padding-left: 0px;"
+							class="fa fa-file-text-o" aria-hidden="true"></i>
+					</button>
+				</div>
+			</c:when>
+		</c:choose>
 	</sec:authorize>
 	<c:choose>
 		<c:when test="${app.lastAppTest.status == 'OK'}">
@@ -154,6 +166,25 @@
 			</c:choose>
 		</p>
 	</sec:authorize>
+	</div>
+	<div id="modal_error_${app.id}" class="modal fade;overflow:hidden"
+		role="dialog" aria-hidden="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<p>
+						App status : <b>${app.lastAppTest.status}</b>
+					</p>
+					<c:forEach items="${app.lastAppTest.pingResults}" var="pingResult">
+						<p> Error code: ${pingResult.returnCode} </p>
+						<p> Return Value: ${pingResult.returnValue} </p>
+					</c:forEach>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-alert" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div id="modal_${app.id}" class="modal fade;overflow:hidden"
 		role="dialog" aria-hidden="false">

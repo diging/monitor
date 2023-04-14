@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -28,7 +30,7 @@ public class AppTest implements IAppTest {
 	private OffsetDateTime pingTime;
 	private AppStatus status;
 	@JsonIgnore
-	@OneToMany(targetEntity=PingResult.class) @Cascade({CascadeType.ALL}) private List<IPingResult> pingResults;
+	@OneToMany(targetEntity=PingResult.class) @Cascade({CascadeType.ALL}) @LazyCollection(LazyCollectionOption.FALSE) private List<IPingResult> pingResults;
 	private String appId;
 	
 	/* (non-Javadoc)
