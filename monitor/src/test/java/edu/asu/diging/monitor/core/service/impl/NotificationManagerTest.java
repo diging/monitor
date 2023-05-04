@@ -85,12 +85,12 @@ public class NotificationManagerTest {
     }
 
     @Test
-    public void test_modifyRecipient_success() throws RecipientNotFoundException {
+    public void test_modifyRecipient_success() throws RecipientNotFoundException, UnstorableObjectException {
         managerToTest.modifyRecipient(ID1, id1Name, appIds);
         try {
             Mockito.verify(dbConn).update(Mockito.any());
         } catch (UnstorableObjectException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 

@@ -73,7 +73,7 @@ public class ModifyRecipientController {
         } catch (RecipientNotFoundException e) {
             redirectAttrs.addFlashAttribute("show_alert", true);
             redirectAttrs.addFlashAttribute("alert_type", "danger");
-            redirectAttrs.addFlashAttribute("alert_msg", "No such email recipient exists.");
+            redirectAttrs.addFlashAttribute("alert_msg", "No recipient with the provided email address exists.");
             return "redirect:/";
         }
     }
