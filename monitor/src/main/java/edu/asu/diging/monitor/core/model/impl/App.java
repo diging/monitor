@@ -236,6 +236,14 @@ public class App implements IApp {
     public void setLastTestId(String lastTestId) {
         this.lastTestId = lastTestId;
     }
+    
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 
     @Override
     public IAppTest getLastAppTest() {
@@ -295,13 +303,5 @@ public class App implements IApp {
     @Override
     public void setGroup(Group group) {
         this.group = group;
-    }
-
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
     }
 }

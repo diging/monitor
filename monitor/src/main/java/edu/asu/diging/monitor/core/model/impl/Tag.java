@@ -42,9 +42,7 @@ public class Tag implements ITag {
         this.apps = apps;
     }
 
-    public Tag() {
-
-    }
+    public Tag() {}
 
     public Tag(String name) {
         this.name = name;
